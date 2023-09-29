@@ -1,0 +1,6 @@
+#map-container {
+    width: 50%;
+    height: 99vh;
+    /* 100vh cuts off the screen */
+    overflow: hidden;
+}
