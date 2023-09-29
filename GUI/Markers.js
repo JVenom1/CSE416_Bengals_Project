@@ -30,9 +30,9 @@ function onMarkerClick(state) {
   }
 }
 const stateNames = {
-  northCarolinaMarker: "North Carolina",
-  marylandMarker: "Maryland",
-  wisconsinMarker: "Wisconsin",
+  northCarolinaMarker: "North Carolina (S/S)",
+  marylandMarker: "Maryland (S/S)",
+  wisconsinMarker: "Wisconsin (F/C)",
 };
 
 northCarolinaMarker.bindTooltip(stateNames.northCarolinaMarker).openTooltip();
