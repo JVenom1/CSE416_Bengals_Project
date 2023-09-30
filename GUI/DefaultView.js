@@ -17,7 +17,10 @@ const maxZoom = 8; // Set your maximum zoom level
 const minZoom = 5; // Set your maximum zoom-out level
 
 // It is what it is
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: maxZoom,
-  minZoom: minZoom, // Set the minimum zoom level
-}).addTo(map);
+const tileLayer = L.tileLayer(
+  "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  {
+    maxZoom: maxZoom,
+    minZoom: minZoom,
+  }
+).addTo(map);
