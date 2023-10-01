@@ -1,4 +1,6 @@
 function makeTable(path, layer) {
+  let initialPath = "Data/";
+  path = initialPath + path;
   fetch(path)
     .then((response) => response.json())
     .then((data) => {

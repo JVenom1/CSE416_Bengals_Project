@@ -7,7 +7,6 @@ const marylandCongressionalDistrictsLayer = L.geoJSON(null, {
     fillOpacity: 0,
   },
 }).addTo(map);
-
 makeTable(
   "Maryland_Data/maryland-congressional-districts.geojson",
   marylandCongressionalDistrictsLayer
