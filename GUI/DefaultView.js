@@ -13,7 +13,7 @@ const map = L.map("map-container", {
   maxBounds: usaBounds, // Set the maximum bounds to the extended bounds
 }).setView(defaultLoc, defaultZoom); // Centered between North Carolina, Maryland, and Wisconsin with zoom level 6
 
-const maxZoom = 8; // Set your maximum zoom level
+const maxZoom = 9; // Set your maximum zoom level
 const minZoom = 5; // Set your maximum zoom-out level
 
 // It is what it is
