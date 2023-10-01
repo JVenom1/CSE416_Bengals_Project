@@ -8,7 +8,7 @@ const marylandCongressionalDistrictsLayer = L.geoJSON(null, {
   },
 }).addTo(map);
 makeTable(
-  "Maryland_Data/maryland-congressional-districts.geojson",
+  "Maryland_Data/Maryland_Congressional_Districts_2022.geojson",
   marylandCongressionalDistrictsLayer
 );
 
@@ -23,7 +23,7 @@ const marylandSenateDistrictsLayer = L.geoJSON(null, {
 }).addTo(map);
 
 makeTable(
-  "Maryland_Data/maryland-senatorial-districts.geojson",
+  "Maryland_Data/2022SENATEOFFICIAL.geojson",
   marylandSenateDistrictsLayer
 );
 
@@ -38,6 +38,6 @@ const marylandAssemblyDistrictsLayer = L.geoJSON(null, {
 }).addTo(map);
 
 makeTable(
-  "Maryland_Data/maryland-assembly-districts.geojson",
+  "Maryland_Data/Maryland_Assembly_Districts_2022.geojson",
   marylandAssemblyDistrictsLayer
 );
