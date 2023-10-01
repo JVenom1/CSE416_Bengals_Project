@@ -7,12 +7,24 @@
 </head>
 
 <body>
-
-  <div id="map-container"></div>
+  <div id="container">
+    <div id="map-container"></div>
+    <div class="data-container">
+      <table id="property-table">
+        <thead>
+          <tr>
+            <th>Property Name</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-
+  <script src="CongresSenateAssemb/helper_functions.js"></script>
   <script src="DefaultView.js"></script>
 
   <script src="CongresSenateAssemb/MarylandLayer.js"></script>
@@ -22,6 +34,7 @@
   <script src="CongresSenateAssemb/ConSenAsLayerControl.js"></script>
 
   <script src="Markers.js"></script>
+  <script src="dropDownMenu.js"></script>
   <script src="Reset.js"></script>
 
 </body>
