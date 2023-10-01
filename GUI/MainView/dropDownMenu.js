@@ -5,7 +5,6 @@ const dropdownControl = L.control({ position: "topleft" });
 function onDropdownSelect(state) {
   const info = stateInfo[state];
   if (info) {
-    // alert(`You selected ${info.name}\n\nDescription: ${info.description}`);
     map.setView(info.latlng, 8); // Set the map view to the clicked state's coordinates with zoom level 8
   }
 }
