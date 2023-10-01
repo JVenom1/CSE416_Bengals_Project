@@ -47,3 +47,9 @@
 #property-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+#scatter-plot {
+    flex: 1;
+    height: 300px;
+    /* Adjust the height as needed */
+}
