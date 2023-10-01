@@ -19,3 +19,31 @@
     overflow: auto;
     /* Add scrollbars if the content overflows the container */
 }
+
+/* Style for the table */
+#property-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+/* Style for table header */
+#property-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style for table data rows */
+#property-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Style for alternating row colors */
+#property-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
