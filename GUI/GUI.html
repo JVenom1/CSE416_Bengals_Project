@@ -9,26 +9,30 @@
 <body>
   <div id="container">
     <div id="map-container"></div>
-    <div class="data-container">
-      <table id="property-table">
-        <thead>
-          <tr>
-            <th>Property Name</th>
-            <th>Value</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div class="container">
-        <h1>GeoJSON Scatter Plots</h1>
-        <select id="dataset-selector">
-          <option value="MD">Maryland (MD)</option>
-          <option value="WC">Wisconsin (WC)</option>
-          <option value="NC">North Carolina (NC)</option>
-        </select>
-        <div id="scatter-plot"></div>
+    <div class="container">
+      <h1>GeoJSON Scatter Plots</h1>
+      <select id="dataset-selector">
+        <option value="MD">Maryland (MD)</option>
+        <option value="WC">Wisconsin (WC)</option>
+        <option value="NC">North Carolina (NC)</option>
+      </select>
+      <div id="scatter-plot">
+        <img src="Data/GenerateDummyData/scatter-plot-pic.png" alt="temp">
+      </div>
+      <div class="data-container">
+        <table id="property-table">
+          <thead>
+            <tr>
+              <th>Property Name</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
       </div>
     </div>
+
   </div>
 
 
