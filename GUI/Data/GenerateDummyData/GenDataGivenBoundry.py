@@ -4,16 +4,21 @@ from shapely.geometry import shape, Polygon
 import pandas as pd
 
 # Define the number of plans you want to create
-num_plans = 5
-num_districts = 8
+num_plans = 1000  # Increase the number of plans
 
 # Load the boundary GeoJSON
-fileName = "WisconsinOutline"
+fileName = "MarylandOutline"
 total_population = 6165000
 boundary_data = gpd.read_file(fileName + ".geojson")
 
 # Initialize an empty list to store all district plans
 all_districts = []
+
+# Define the number of districts per plan (consistent across all plans)
+num_districts_per_plan = 8  # You can adjust this number as needed
+
+# Calculate the population target for each district
+target_population = total_population / num_districts_per_plan
 
 for plan_num in range(num_plans):
     # Initialize districts with random polygons within the boundary for each plan
@@ -21,7 +26,7 @@ for plan_num in range(num_plans):
 
     max_attempts = 100  # Maximum number of attempts to generate a non-overlapping polygon
 
-    for i in range(num_districts):
+    for i in range(num_districts_per_plan):
         for _ in range(max_attempts):
             # Generate random points within the boundary
             minx, miny, maxx, maxy = boundary_data.total_bounds
@@ -36,64 +41,33 @@ for plan_num in range(num_plans):
 
                 # Check if the clipped polygon has a valid area
                 if clipped_polygon.is_valid and clipped_polygon.area > 0:
-                    # Check if the new polygon overlaps with any existing district
-                    overlaps = False
-                    for existing_district in districts:
-                        if clipped_polygon.intersects(existing_district["geometry"]):
-                            overlaps = True
-                            break
+                    districts.append(
+                        {
+                            "geometry": shape(clipped_polygon),
+                            "population": 0,  # Initialize with zero population
+                        }
+                    )
+                    break
 
-                    if not overlaps:
-                        districts.append(
-                            {
-                                "geometry": shape(clipped_polygon),
-                                "population": 0,  # Initialize with zero population
-                            }
-                        )
-                        break
-
-    # Calculate the target population for each district
-    target_population = total_population / num_districts
-
-    # Assign random population to districts
-    for i in range(num_districts - 1):
-        remaining_districts = num_districts - i
-        max_population = total_population - sum(
-            district["population"] for district in districts
-        )
-        max_population_per_district = max_population / remaining_districts
-        district = random.choice(districts)
-
-        while district["population"] >= max_population_per_district:
-            district = random.choice(districts)
-
-        # Convert max_population_per_district to an integer
-        max_population_per_district_int = int(max_population_per_district)
-
-        district["population"] += random.randint(
-            1, max_population_per_district_int - district["population"]
-        )
-
-    # Assign the remaining population to the last district
-    districts[-1]["population"] = total_population - sum(
-        district["population"] for district in districts
-    )
+    # Assign random population to districts in this plan
+    for district in districts:
+        max_population_per_district_int = int(target_population)
+        district["population"] = random.randint(1, max_population_per_district_int)
 
     # Append the districts for this plan to the list of all districts
-    all_districts.append(districts)
+    all_districts.extend(districts)
 
 # Create GeoJSON features for all district plans
 all_district_features = []
 
-for plan_num, districts in enumerate(all_districts):
-    for i, district in enumerate(districts):
-        all_district_features.append(
-            {
-                "type": "Feature",
-                "properties": {"PlanID": plan_num + 1, "DistrictID": i + 1, "Population": district["population"]},
-                "geometry": district["geometry"],
-            }
-        )
+for i, district in enumerate(all_districts):
+    all_district_features.append(
+        {
+            "type": "Feature",
+            "properties": {"PlanID": i // num_districts_per_plan + 1, "DistrictID": i % num_districts_per_plan + 1, "Population": district["population"]},
+            "geometry": district["geometry"],
+        }
+    )
 
 # Create a GeoDataFrame that includes the union polygon and district polygons for all plans
 result_geojson = {"type": "FeatureCollection", "features": all_district_features}

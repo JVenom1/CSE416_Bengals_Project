@@ -19,7 +19,15 @@
         </thead>
         <tbody></tbody>
       </table>
-      <!-- <svg id="scatter-plot"></svg> -->
+      <div class="container">
+        <h1>GeoJSON Scatter Plots</h1>
+        <select id="dataset-selector">
+          <option value="MD">Maryland (MD)</option>
+          <option value="WC">Wisconsin (WC)</option>
+          <option value="NC">North Carolina (NC)</option>
+        </select>
+        <div id="scatter-plot"></div>
+      </div>
     </div>
   </div>
 
@@ -28,8 +36,6 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
-
-  <script src="Data/GenerateDummyData/scatter-plot.js"></script>
 
   <script src="CongresSenateAssembDistr/helper_functions.js"></script>
   <script src="MainView/DefaultView.js"></script>
@@ -44,6 +50,7 @@
   <script src="MainView/Markers.js"></script>
   <script src="MainView/dropDownMenu.js"></script>
   <script src="MainView/Reset.js"></script>
+  <script src="Data/GenerateDummyData/scatter-plot.js"></script>
 
 </body>
 

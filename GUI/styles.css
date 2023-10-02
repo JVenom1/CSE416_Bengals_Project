@@ -48,8 +48,13 @@
     background-color: #f2f2f2;
 }
 
+
+#dataset-selector {
+    margin: 10px;
+}
+
 #scatter-plot {
-    flex: 1;
-    height: 300px;
-    /* Adjust the height as needed */
+    width: 800px;
+    height: 400px;
+    margin: 0 auto;
 }

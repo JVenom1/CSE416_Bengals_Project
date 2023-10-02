@@ -1,59 +1,77 @@
-// // Load the GeoJSON data for your districts
-// fetch("Data/GenerateDummyData/NCOutline.geojson")
-//   .then((response) => response.json())
-//   .then((boundaryData) => {
-//     // Process the GeoJSON data here
-//     generateRandomDistricts(boundaryData);
-//   });
+// Define the data variables
+var mdData, wcData, ncData;
 
-// function generateRandomDistricts(boundaryData) {
-//   // Extract the boundary geometry from the GeoJSON data
-//   const boundary = boundaryData.features[0].geometry;
+// Load Maryland GeoJSON Data
+console.log("Fetching Maryland data...");
+fetch("Data/GenerateDummyData/MarylandOutlineMultiplePlans.geojson")
+  .then((response) => response.json())
+  .then((data) => {
+    createScatterPlot(data);
+  })
+  .catch((error) => {
+    console.error("Error loading GeoJSON data:", error);
+  });
 
-//   // Define the number of districts and random seed for reproducibility
-//   const numDistricts = 5; // Change this to the desired number of districts
-//   const randomSeed = 42; // Change this for different random results
+// Function to create the scatter plot
+function createScatterPlot(data) {
+  // Define the width and height of the plot
+  const width = 600;
+  const height = 400;
 
-//   // Generate random points within the boundary
-//   const randomPoints = generateRandomPointsWithinBoundary(
-//     boundary,
-//     numDistricts,
-//     randomSeed
-//   );
+  // Create an SVG element for the plot
+  const svg = d3
+    .select("#scatter-plot")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
 
-//   // Now you have an array of random points, you can use any algorithm to group them into districts
-//   // For simplicity, let's create a GeoJSON FeatureCollection with these points as centroids
-//   const districtFeatures = randomPoints.map((point, index) => ({
-//     type: "Feature",
-//     properties: {
-//       district_id: index + 1, // Assign unique district IDs
-//     },
-//     geometry: {
-//       type: "Point",
-//       coordinates: point,
-//     },
-//   }));
+  // Extract the features (districts) from the GeoJSON data
+  const features = data.features;
 
-//   const districtCollection = {
-//     type: "FeatureCollection",
-//     features: districtFeatures,
-//   };
+  // Define scales for x and y axes
+  const xScale = d3
+    .scaleLinear()
+    .domain([1, d3.max(features, (d) => d.properties.PlanID)]) // Adjust the domain as needed
+    .range([0, width]);
 
-//   // You can save districtCollection as a GeoJSON file or use it for further processing
-//   console.log(districtCollection);
-// }
+  const yScale = d3
+    .scaleLinear()
+    .domain([0, d3.max(features, (d) => d.properties.Population)]) // Adjust the domain as needed
+    .range([height, 0]);
 
-// function generateRandomPointsWithinBoundary(boundary, numPoints, seed) {
-//   // You can use any method to generate random points within a polygon
-//   // Here's a simple example using a bounding box approach
-//   const [minX, minY, maxX, maxY] = turf.bbox(boundary);
-//   const randomPoints = [];
+  // Create circles for each data point
+  svg
+    .selectAll("circle")
+    .data(features)
+    .enter()
+    .append("circle")
+    .attr("cx", (d) => xScale(d.properties.PlanID))
+    .attr("cy", (d) => yScale(d.properties.Population))
+    .attr("r", 4) // Adjust the radius as needed
+    .attr("fill", "blue"); // Adjust the fill color as needed
 
-//   for (let i = 0; i < numPoints; i++) {
-//     const x = Math.random() * (maxX - minX) + minX;
-//     const y = Math.random() * (maxY - minY) + minY;
-//     randomPoints.push([x, y]);
-//   }
+  // Add x-axis
+  svg
+    .append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(xScale));
 
-//   return randomPoints;
-// }
+  // Add y-axis
+  svg.append("g").call(d3.axisLeft(yScale));
+
+  // Add labels and titles as needed
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", height + 30)
+    .attr("text-anchor", "middle")
+    .text("Plan ID");
+
+  svg
+    .append("text")
+    .attr("x", -height / 2)
+    .attr("y", -40)
+    .attr("text-anchor", "middle")
+    .attr("transform", "rotate(-90)")
+    .text("Population");
+}
