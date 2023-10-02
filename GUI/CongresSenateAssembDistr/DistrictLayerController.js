@@ -1,17 +1,17 @@
 const WisconsinDistrictLayers = {
   "Wisconsin Congressional (Red)": wisconsinCongressionalDistrictsLayer,
-  "Wisconsin Senate (Green)": wisconsinSenateDistrictsLayer,
-  "Wisconsin Assembly (Blue)": wisconsinAssemblyDistrictsLayer,
+  // "Wisconsin Senate (Green)": wisconsinSenateDistrictsLayer,
+  // "Wisconsin Assembly (Blue)": wisconsinAssemblyDistrictsLayer,
 };
 const MarylandDistrictLayers = {
-  "Maryland Congressional (Red)": marylandCongressionalDistrictsLayer,
+  // "Maryland Congressional (Red)": marylandCongressionalDistrictsLayer,
   "Maryland Senate (Green)": marylandSenateDistrictsLayer,
-  "Maryland Assembly (Blue)": marylandAssemblyDistrictsLayer,
+  // "Maryland Assembly (Blue)": marylandAssemblyDistrictsLayer,
 };
 const NCDistrictLayers = {
-  "North Carolina Congressional (Red)": NCCongressionalDistrictsLayer,
+  // "North Carolina Congressional (Red)": NCCongressionalDistrictsLayer,
   "North Carolina Senate (Green)": NCSenateDistrictsLayer,
-  "North Carolina Assembly (Blue)": NCAssemblyDistrictsLayer,
+  // "North Carolina Assembly (Blue)": NCAssemblyDistrictsLayer,
 };
 // Create a layer control and add it to the map
 L.control
