@@ -98,122 +98,6 @@ function resetToInitialState() {
   createStateLayer(geojsonNorthCarolinaBound, stateName.northCarolina);
 }
 
-function centerMapOnState(state, stateName) {
-  if (typeof state === "string") {
-    var stateBounds = stateZoomBounds[state]; // Get the bounds for the selected state
-    map.fitBounds(stateBounds);
-    afterStateSelectionPage(state);
-  } else {
-    var stateBounds = state.target.getBounds();
-    console.log(state);
-    map.fitBounds(stateBounds);
-    afterStateSelectionPage(stateName);
-  }
-}
-function changedMapWidthRefresh() {
-  map.invalidateSize();
-}
-
-function afterStateSelectionPage(stateName) {
-  let mapContainer = document.getElementById("map");
-  let rightPan = document.getElementById("right-panel");
-
-  // initial view hide
-  document.getElementById("state-selection").style.display = "none";
-
-  //adjust to new view
-  mapContainer.style.width = "50%";
-  rightPan.style.width = "50%";
-
-  changedMapWidthRefresh(); // Refresh the map to adapt to the new size
-  // ensemble create view
-  var ensemblePanel = document.getElementById("ensemble-panel");
-  ensemblePanel.style.display = "flex";
-
-  ensembleView(rightPan);
-  districtView(stateName);
-}
-function ensembleView(rightPan) {}
-// ----------------------
-var districtFile = {
-  Maryland: geojsonMarylandDistricts,
-  Wisconsin: geojsonWisconsinDistricts,
-  NorthCarolina: geojsonNorthCarolinaDistricts,
-};
-
-let selectedDistrictLayer = null; // Variable to store the selected district layer
-let defaultColor = "black";
-let defaultWeight = 2;
-let boldWeight = defaultWeight + 2;
-let activeState = null; // Variable to store the active state
-
-function districtView(stateName) {
-  if (activeState && stateName !== activeState) {
-    map.removeLayer(activeState);
-    activeState = null;
-  }
-  fetch(districtFile[stateName])
-    .then((response) => response.json())
-    .then((data) => {
-      const stateLayer = L.geoJSON(data, {
-        style: {
-          color: defaultColor,
-          weight: defaultWeight,
-        },
-        onEachFeature: function (feature, layer) {
-          // Bind pop-up with district name
-          let districtName = feature.properties.District;
-
-          // Add click event to each district
-          layer.on("click", function (e) {
-            // Reset the style of the previously selected district, if any
-            if (selectedDistrictLayer) {
-              selectedDistrictLayer.setStyle({
-                weight: defaultWeight,
-                color: defaultColor,
-              });
-            }
-
-            // Highlight the clicked district
-            e.target.setStyle({
-              weight: boldWeight,
-              color: "red",
-            });
-
-            // Update the selected district
-            selectedDistrictLayer = e.target;
-          });
-
-          // Change the style on mouseover
-          layer.on("mouseover", function (e) {
-            if (e.target !== selectedDistrictLayer) {
-              e.target.setStyle({
-                weight: boldWeight,
-                color: defaultColor,
-              });
-            }
-          });
-
-          // Reset the style on mouseout
-          layer.on("mouseout", function (e) {
-            // Only reset the style if the district is not the selected one
-            if (e.target !== selectedDistrictLayer) {
-              e.target.setStyle({
-                weight: defaultWeight,
-                color: defaultColor,
-              });
-            }
-          });
-        },
-      }).addTo(map);
-
-      // Update the active state
-      activeState = stateLayer;
-    });
-}
-
-// ----------------------
-
 function createStateLayer(geojsonURL, stateName) {
   fetch(geojsonURL)
     .then((response) => response.json())
@@ -303,3 +187,5 @@ function addButtons() {
   var dropdown = document.getElementById("state-dropdown");
   dropdown.addEventListener("change", addButtons);
 }
+
+// --------------- Page 2 ----------------------
