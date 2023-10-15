@@ -1,184 +1,305 @@
 // Define the coordinates for the boundaries of Wisconsin, Maryland, and North Carolina
 var bounds = [
-    [50.5, -105.0], // Wisconsin (top-left, slightly adjusted to the left)
-    [30.0, -60.0]  // Maryland (bottom-right)
+  [50.5, -105.0], // Wisconsin (top-left, slightly adjusted to the left)
+  [30.0, -60.0], // Maryland (bottom-right)
 ];
 
 // Initialize the map
-var map = L.map('map', {
-    center: [39.67, -82.0], // Centered on the average coordinates
-    zoom: 6, // Initial zoom level
-    minZoom: 6, // Minimum zoom level
-    maxBounds: bounds // Restrict panning within the specified bounds
-});
+var initMapStyle = {
+  center: [39.67, -82.0], // Centered on the average coordinates
+  zoom: 6, // Initial zoom level
+  minZoom: 6, // Minimum zoom level
+  maxBounds: bounds, // Restrict panning within the specified bounds
+};
+var map = L.map("map", initMapStyle);
 
 // Add a tile layer for the map
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 10, // Adjust the maximum zoom level as needed
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 10, // Adjust the maximum zoom level as needed
 }).addTo(map);
 
 // Create GeoJSON data for the boundaries of Wisconsin, Maryland, and North Carolina
-var geojsonWisconsin = "WisconsinOutline.geojson";
-var geojsonMaryland = "MarylandOutline.geojson";
-var geojsonNorthCarolina = "NCOutline.geojson";
+var geojsonWisconsinBound = "WisconsinOutline.geojson";
+var geojsonMarylandBound = "MarylandOutline.geojson";
+var geojsonNorthCarolinaBound = "NCOutline.geojson";
+
+var geojsonWisconsinDistricts = "Data/Wisconson.geojson";
+var geojsonMarylandDistricts = "Data/Maryland.geojson";
+var geojsonNorthCarolinaDistricts = "Data/NC.geojson";
 
 // Style for the state boundaries (black border)
 var boundaryStyle = {
-    color: "black",
-    weight: 2, // Adjust the border thickness as needed
-    fill: false // No fill color
+  color: "black",
+  weight: 2, // Adjust the border thickness as needed
+  fill: false, // No fill color
 };
 
-var bounds = {
-    "Wisconsin": [[47, -92.0], [42.5, -87.0]], // Adjust the bounds as needed
-    "Maryland": [[39.5, -79.5], [37.5, -75.0]],   // Adjust the bounds as needed
-    "NorthCarolina": [[36.5, -84.0], [33.5, -75.0]] // Adjust the bounds as needed
+var stateName = {
+  wisconsin: "Wisconsin",
+  maryland: "Maryland",
+  northCarolina: "NorthCarolina",
+};
+// old state zoom boundary
+// lat, long
+var stateZoomBounds = {
+  Wisconsin: [
+    [47, -92.0], // Southwestern corner
+    [42.5, -87.0], // Northeastern corner
+  ], // Adjust the bounds as needed
+  Maryland: [
+    [35.5, -79.5], // Southwestern corner
+    [40.5, -74.0], // Northeastern corner
+  ], // Adjust the bounds as needed
+  NorthCarolina: [
+    [36.5, -84.0], // Southwestern corner
+    [33.5, -75.0], // Northeastern corner
+  ], // Adjust the bounds as needed
+};
+const resetControl = L.control({ position: "topleft" });
+
+// Function to handle reset button click
+resetControl.onAdd = function (map) {
+  const button = L.DomUtil.create("button", "reset-button");
+  button.innerHTML = "Reset Map";
+
+  button.addEventListener("click", function () {
+    resetToInitialState();
+  });
+
+  return button;
 };
 
-function centerMapOnStateClick(e) {
-    var stateBounds = e.target.getBounds();
-    map.fitBounds(stateBounds);
-    
+resetControl.addTo(map); // Add the reset button to the map
+
+// Function to reset the map to its initial state
+function resetToInitialState() {
+  // Remove the district layers (if any)
+  map.eachLayer(function (layer) {
+    if (layer instanceof L.GeoJSON) {
+      map.removeLayer(layer);
+    }
+  });
+  // Restore the map to its original dimensions
+  map.setView(initMapStyle.center, initMapStyle.zoom);
+  document.getElementById("map").style.width = "70%";
+  document.getElementById("right-panel").style.width = "30%";
+
+  // Hide the ensemble panel
+  document.getElementById("ensemble-panel").style.display = "none";
+
+  // Show the state selection dropdown
+  document.getElementById("state-selection").style.display = "block";
+
+  // Refresh the map to adapt to the new size
+  changedMapWidthRefresh();
+
+  createStateLayer(geojsonWisconsinBound, stateName.wisconsin);
+  createStateLayer(geojsonMarylandBound, stateName.maryland);
+  createStateLayer(geojsonNorthCarolinaBound, stateName.northCarolina);
 }
 
-function centerMapOnState(stateName) {
-    var stateBounds = bounds[stateName]; // Get the bounds for the selected state
+function centerMapOnState(state, stateName) {
+  if (typeof state === "string") {
+    var stateBounds = stateZoomBounds[state]; // Get the bounds for the selected state
     map.fitBounds(stateBounds);
+    afterStateSelectionPage(state);
+  } else {
+    var stateBounds = state.target.getBounds();
+    console.log(state);
+    map.fitBounds(stateBounds);
+    afterStateSelectionPage(stateName);
+  }
+}
+function changedMapWidthRefresh() {
+  map.invalidateSize();
 }
 
-// Load and parse the GeoJSON data for Wisconsin, and make it clickable with a hover effect
-fetch(geojsonWisconsin)
-    .then(response => response.json())
-    .then(data => {
-        // Create a GeoJSON layer for Wisconsin with a specified style
-        var wisconsin = L.geoJSON(data, {
-            style: boundaryStyle,
-        }).addTo(map);
+function afterStateSelectionPage(stateName) {
+  let mapContainer = document.getElementById("map");
+  let rightPan = document.getElementById("right-panel");
 
-        // Create a transparent polygon using the GeoJSON geometry for the entire state
-        var wisconsinClickable = L.geoJSON(data.features[0].geometry, {
-            opacity: 0, // Make it transparent
-            fillOpacity: 0, // Make it transparent
-        }).addTo(map);
+  // initial view hide
+  document.getElementById("state-selection").style.display = "none";
 
-        // Add a hover effect
-        wisconsinClickable.on('mouseover', function () {
-            // Change the fill color to gray with 20% opacity when hovering
-            this.setStyle({ fill: true, fillColor: 'gray', fillOpacity: 0.2 });
-        });
-        wisconsinClickable.on('mouseout', function () {
-            // Revert to the original style when the mouse leaves
-            this.setStyle({ fill: false });
-        });
+  //adjust to new view
+  mapContainer.style.width = "50%";
+  rightPan.style.width = "50%";
 
-        // Add a click event to the entire Wisconsin polygon
-        wisconsinClickable.on('click', centerMapOnStateClick);
+  changedMapWidthRefresh(); // Refresh the map to adapt to the new size
+  // ensemble create view
+  var ensemblePanel = document.getElementById("ensemble-panel");
+  ensemblePanel.style.display = "flex";
+
+  ensembleView(rightPan);
+  districtView(stateName);
+}
+function ensembleView(rightPan) {}
+// ----------------------
+var districtFile = {
+  Maryland: geojsonMarylandDistricts,
+  Wisconsin: geojsonWisconsinDistricts,
+  NorthCarolina: geojsonNorthCarolinaDistricts,
+};
+
+let selectedDistrictLayer = null; // Variable to store the selected district layer
+let defaultColor = "black";
+let defaultWeight = 2;
+let boldWeight = defaultWeight + 2;
+let activeState = null; // Variable to store the active state
+
+function districtView(stateName) {
+  if (activeState && stateName !== activeState) {
+    map.removeLayer(activeState);
+    activeState = null;
+  }
+  fetch(districtFile[stateName])
+    .then((response) => response.json())
+    .then((data) => {
+      const stateLayer = L.geoJSON(data, {
+        style: {
+          color: defaultColor,
+          weight: defaultWeight,
+        },
+        onEachFeature: function (feature, layer) {
+          // Bind pop-up with district name
+          let districtName = feature.properties.District;
+
+          // Add click event to each district
+          layer.on("click", function (e) {
+            // Reset the style of the previously selected district, if any
+            if (selectedDistrictLayer) {
+              selectedDistrictLayer.setStyle({
+                weight: defaultWeight,
+                color: defaultColor,
+              });
+            }
+
+            // Highlight the clicked district
+            e.target.setStyle({
+              weight: boldWeight,
+              color: "red",
+            });
+
+            // Update the selected district
+            selectedDistrictLayer = e.target;
+          });
+
+          // Change the style on mouseover
+          layer.on("mouseover", function (e) {
+            if (e.target !== selectedDistrictLayer) {
+              e.target.setStyle({
+                weight: boldWeight,
+                color: defaultColor,
+              });
+            }
+          });
+
+          // Reset the style on mouseout
+          layer.on("mouseout", function (e) {
+            // Only reset the style if the district is not the selected one
+            if (e.target !== selectedDistrictLayer) {
+              e.target.setStyle({
+                weight: defaultWeight,
+                color: defaultColor,
+              });
+            }
+          });
+        },
+      }).addTo(map);
+
+      // Update the active state
+      activeState = stateLayer;
     });
+}
 
-// Load and parse the GeoJSON data for Maryland, and make it clickable
-fetch(geojsonMaryland)
-    .then(response => response.json())
-    .then(data => {
-        var maryland = L.geoJSON(data, {
-            style: boundaryStyle,
-        }).addTo(map);
+// ----------------------
 
-        var marylandClickable = L.geoJSON(data.features[0].geometry, {
-            opacity: 0, // Make it transparent
-            fillOpacity: 0, // Make it transparent
-        }).addTo(map);
+function createStateLayer(geojsonURL, stateName) {
+  fetch(geojsonURL)
+    .then((response) => response.json())
+    .then((data) => {
+      // Create a GeoJSON layer for the state with a specified style
+      var stateLayer = L.geoJSON(data, {
+        style: boundaryStyle,
+      }).addTo(map);
 
-        // Add a hover effect
-        marylandClickable.on('mouseover', function () {
-            // Change the fill color to gray with 20% opacity when hovering
-            this.setStyle({ fill: true, fillColor: 'gray', fillOpacity: 0.2 });
-        });
-        marylandClickable.on('mouseout', function () {
-            // Revert to the original style when the mouse leaves
-            this.setStyle({ fill: false });
-        });
+      // Create a transparent polygon using the GeoJSON geometry for the entire state
+      var stateClickable = L.geoJSON(data.features[0].geometry, {
+        opacity: 0, // Make it transparent
+        fillOpacity: 0, // Make it transparent
+      }).addTo(map);
 
-        // Add a click event to the entire Maryland layer
-        marylandClickable.on('click', centerMapOnStateClick);
+      // Add a hover effect
+      stateClickable.on("mouseover", function () {
+        // Change the fill color to gray with 20% opacity when hovering
+        this.setStyle({ fill: true, fillColor: "gray", fillOpacity: 0.2 });
+      });
+      stateClickable.on("mouseout", function () {
+        // Revert to the original style when the mouse leaves
+        this.setStyle({ fill: false });
+      });
+
+      // Add a click event to the entire state layer
+      stateClickable.on("click", function (e) {
+        centerMapOnState(e, stateName);
+      });
     });
+}
 
-// Load and parse the GeoJSON data for North Carolina, and make it clickable
-fetch(geojsonNorthCarolina)
-    .then(response => response.json())
-    .then(data => {
-        var northCarolina = L.geoJSON(data, {
-            style: boundaryStyle,
-        }).addTo(map);
+// Create state layers for Wisconsin, Maryland, and North Carolina
+createStateLayer(geojsonWisconsinBound, stateName.wisconsin);
+createStateLayer(geojsonMarylandBound, stateName.maryland);
+createStateLayer(geojsonNorthCarolinaBound, stateName.northCarolina);
 
-        var northCarolinaClickable = L.geoJSON(data.features[0].geometry, {
-            opacity: 0, // Make it transparent
-            fillOpacity: 0, // Make it transparent
-        }).addTo(map);
-
-        // Add a hover effect
-        northCarolinaClickable.on('mouseover', function () {
-            // Change the fill color to gray with 20% opacity when hovering
-            this.setStyle({ fill: true, fillColor: 'gray', fillOpacity: 0.2 });
-        });
-        northCarolinaClickable.on('mouseout', function () {
-            // Revert to the original style when the mouse leaves
-            this.setStyle({ fill: false });
-        });
-
-        // Add a click event to the entire North Carolina layer
-        northCarolinaClickable.on('click', centerMapOnStateClick);
-    });
-
-document.addEventListener("DOMContentLoaded", function() {
-    var dropdown = document.getElementById("state-dropdown");
-    dropdown.value = ""; // Set the value to an empty string to select the disabled "State" option
+document.addEventListener("DOMContentLoaded", function () {
+  var dropdown = document.getElementById("state-dropdown");
+  dropdown.value = ""; // Set the value to an empty string to select the disabled "State" option
 });
 
 var dropdown = document.getElementById("state-dropdown");
-dropdown.addEventListener("change", function() {
-    var selectedOption = dropdown.options[dropdown.selectedIndex];
-    var stateName = selectedOption.getAttribute("data-state");
-    centerMapOnState(stateName);
+dropdown.addEventListener("change", function () {
+  var selectedOption = dropdown.options[dropdown.selectedIndex];
+  var stateName = selectedOption.getAttribute("data-state");
+  centerMapOnState(stateName, stateName);
 });
 
 function addButtons() {
-    // Get the selected state from the dropdown
-    var dropdown = document.getElementById("state-dropdown");
-    var selectedOption = dropdown.options[dropdown.selectedIndex];
-    var stateName = selectedOption.getAttribute("data-state");
+  // Get the selected state from the dropdown
+  var dropdown = document.getElementById("state-dropdown");
+  var selectedOption = dropdown.options[dropdown.selectedIndex];
+  var stateName = selectedOption.getAttribute("data-state");
 
+  var buttonContainer = document.getElementById("button-container");
+
+  while (buttonContainer.firstChild) {
+    buttonContainer.removeChild(buttonContainer.firstChild);
+  }
+
+  // Check if a state is selected
+  if (stateName) {
+    // Create and append the buttons
     var buttonContainer = document.getElementById("button-container");
 
+    // Create the first button
+    var button1 = document.createElement("button");
+    button1.textContent = "Button 1";
+    button1.addEventListener("click", function () {
+      alert("Button 1 clicked for " + stateName);
+    });
+    buttonContainer.appendChild(button1);
+    var button2 = document.createElement("button");
+    button2.textContent = "Button 2";
+    button2.addEventListener("click", function () {
+      alert("Button 2 clicked for " + stateName);
+    });
+    buttonContainer.appendChild(button2);
+  } else {
     while (buttonContainer.firstChild) {
-        buttonContainer.removeChild(buttonContainer.firstChild);
+      buttonContainer.removeChild(buttonContainer.firstChild);
     }
+  }
 
-    // Check if a state is selected
-    if (stateName) {
-        // Create and append the buttons
-        var buttonContainer = document.getElementById("button-container");
-
-        // Create the first button
-        var button1 = document.createElement("button");
-        button1.textContent = "Button 1";
-        button1.addEventListener("click", function() {
-            alert("Button 1 clicked for " + stateName);
-        });
-        buttonContainer.appendChild(button1);
-        var button2 = document.createElement("button");
-        button2.textContent = "Button 2";
-        button2.addEventListener("click", function() {
-            alert("Button 2 clicked for " + stateName);
-        });
-        buttonContainer.appendChild(button2);
-    }
-    else {
-        while (buttonContainer.firstChild) {
-            buttonContainer.removeChild(buttonContainer.firstChild);
-        }
-    }
+  // Listen for changes in the dropdown selection
+  var dropdown = document.getElementById("state-dropdown");
+  dropdown.addEventListener("change", addButtons);
 }
-
-// Listen for changes in the dropdown selection
-var dropdown = document.getElementById("state-dropdown");
-dropdown.addEventListener("change", addButtons);
