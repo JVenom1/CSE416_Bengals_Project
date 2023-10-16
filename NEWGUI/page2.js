@@ -5,7 +5,6 @@ function centerMapOnState(state, stateName) {
     afterStateSelectionPage(state);
   } else {
     var stateBounds = state.target.getBounds();
-    console.log(state);
     map.fitBounds(stateBounds);
     afterStateSelectionPage(stateName);
   }
@@ -29,12 +28,11 @@ function afterStateSelectionPage(stateName) {
   // ensemble create view
   var ensemblePanel = document.getElementById("ensemble-panel");
   ensemblePanel.style.display = "flex";
-
-  ensembleView(rightPan);
   districtView(stateName);
+  ensembleView(rightPan);
 }
-function ensembleView(rightPan) {}
 
+// ----------------- left side -----------------
 var districtFile = {
   Maryland: geojsonMarylandDistricts,
   Wisconsin: geojsonWisconsinDistricts,
@@ -110,4 +108,67 @@ function districtView(stateName) {
       // Update the active state
       activeState = stateLayer;
     });
+}
+
+// ---------- right side ------------
+
+// function to display right-panel
+var scatterPlot;
+function ensembleView(rightPan) {
+  // clears previous scatter plot
+  if (scatterPlot) {
+    scatterPlot.destroy(); // Remove the scatter plot
+    scatterPlot = null; // Clear the scatter plot object
+    document.getElementById("scatter-plot").innerHTML = ""; // Hide the canvas
+  }
+  let view1Data = [
+    { x: 1, y: 3 },
+    { x: 2, y: 5 },
+    { x: 3, y: 7 },
+    // Add your data for View 1 here
+  ];
+
+  let view2Data = [
+    { x: 2, y: 2 },
+    { x: 4, y: 6 },
+    { x: 6, y: 9 },
+    // Add your data for View 2 here
+  ];
+
+  // Set up the scatter plot with default data
+  let ctx = document.getElementById("scatter-plot").getContext("2d");
+  scatterPlot = new Chart(ctx, {
+    type: "scatter",
+    data: {
+      datasets: [
+        {
+          label: "View 1",
+          data: view1Data,
+          backgroundColor: "rgba(75, 192, 192, 0.5)",
+        },
+      ],
+    },
+    options: {
+      scales: {
+        x: {
+          type: "linear",
+          position: "bottom",
+        },
+        y: {
+          type: "linear",
+          position: "left",
+        },
+      },
+    },
+  });
+
+  // Event listener for the dropdown menu
+  let viewSelector = document.getElementById("view-selector");
+  viewSelector.addEventListener("change", (event) => {
+    let selectedView = event.target.value;
+    let newData = selectedView === "view1" ? view1Data : view2Data;
+
+    scatterPlot.data.datasets[0].data = newData;
+    scatterPlot.update();
+  });
 }

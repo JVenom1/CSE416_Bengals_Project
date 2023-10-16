@@ -3,6 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <style>
         /* Remove default margin and padding from body and html */
@@ -70,7 +71,18 @@
 <body>
     <div id="map"></div>
     <div id="right-panel">
-        <div id="ensemble-panel"></div>
+        <div id="ensemble-panel">
+            <div>
+                <select id="view-selector">
+                    <option value="view1">View 1</option>
+                    <option value="view2">View 2</option>
+                </select>
+            </div>
+            <canvas id="scatter-plot"></canvas>
+        </div>
+
+
+
         <div id="state-selection">
             <div id="select-statement">I want to analyse:</div>
             <select id="state-dropdown">

@@ -96,6 +96,12 @@ function resetToInitialState() {
   createStateLayer(geojsonWisconsinBound, stateName.wisconsin);
   createStateLayer(geojsonMarylandBound, stateName.maryland);
   createStateLayer(geojsonNorthCarolinaBound, stateName.northCarolina);
+
+  if (scatterPlot) {
+    scatterPlot.destroy(); // Remove the scatter plot
+    scatterPlot = null; // Clear the scatter plot object
+    document.getElementById("scatter-plot").innerHTML = ""; // Hide the canvas
+  }
 }
 
 function createStateLayer(geojsonURL, stateName) {
@@ -187,5 +193,3 @@ function addButtons() {
   var dropdown = document.getElementById("state-dropdown");
   dropdown.addEventListener("change", addButtons);
 }
-
-// --------------- Page 2 ----------------------
