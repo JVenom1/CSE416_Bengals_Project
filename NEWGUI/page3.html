@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Map with Scatterplot and Districts</title>
+
+    <!-- Include Leaflet CSS and JavaScript -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Include Plotly JavaScript for the scatterplot -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+        }
+        #map {
+            width: 50%;
+            height: 100vh;
+        }
+        #right {
+            width: 50%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #scatterplot {
+            flex: 1;
+        }
+        #districts {
+            flex: 1;
+            overflow-y: scroll;
+        }
+        /* Style for the table */
+        #districts table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        #districts table th, #districts table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        #districts table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="right">
+        <div id="scatterplot"></div>
+        <div id="districts">
+            <!-- Table structure for clickable districts -->
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>District Map Number</th>
+                        <th># of Republican Seats</th>
+                        <th># of Democrat Seats</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#" onclick="handleDistrictClick('1')">[Click]</a></td>
+                        <td>District 1</td>
+                        <td>3</td>
+                        <td>2</td>
+                        <td><a href="#">Details</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" onclick="handleDistrictClick('2')">[Click]</a></td>
+                        <td>District 2</td>
+                        <td>4</td>
+                        <td>1</td>
+                        <td><a href="#">Details</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" onclick="handleDistrictClick('3')">[Click]</a></td>
+                        <td>District 3</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td><a href="#">Details</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" onclick="handleDistrictClick('4')">[Click]</a></td>
+                        <td>District 4</td>
+                        <td>5</td>
+                        <td>0</td>
+                        <td><a href="#">Details</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="#" onclick="handleDistrictClick('5')">[Click]</a></td>
+                        <td>District 5</td>
+                        <td>1</td>
+                        <td>4</td>
+                        <td><a href="#">Details</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the Leaflet map centered on the USA
+        var map = L.map('map').setView([37.0902, -95.7129], 4);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        // Sample data for the scatterplot
+        var scatterData = [
+            { x: [1, 2, 3, 4, 5], y: [10, 11, 12, 13, 14], text: ['A', 'B', 'C', 'D', 'E'], mode: 'markers', type: 'scatter' },
+            // Add more data as needed
+        ];
+
+        // Layout for the scatterplot
+        var scatterLayout = {
+            title: 'Scatterplot',
+            xaxis: { title: 'X-axis' },
+            yaxis: { title: 'Y-axis' }
+        };
+
+        // Create the scatterplot using Plotly
+        Plotly.newPlot('scatterplot', scatterData, scatterLayout);
+
+        // Function to handle district clicks
+        function handleDistrictClick(districtNumber) {
+            // Handle click events on the districts
+            alert('You clicked on District Map ' + districtNumber);
+        }
+    </script>
+</body>
+</html>
