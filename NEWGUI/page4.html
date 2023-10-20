@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ensemble Size vs. Clusters</title>
+
+    <!-- Include Plotly JavaScript -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+        #left {
+            width: 50%;
+            height: 100%;
+            padding: 20px;
+            background-color: #f2f2f2;
+            display: flex;
+            flex-direction: column;
+        }
+        #back-state-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #state-dropdown {
+            width: 30%;
+        }
+        #back-button {
+            width: 15%; /* Adjust the width as needed */
+        }
+        #distance-ensemble-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        #distance-measure-dropdown {
+            width: 30%; /* Adjust the width as needed */
+        }
+        #ensemble-number-dropdown {
+            width: 30%; /* Adjust the width as needed */
+        }
+        #placeholder-chart {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+        #graph {
+            width: 50%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="left">
+        <div id="back-state-container">
+            <button id="back-button">Back</button>
+            <select id="state-dropdown">
+                <option value="state1">State 1</option>
+                <option value="state2">State 2</option>
+                <option value="state3">State 3</option>
+                <!-- Add more states as needed -->
+            </select>
+        </div>
+        <div id="distance-ensemble-container">
+            <select id="distance-measure-dropdown">
+                <option value="distance-measure-1">Distance Measure 1</option>
+                <option value="distance-measure-2">Distance Measure 2</option>
+                <option value="distance-measure-3">Distance Measure 3</option>
+                <!-- Add more distance measures as needed -->
+            </select>
+            <select id="ensemble-number-dropdown">
+                <option value="ensemble-number-1">Ensemble Number 1</option>
+                <option value="ensemble-number-2">Ensemble Number 2</option>
+                <option value="ensemble-number-3">Ensemble Number 3</option>
+                <!-- Add more ensemble numbers as needed -->
+            </select>
+        </div>
+        <div id="placeholder-chart">Placeholder Chart</div>
+    </div>
+    <div id="graph"></div>
+
+    <script>
+        // Sample data for the line graph
+        var data = [
+            {
+                x: [1, 2, 3, 4, 5], // X-axis (Ensemble Size)
+                y: [3, 5, 7, 4, 6], // Y-axis (Number of Clusters)
+                mode: 'lines+markers',
+                type: 'scatter',
+                name: 'Distance Measure A'
+            },
+            {
+                x: [1, 2, 3, 4, 5], // X-axis (Ensemble Size)
+                y: [4, 6, 8, 5, 7], // Y-axis (Number of Clusters)
+                mode: 'lines+markers',
+                type: 'scatter',
+                name: 'Distance Measure B'
+            },
+            // Add more data for additional distance measures
+        ];
+
+        // Layout for the line graph
+        var layout = {
+            title: 'Ensemble Size vs. Clusters',
+            xaxis: { title: 'Ensemble Size' },
+            yaxis: { title: 'Number of Clusters' },
+        };
+
+        // Create the line graph using Plotly
+        Plotly.newPlot('graph', data, layout);
+    </script>
+</body>
+</html>
