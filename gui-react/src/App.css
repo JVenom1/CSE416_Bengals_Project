@@ -1,0 +1,56 @@
+/* Remove default margin and padding from body and html */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  background-color: #bdbdbd;
+}
+
+
+.homeMapWrapper {
+  height: 99%;
+  width: 99vw;
+  /* 100% or 100vw adds a scroll bar */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* change size in future:
+  function changeMapSizeXbyY(height = "100%", width = "70vw") {
+    const leafletContainer = document.querySelector(".leaflet-container");
+    leafletContainer.style.width = width;
+    leafletContainer.style.height = height;
+  }
+*/
+.leaflet-container {
+  height: 100%;
+  width: 70vw;
+  flex: 1;
+
+}
+
+.right-panel {
+  width: 30%;
+  padding: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  /* Center the text within the dropdown */
+  font-size: 40px;
+  /* Set the font size to make it larger */
+
+}
+
+.right-panel select {
+  width: 70%;
+  /* Adjust the width as needed */
+  text-align: center;
+  /* Center the text within the dropdown */
+  font-size: 24px;
+  /* Set the font size to make it larger */
+  padding: 10px;
+  /* Add padding to make it larger */
+}
