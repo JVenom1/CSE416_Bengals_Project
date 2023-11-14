@@ -42,11 +42,11 @@ const HomePage = () => {
   }
   const handleStateClick = (e) => {
     let stateID = e.sourceTarget.feature.properties.State;
-    navigate(`/state`, { state: { stateID: stateID } });
+    navigate(`/State`, { state: { stateID: stateID } });
   };
   const handleDropDownClick = (e) => {
     let stateID = e.target.value;
-    navigate(`/state`, { state: { stateID: stateID } });
+    navigate(`/State`, { state: { stateID: stateID } });
   }
   return (
     <>

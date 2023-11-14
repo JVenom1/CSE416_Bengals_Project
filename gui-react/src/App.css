@@ -66,6 +66,18 @@ html {
   /* Set the font size to make it larger */
 
 }
+
+.EnsembleNumScatter {
+  width: 50%;
+  padding: 20px;
+  margin-bottom: 10px;
+  text-align: center;
+  /* Center the text within the dropdown */
+  font-size: 40px;
+  /* Set the font size to make it larger */
+
+}
+
 .ensembleSelect {
   width: 50%;
   padding: 20px;
