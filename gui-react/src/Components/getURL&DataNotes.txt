@@ -1,0 +1,41 @@
+Getting URL and its data:
+
+// Page1.js
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const Page1 = () => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/page2', { state: { yourData: 'Hello from Page1' } });
+  };
+
+  return (
+    <div>
+      <h1>Page 1</h1>
+      <button onClick={handleClick}>Go to Page 2</button>
+    </div>
+  );
+};
+
+export default Page1;
+
+
+// Page2.js
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+
+const Page2 = () => {
+  const location = useLocation();
+  const yourData = location.state?.yourData || 'Default Value';
+
+  return (
+    <div>
+      <h1>Page 2</h1>
+      <p>Data from Page 1: {yourData}</p>
+    </div>
+  );
+};
+
+export default Page2;
