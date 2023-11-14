@@ -8,7 +8,7 @@ import MDDistricts from "../Data/DistrictPlans/MD.json";
 import NCDistricts from "../Data/DistrictPlans/NC.json";
 import WIDistricts from "../Data/DistrictPlans/WI.json";
 
-const EnsemblePage = () => {
+const ClusterAnalysis = () => {
     return (<></>)
 }
-export default EnsemblePage;
+export default ClusterAnalysis;
