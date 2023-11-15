@@ -1,5 +1,5 @@
 /* Remove default margin and padding from body and html */
-body, 
+body,
 
 html {
   margin: 0;
@@ -20,7 +20,8 @@ html {
   padding: 5px 10px;
   cursor: pointer;
 }
-.home-button:hover{
+
+.home-button:hover {
   position: absolute;
   top: 80px;
   left: 10px;
@@ -67,13 +68,13 @@ html {
 
 }
 
-.EnsembleNumScatter {
+.clusterScatter {
   width: 50%;
+  height: 70%;
   padding: 20px;
   margin-bottom: 10px;
   text-align: center;
   /* Center the text within the dropdown */
-  font-size: 40px;
   /* Set the font size to make it larger */
 
 }
@@ -88,6 +89,7 @@ html {
   /* Set the font size to make it larger */
 
 }
+
 #ensembles {
   width: 50%;
   height: 100vh;
@@ -107,9 +109,11 @@ html {
   justify-content: space-between;
   align-items: center;
 }
+
 .button-container {
   display: flex;
 }
+
 .button {
   margin: 5px;
   padding: 5px 10px;

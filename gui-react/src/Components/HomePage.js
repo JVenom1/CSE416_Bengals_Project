@@ -27,7 +27,7 @@ const HomePage = () => {
 
   // Handlers
 
-  const handleGeoJson = ((data) => {
+  const handleGeoJson = (data) => {
     return (
       <GeoJSON
         data={data}
@@ -36,10 +36,10 @@ const HomePage = () => {
         }}
       />
     );
-  })
+  };
   const goToHomePage = (e) => {
     navigate("/");
-  }
+  };
   const handleStateClick = (e) => {
     let stateID = e.sourceTarget.feature.properties.State;
     navigate(`/State`, { state: { stateID: stateID } });
@@ -47,13 +47,13 @@ const HomePage = () => {
   const handleDropDownClick = (e) => {
     let stateID = e.target.value;
     navigate(`/State`, { state: { stateID: stateID } });
-  }
+  };
   return (
     <>
       <div className={"mapWrapper"}>
         <MapContainer
           center={[39.67, -83.0]}
-          zoom={6}
+          zoom={5.5}
           minZoom={6}
           maxBounds={bounds}
           maxZoom={10}
@@ -72,7 +72,9 @@ const HomePage = () => {
         <div className="dropdown">
           <p>Please select from the dropdown</p>
           <select onChange={handleDropDownClick}>
-            <option disabled selected>Select a State</option>
+            <option disabled selected>
+              Select a State
+            </option>
             <option value="WI">WI</option>
             <option value="MD">MD</option>
             <option value="NC">NC</option>
