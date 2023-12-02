@@ -3,7 +3,7 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-
+import ScatterPlot from "./scatterplotStateClicked";
 // District Data
 import MDData from "../Data/DistrictPlans/MD.json";
 import NCData from "../Data/DistrictPlans/NC.json";
@@ -79,35 +79,15 @@ const StateClicked = () => {
   const maxBounds = stateZoomBounds.stateID;
   const center = stateCenter[stateID].latlng;
 
-  const generateRandomCoordinate = () => Math.floor(Math.random() * 100);
-  // length is the list of plans in said cluster (DUMMY DATA)
-  const initialDataSet = [
-    {
-      length: 10,
-      x: generateRandomCoordinate(),
-      y: generateRandomCoordinate(),
-      data: [null, { x: 20, y: 30 }, null],
-    },
-    {
-      length: 15,
-      x: generateRandomCoordinate(),
-      y: generateRandomCoordinate(),
-      data: [{ x: 40, y: 50 }, null, { x: 60, y: 70 }],
-    },
-    {
-      length: 20,
-      x: generateRandomCoordinate(),
-      y: generateRandomCoordinate(),
-      data: [null, { x: 80, y: 90 }, { x: 100, y: 110 }],
-    },
+  const data = [
+    { x: 1, y: 2, label: "Point 1" },
+    { x: 2, y: 3, label: "Point 2" },
+    // Add more data points as needed
   ];
-  const [data, setData] = useState(initialDataSet);
 
-  // Function to handle click on a data point
-  const handlePointClick = (point) => {
-    setSelectedPoint(point);
-    // Logic to load new data set based on the selected point
-    // You can call a function here to fetch and set new data
+  const handlePointClick = (clickedPoint) => {
+    console.log("Clicked point:", clickedPoint);
+    // Perform your specific action here
   };
 
   return (
@@ -130,16 +110,7 @@ const StateClicked = () => {
           Home
         </button>
         <div className="clusterScatter">
-          {data.map((point, index) => (
-            <div
-              key={index}
-              className={`scatterPoint ${
-                selectedPoint === point ? "selected" : ""
-              }`}
-              style={{ width: point.length, height: point.length }}
-              onClick={() => handlePointClick(point)}
-            />
-          ))}
+          <ScatterPlot data={data} onPointClick={handlePointClick} />
         </div>
       </div>
     </>
