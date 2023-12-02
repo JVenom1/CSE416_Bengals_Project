@@ -7,43 +7,31 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import MDData from "../Data/DistrictPlans/MD.json";
 import NCData from "../Data/DistrictPlans/NC.json";
 import WIData from "../Data/DistrictPlans/WI.json";
-// Outline Data
-// import MDData from "../Data/StateOutlines/MDOutline.json";
-// import NCData from "../Data/StateOutlines/NCOutline.json";
-// import WIData from "../Data/StateOutlines/WIOutline.json";
 
+// Scatter Plot Linear Feature Broken
 const EnsembleList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // look in getURL&DataNotes.txt for notes
   const stateID = location.state.stateID;
 
-  const handleDistrictData = (() => {
+  const handleDistrictData = () => {
     // set the map view
     if (stateID === "WI") {
-      return (
-        <GeoJSON
-          data={WIData}
-        />);
+      return <GeoJSON data={WIData} />;
+    } else if (stateID === "MD") {
+      return <GeoJSON data={MDData} />;
+    } else if (stateID === "NC") {
+      return <GeoJSON data={NCData} />;
     }
-    else if (stateID === "MD") {
-      return (<GeoJSON
-        data={MDData}
-      />)
-    }
-    else if (stateID === "NC") {
-      return (<GeoJSON
-        data={NCData}
-      />)
-    }
-  })
+  };
 
   const geojsonData = handleDistrictData();
-  const changeMapSizeXbyY = ((height = "100%", width = "50vw") => {
+  const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
     leafletContainer.style.height = height;
-  });
+  };
   // stateID = Abbr of actual state (eg: WI, MD, NC)
   const stateCenter = {
     NC: {
@@ -77,76 +65,98 @@ const EnsembleList = () => {
 
   const handleEnsembleBoxes = () => {
     //implement later
-  }
+  };
 
   useEffect(() => {
     changeMapSizeXbyY("100%", "50vw");
     handleDistrictData();
-  }, [])
+  }, []);
   const goToHomePage = (e) => {
     navigate("/");
-  }
+  };
 
-  return <>
-    <div className="mapWrapper">
-      <MapContainer
-        center={center}
-        zoom={6}
-        minZoom={6}
-        maxBounds={maxBounds}
-        maxZoom={10}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {geojsonData}
-      </MapContainer>
-      <button className="home-button" onClick={goToHomePage}>
-        Home
-      </button>
-      <div className="ensembleSelect">
-        {/* implement later {handleEnsembleBoxes} */}
-        <div id="ensembles">
-          <div class="ensemble">
-            Ensemble 1
-            <div class="button-container">
-              <a href="#" class="button">Distance Measures</a>
-              <a href="#" class="button">Cluster Analysis</a>
+  return (
+    <>
+      <div className="mapWrapper">
+        <MapContainer
+          center={center}
+          zoom={6}
+          minZoom={6}
+          maxBounds={maxBounds}
+          maxZoom={10}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {geojsonData}
+        </MapContainer>
+        <button className="home-button" onClick={goToHomePage}>
+          Home
+        </button>
+        <div className="ensembleSelect">
+          {/* implement later {handleEnsembleBoxes} */}
+          <div id="ensembles">
+            <div class="ensemble">
+              Ensemble 1
+              <div class="button-container">
+                <a href="#" class="button">
+                  Distance Measures
+                </a>
+                <a href="#" class="button">
+                  Cluster Analysis
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="ensemble">
-            Ensemble 2
-            <div class="button-container">
-              <a href="#" class="button">Distance Measures</a>
-              <a href="#" class="button">Cluster Analysis</a>
+            <div class="ensemble">
+              Ensemble 2
+              <div class="button-container">
+                <a href="#" class="button">
+                  Distance Measures
+                </a>
+                <a href="#" class="button">
+                  Cluster Analysis
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="ensemble">
-            Ensemble 3
-            <div class="button-container">
-              <a href="#" class="button">Distance Measures</a>
-              <a href="#" class="button">Cluster Analysis</a>
+            <div class="ensemble">
+              Ensemble 3
+              <div class="button-container">
+                <a href="#" class="button">
+                  Distance Measures
+                </a>
+                <a href="#" class="button">
+                  Cluster Analysis
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="ensemble">
-            Ensemble 4
-            <div class="button-container">
-              <a href="#" class="button">Distance Measures</a>
-              <a href="#" class="button">Cluster Analysis</a>
+            <div class="ensemble">
+              Ensemble 4
+              <div class="button-container">
+                <a href="#" class="button">
+                  Distance Measures
+                </a>
+                <a href="#" class="button">
+                  Cluster Analysis
+                </a>
+              </div>
             </div>
-          </div>
-          <div class="ensemble">
-            Ensemble 5
-            <div class="button-container">
-              <a href="#" class="button">Distance Measures</a>
-              <a href="#" class="button">Cluster Analysis</a>
+            <div class="ensemble">
+              Ensemble 5
+              <div class="button-container">
+                <a href="#" class="button">
+                  Distance Measures
+                </a>
+                <a href="#" class="button">
+                  Cluster Analysis
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 };
 
 export default EnsembleList;
