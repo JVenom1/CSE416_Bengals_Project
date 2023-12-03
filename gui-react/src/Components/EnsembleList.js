@@ -26,7 +26,7 @@ const EnsembleList = () => {
       cluster: [1],
       clusterDetails: ["hi", "hi"],
       clusterCoordinate: {
-        x: [1, 2, 3],
+        x: [30, 20, 10],
         y: [4, 5, 6],
         radius: [10, 15, 20],
       },

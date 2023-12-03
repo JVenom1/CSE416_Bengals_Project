@@ -5,9 +5,8 @@ import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import MagicNumbers from "../Helpers/magicNumbers.js";
-
-// Import GeoJSON data
-import WIData from "../Data/StateOutlines/WIOutline.json";
+import DistrictsScatter from "./DistrictsScatter.js";
+import optTrans from "../Data/DistanceMeasure5plans/optimal_transport.json";
 
 // Define the ClusterAnalysis component
 const ClusterAnalysis = () => {
@@ -31,7 +30,9 @@ const ClusterAnalysis = () => {
     changeMapSizeXbyY("100%", "25vw");
     setLeafLetStateCenter(center);
   }, []);
-
+  const [distanceMatrix, setDistanceMatrix] = useState(
+    optTrans.optimal_transport_matrix
+  );
   // Function to change map size
   const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
@@ -43,6 +44,8 @@ const ClusterAnalysis = () => {
   const goToHomePage = () => {
     navigate("/");
   };
+
+  // Load the distance matrix from "optimal_transport.json"
 
   return (
     <>
@@ -81,7 +84,9 @@ const ClusterAnalysis = () => {
           </MapContainer>
         ) : null}
         <div className="clusterRight">
-          <div className="districtsScatter"></div>
+          <div className="districtsScatter">
+            {distanceMatrix && <DistrictsScatter data={distanceMatrix} />}
+          </div>
           <div className="districtsTable"></div>
         </div>
       </div>

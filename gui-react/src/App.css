@@ -95,19 +95,17 @@ html {
   padding: 20px;
   margin-bottom: 10px;
   text-align: center;
-  /* Center the text within the dropdown */
-  font-size: 40px;
-  /* Set the font size to make it larger */
 
 }
 
 .districtsScatter {
-  height: 50%;
+  margin-top: 20px;
+  height: 520px;
 }
 
-.districtsTable {
-  height: 50%;
-}
+
+
+
 
 .ensemble {
   width: 80%;

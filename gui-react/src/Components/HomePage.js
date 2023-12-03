@@ -1,6 +1,6 @@
 // description comments are used for the combination with server part (can be deleted later by anyone)
 
-import { React, useState } from "react";
+import { React } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
