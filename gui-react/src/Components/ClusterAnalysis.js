@@ -15,18 +15,21 @@ const ClusterAnalysis = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currCluster = location.state.currCluster;
+  const currentDistrictPlan = location.state.currentDistrictPlan;
 
   // Define state ID and map bounds
   const stateID = location.state.stateID;
-  const distPlan1 = WIData;
-  const distPlan2 = WIData;
+  const [distPlan1, setDistPlan1] = useState(currentDistrictPlan);
+  const [distPlan2, setDistPlan2] = useState(null);
   const maxBounds = MagicNumbers.stateZoomBounds[stateID];
   const center = MagicNumbers.stateCenter[stateID].latlng;
-  const leafLeftCenter = MagicNumbers.leafLeftStateCenter[stateID].latlng;
+  const mapLeftCenter = MagicNumbers.leafLeftStateCenter[stateID].latlng;
+  const [leafLeftStateCenter, setLeafLetStateCenter] = useState(mapLeftCenter);
 
   // Use useEffect to handle side effects when the component mounts
   useEffect(() => {
     changeMapSizeXbyY("100%", "25vw");
+    setLeafLetStateCenter(center);
   }, []);
 
   // Function to change map size
@@ -41,15 +44,13 @@ const ClusterAnalysis = () => {
     navigate("/");
   };
 
-  // Return JSX for rendering the component
   return (
     <>
       <div className="mapWrapper">
         <MapContainer
-          center={center}
+          center={leafLeftStateCenter}
           zoom={6}
           minZoom={6}
-          maxBounds={maxBounds}
           maxZoom={6}
           dragging={false}
         >
@@ -65,7 +66,7 @@ const ClusterAnalysis = () => {
         </button>
         {distPlan2 !== null ? (
           <MapContainer
-            center={leafLeftCenter}
+            center={center}
             zoom={6}
             minZoom={6}
             maxBounds={maxBounds}

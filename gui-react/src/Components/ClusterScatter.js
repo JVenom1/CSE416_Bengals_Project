@@ -5,19 +5,20 @@ import * as d3 from "d3";
 const ScatterPlot = ({
   ensemble,
   stateID,
+  currentDistrictPlan,
   clusterScatterWidth,
   clusterScatterHeight,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const svgRef = useRef();
-  const margin = { top: 40, right: 30, bottom: 250, left: 30 };
-
+  const margin = { top: 40, right: 30, bottom: 250, left: 80 };
+  const currentDistrictPlanThis = currentDistrictPlan;
   useEffect(() => {
     if (!ensemble) return;
     const width = clusterScatterWidth - margin.left - margin.right;
     const height = clusterScatterHeight - margin.top - margin.bottom;
-    const mainTitle = "Scatter Plot";
+    const mainTitle = "Cluster Scatter";
     const xAxTitle = "x-axis";
     const yAxTitle = "y-axis";
 
@@ -116,6 +117,7 @@ const ScatterPlot = ({
             },
           },
           stateID: stateID,
+          currentDistrictPlan: currentDistrictPlanThis,
         },
       });
     } else {
