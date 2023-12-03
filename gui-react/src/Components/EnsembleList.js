@@ -3,8 +3,7 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import magicNumbers from "../Helpers/magicNumbers.js";
-import miscFunc from "../Helpers/miscFunctions.js";
+import MagicNumbers from "../Helpers/magicNumbers.js";
 
 // Scatter Plot Linear Feature Broken
 const EnsembleList = () => {
@@ -19,23 +18,23 @@ const EnsembleList = () => {
     leafletContainer.style.width = width;
     leafletContainer.style.height = height;
   };
-  const mapMaxBounds = magicNumbers.stateZoomBounds.stateID;
-  const mapCenter = magicNumbers.stateCenter[stateID].latlng;
-
+  const mapMaxBounds = MagicNumbers.stateZoomBounds.stateID;
+  const mapCenter = MagicNumbers.stateCenter[stateID].latlng;
+  // retrieve from server
   const ensemblesData = [
     {
-      cluster: [],
-      clusterDetails: [],
+      cluster: [1],
+      clusterDetails: ["hi", "hi"],
       clusterCoordinate: {
         x: [1, 2, 3],
         y: [4, 5, 6],
         radius: [10, 15, 20],
       },
-      clusterAssociationCoordinate: { x: [], y: [] },
+      clusterAssociationCoordinate: { x: [1, 2, 3], y: [4, 5, 6] },
       distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
+        optimalTransport: [3],
+        hammingDistance: [2],
+        totalVariation: [1],
       },
     },
     {
@@ -131,6 +130,9 @@ const EnsembleList = () => {
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
   };
+  const goToHomePage = () => {
+    navigate("/");
+  };
   const handleDistMsrClicked = () => {
     navigate("/Distances");
   };
@@ -139,6 +141,7 @@ const EnsembleList = () => {
       state: {
         stateID: stateID,
         currentDistrictPlan: currentDistrictPlan,
+        ensemble: ensemblesData,
       },
     });
   };
@@ -164,7 +167,7 @@ const EnsembleList = () => {
           />
           <GeoJSON data={currentDistrictPlan} />
         </MapContainer>
-        <button className="home-button" onClick={miscFunc.goToHomePage}>
+        <button className="home-button" onClick={goToHomePage}>
           Home
         </button>
         <div className="ensembleSelect">

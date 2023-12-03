@@ -3,9 +3,8 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import ScatterPlot from "./scatterplotStateClicked";
-import magicNumbers from "../Helpers/magicNumbers.js";
-import miscFunc from "../Helpers/miscFunctions.js";
+import ScatterPlot from "./ClusterScatter.js";
+import MagicNumbers from "../Helpers/magicNumbers.js";
 
 // Outline Data
 import MDData from "../Data/StateOutlines/MDOutline.json";
@@ -20,51 +19,20 @@ const StateOverview = () => {
 
   const state = {
     currentDistrictPlan: location.state.currentDistrictPlan,
-    ensemble: [], // get ensemble list on server
+    ensembleList: location.state.ensemble,
   };
 
   // this is dummy data used to test will be replaced by state.ensemble when server is involved
-  // list of predetermined ensemble sizes where getEnsemble will be a single one depending on the size
-  const ensembleList = [
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [1, 2, 3],
-        y: [4, 5, 6],
-        radius: [10, 15, 20],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [4, 5, 6],
-        y: [7, 50, 75],
-        radius: [11, 13, 2],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-  ];
+
   const goToHomePage = (e) => {
     navigate("/");
   };
   const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
   const clusterScatterHeight = window.innerHeight; // Full height of the screen
 
-  const maxBounds = magicNumbers.stateZoomBounds.stateID;
-  const center = magicNumbers.stateCenter[stateID].latlng;
+  const maxBounds = MagicNumbers.stateZoomBounds.stateID;
+  const center = MagicNumbers.stateCenter[stateID].latlng;
+
   const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
@@ -108,7 +76,8 @@ const StateOverview = () => {
         </button>
         <div className="clusterScatter">
           <ScatterPlot
-            ensemble={ensembleList[0]}
+            ensemble={state.ensembleList[0]}
+            stateID={stateID}
             clusterScatterWidth={clusterScatterWidth}
             clusterScatterHeight={clusterScatterHeight}
           />
