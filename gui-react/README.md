@@ -1,3 +1,5 @@
+cd gui-react
+
 npm install npm
 npm install react react-dom leaflet
 npm install react-leaflet
