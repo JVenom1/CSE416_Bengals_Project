@@ -3,10 +3,8 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-// District Data
-import MDData from "../Data/DistrictPlans/MD.json";
-import NCData from "../Data/DistrictPlans/NC.json";
-import WIData from "../Data/DistrictPlans/WI.json";
+import magicNumbers from "../Helpers/magicNumbers.js";
+import miscFunc from "../Helpers/miscFunctions.js";
 
 // Scatter Plot Linear Feature Broken
 const EnsembleList = () => {
@@ -14,143 +12,188 @@ const EnsembleList = () => {
   const location = useLocation();
   // look in getURL&DataNotes.txt for notes
   const stateID = location.state.stateID;
+  const currentDistrictPlan = location.state.currentDistrictPlan;
 
-  const handleDistrictData = () => {
-    // set the map view
-    if (stateID === "WI") {
-      return <GeoJSON data={WIData} />;
-    } else if (stateID === "MD") {
-      return <GeoJSON data={MDData} />;
-    } else if (stateID === "NC") {
-      return <GeoJSON data={NCData} />;
-    }
-  };
-
-  const geojsonData = handleDistrictData();
   const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
     leafletContainer.style.height = height;
   };
-  // stateID = Abbr of actual state (eg: WI, MD, NC)
-  const stateCenter = {
-    NC: {
-      latlng: [35.7796, -78.6382],
-    },
-    MD: {
-      latlng: [39.0458, -76.6413],
-    },
-    WI: {
-      latlng: [44.0731, -89.4012],
-    },
-  };
+  const mapMaxBounds = magicNumbers.stateZoomBounds.stateID;
+  const mapCenter = magicNumbers.stateCenter[stateID].latlng;
 
-  // lat, long
-  const stateZoomBounds = {
-    WI: [
-      [47, -92.0], // Southwestern corner
-      [42.5, -87.0], // Northeastern corner
-    ], // Adjust the bounds as needed
-    MD: [
-      [35.5, -79.5], // Southwestern corner
-      [40.5, -74.0], // Northeastern corner
-    ], // Adjust the bounds as needed
-    NC: [
-      [36.5, -84.0], // Southwestern corner
-      [33.5, -75.0], // Northeastern corner
-    ], // Adjust the bounds as needed
-  };
-  const maxBounds = stateZoomBounds.stateID;
-  const center = stateCenter[stateID].latlng;
-
-  const handleEnsembleBoxes = () => {
-    //implement later
-  };
+  const ensemblesData = [
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [1, 2, 3],
+        y: [4, 5, 6],
+        radius: [10, 15, 20],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+  ];
 
   useEffect(() => {
     changeMapSizeXbyY("100%", "50vw");
-    handleDistrictData();
   }, []);
-  const goToHomePage = (e) => {
-    navigate("/");
+
+  const itemsPerPage = 4;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const totalPages = Math.ceil(ensemblesData.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
   };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
+  };
+  const handleDistMsrClicked = () => {
+    navigate("/Distances");
+  };
+  const handleClustAnalysis = () => {
+    navigate("/StateOverview", {
+      state: {
+        stateID: stateID,
+        currentDistrictPlan: currentDistrictPlan,
+      },
+    });
+  };
+
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const visibleEnsembles = ensemblesData.slice(startIndex, endIndex);
 
   return (
     <>
       <div className="mapWrapper">
         <MapContainer
-          center={center}
-          zoom={6}
-          minZoom={6}
-          maxBounds={maxBounds}
-          maxZoom={10}
+          center={mapCenter}
+          zoom={7}
+          minZoom={7}
+          maxBounds={mapMaxBounds}
+          maxZoom={7}
+          dragging={false}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          {geojsonData}
+          <GeoJSON data={currentDistrictPlan} />
         </MapContainer>
-        <button className="home-button" onClick={goToHomePage}>
+        <button className="home-button" onClick={miscFunc.goToHomePage}>
           Home
         </button>
         <div className="ensembleSelect">
-          {/* implement later {handleEnsembleBoxes} */}
           <div id="ensembles">
-            <div class="ensemble">
-              Ensemble 1
-              <div class="button-container">
-                <a href="#" class="button">
-                  Distance Measures
-                </a>
-                <a href="#" class="button">
-                  Cluster Analysis
-                </a>
+            {visibleEnsembles.map((ensemble, index) => (
+              <div key={index} className="ensemble">
+                <div className="ensemble-header">
+                  Ensemble {startIndex + index + 1}
+                </div>
+                <div className="button-container">
+                  <button onClick={handleDistMsrClicked} className="button">
+                    Distance Measures
+                  </button>
+                  <button onClick={handleClustAnalysis} className="button">
+                    Cluster Analysis
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="ensemble">
-              Ensemble 2
-              <div class="button-container">
-                <a href="#" class="button">
-                  Distance Measures
-                </a>
-                <a href="#" class="button">
-                  Cluster Analysis
-                </a>
-              </div>
-            </div>
-            <div class="ensemble">
-              Ensemble 3
-              <div class="button-container">
-                <a href="#" class="button">
-                  Distance Measures
-                </a>
-                <a href="#" class="button">
-                  Cluster Analysis
-                </a>
-              </div>
-            </div>
-            <div class="ensemble">
-              Ensemble 4
-              <div class="button-container">
-                <a href="#" class="button">
-                  Distance Measures
-                </a>
-                <a href="#" class="button">
-                  Cluster Analysis
-                </a>
-              </div>
-            </div>
-            <div class="ensemble">
-              Ensemble 5
-              <div class="button-container">
-                <a href="#" class="button">
-                  Distance Measures
-                </a>
-                <a href="#" class="button">
-                  Cluster Analysis
-                </a>
-              </div>
+            ))}
+            <div className="pagination">
+              <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                Prev
+              </button>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages - 1}
+              >
+                Next
+              </button>
             </div>
           </div>
         </div>
