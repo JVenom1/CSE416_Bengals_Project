@@ -14,14 +14,12 @@ import MDPlan from "../Data/DistrictPlans/MD.json";
 import NCPlan from "../Data/DistrictPlans/NC.json";
 import WIPlan from "../Data/DistrictPlans/WI.json";
 
+import MagicNumbers from "../Helpers/magicNumbers";
+
 const HomePage = () => {
   const navigate = useNavigate();
 
   // Handlers
-  const mapBounds = [
-    [50.5, -105.0], // Wisconsin (top-left, slightly adjusted to the left)
-    [30.0, -60.0], // Maryland (bottom-right)
-  ];
   const handleStateOutline = (geoData) => {
     return (
       <GeoJSON
@@ -73,7 +71,7 @@ const HomePage = () => {
           center={[39.67, -83.0]}
           zoom={5.5}
           minZoom={6}
-          maxBounds={mapBounds}
+          maxBounds={MagicNumbers.mapBounds}
           maxZoom={10}
         >
           <TileLayer

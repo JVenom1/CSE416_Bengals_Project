@@ -101,6 +101,14 @@ html {
 
 }
 
+.districtsScatter {
+  height: 50%;
+}
+
+.districtsTable {
+  height: 50%;
+}
+
 .ensemble {
   width: 80%;
   max-height: 15%;
