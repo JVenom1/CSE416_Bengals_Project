@@ -84,14 +84,15 @@ const ScatterPlot = ({
       .attr("cx", (d, i) => xScale(d))
       .attr("cy", (d, i) => yScale(ensemble.clusterCoordinate.y[i]))
       .attr("r", (d, i) => ensemble.clusterCoordinate.radius[i])
-      .attr("fill", () => getRandomOrangeColor())
-      .on("click", (event) => handlePointClick());
+      .attr("fill", () => selectOrangeColor())
+      .attr("data-value", (d, i) => i) // Assigning the index as a data attribute
+      .on("click", (event) => handlePointClick(event));
   }, [ensemble, clusterScatterWidth, clusterScatterHeight]);
 
-  const handlePointClick = (i) => {
-    i = 0;
+  const handlePointClick = (e) => {
+    const i = e.target.getAttribute("data-value");
     // check if theres data
-    if (ensemble.clusterDetails[i]) {
+    if (!ensemble.clusterDetails[i]) {
       navigate("/ClusterAnalysis", {
         state: {
           currCluster: {
@@ -125,7 +126,7 @@ const ScatterPlot = ({
     }
   };
 
-  const getRandomOrangeColor = () => {
+  const selectOrangeColor = () => {
     const randomShade = Math.floor(Math.random() * 255);
     return `rgb(255, ${randomShade}, 0)`;
   };
