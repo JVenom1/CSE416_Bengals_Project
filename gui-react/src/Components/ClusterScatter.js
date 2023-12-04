@@ -19,8 +19,8 @@ const ScatterPlot = ({
     const width = clusterScatterWidth - margin.left - margin.right;
     const height = clusterScatterHeight - margin.top - margin.bottom;
     const mainTitle = "Cluster Scatter";
-    const xAxTitle = "x-axis";
-    const yAxTitle = "y-axis";
+    const xAxTitle = "African American Pop";
+    const yAxTitle = "African American Pop > 50";
 
     const svg = d3
       .select(svgRef.current)
@@ -90,40 +90,25 @@ const ScatterPlot = ({
   }, [ensemble, clusterScatterWidth, clusterScatterHeight]);
 
   const handlePointClick = (e) => {
-    const i = e.target.getAttribute("data-value");
+    let clusterPointIndex = e.target.getAttribute("data-value");
+    clusterPointIndex = 0; //for testings
     // check if theres data
-    if (!ensemble.clusterDetails[i]) {
-      navigate("/ClusterAnalysis", {
-        state: {
-          currCluster: {
-            cluster: ensemble.cluster[i],
-            clusterDetails: ensemble.clusterDetails[i],
-            clusterCoordinate: {
-              x: ensemble.clusterCoordinate.x[i],
-              y: ensemble.clusterCoordinate.y[i],
-              radius: ensemble.clusterCoordinate.radius[i],
-            },
-            clusterAssociationCoordinate: {
-              optimalTransport:
-                ensemble.clusterAssociationCoordinate.optimalTransport,
-              hammingDistance:
-                ensemble.clusterAssociationCoordinate.hammingDistance,
-              totalVariation:
-                ensemble.clusterAssociationCoordinate.totalVariation,
-            },
-            distanceMeasure: {
-              optimalTransport: ensemble.distanceMeasure.optimalTransport,
-              hammingDistance: ensemble.distanceMeasure.hammingDistance,
-              totalVariation: ensemble.distanceMeasure.totalVariation,
-            },
+    navigate("/ClusterAnalysis", {
+      state: {
+        // removed not needed distance measures for this part
+        currEnsemble: {
+          cluster: ensemble.cluster[clusterPointIndex],
+          clusterDetails: ensemble.clusterDetails[clusterPointIndex],
+          clusterCoordinate: {
+            x: ensemble.clusterCoordinate.x[clusterPointIndex],
+            y: ensemble.clusterCoordinate.y[clusterPointIndex],
+            radius: ensemble.clusterCoordinate.radius[clusterPointIndex],
           },
-          stateID: stateID,
-          currentDistrictPlan: currentDistrictPlanThis,
         },
-      });
-    } else {
-      alert("No Data");
-    }
+        stateID: stateID,
+        currentDistrictPlan: currentDistrictPlanThis,
+      },
+    });
   };
 
   const selectOrangeColor = () => {

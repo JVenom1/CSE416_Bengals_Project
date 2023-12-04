@@ -1,4 +1,6 @@
-const MagicNumbers = {
+const mNum = {
+  mapCenter: [39.67, -83.0],
+
   // Define the coordinates for the boundaries of Wisconsin, Maryland, and North Carolina
   mapBounds: [
     [50.5, -105.0], // Wisconsin (top-left, slightly adjusted to the left)
@@ -18,7 +20,7 @@ const MagicNumbers = {
       [36.5, -84.0],
       [33.5, -75.0],
     ],
-  }, // State Center Coords
+  }, // Default State Center Coords
   stateCenter: {
     NC: {
       latlng: [35.7796, -78.6382],
@@ -30,6 +32,8 @@ const MagicNumbers = {
       latlng: [44.0731, -89.4012],
     },
   },
+  // left map in compare stage
+  // (leaflet needs a predetermined width otherwise its 0 for some reason)
   leafLeftStateCenter: {
     NC: {
       latlng: [34.9165, -74.6382],
@@ -41,5 +45,11 @@ const MagicNumbers = {
       latlng: [45.0, -85.4012],
     },
   },
+  stateNumbers: {
+    WI: 0,
+    MD: 1,
+    NC: 2,
+  },
 };
-export default MagicNumbers;
+
+export default mNum;

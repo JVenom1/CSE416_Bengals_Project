@@ -14,7 +14,7 @@ import MDPlan from "../Data/DistrictPlans/MD.json";
 import NCPlan from "../Data/DistrictPlans/NC.json";
 import WIPlan from "../Data/DistrictPlans/WI.json";
 
-import MagicNumbers from "../Helpers/magicNumbers";
+import mNum from "../Helpers/magicNumbers";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -35,43 +35,46 @@ const HomePage = () => {
     navigate("/");
   };
   const handleStateClick = (e) => {
-    const stateID = e.sourceTarget.feature.properties.State;
+    const stateOutlineID = e.sourceTarget.feature.properties.State;
+    const [stateID, currDistPlan] = getCurrDistPlan(stateOutlineID);
     navigate(`/EnsembleList`, {
       state: {
         stateID: stateID,
-        currentDistrictPlan: getCurrDistPlan(stateID),
+        currentDistrictPlan: currDistPlan,
       },
     });
   };
 
   const handleDropDownClick = (e) => {
-    const stateID = e.target.value;
+    const stateOutlineID = e.target.value;
+    // current districtplan is the default one
+    const [stateID, currDistPlan] = getCurrDistPlan(stateOutlineID);
     navigate(`/EnsembleList`, {
       state: {
         stateID: stateID,
-        currentDistrictPlan: getCurrDistPlan(stateID),
+        currentDistrictPlan: currDistPlan,
       },
     });
   };
   const getCurrDistPlan = (stateID) => {
-    if (stateID === "WI") {
-      return WIPlan;
-    } else if (stateID === "MD") {
-      return MDPlan;
-    } else if (stateID === "NC") {
-      return NCPlan;
+    if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
+      return ["WI", WIPlan]; // retrieve the default plans from the server here
+    } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
+      return ["MD", MDPlan];
+    } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
+      return ["NC", NCPlan];
     }
-    console.log("No Data HomePage");
+    alert("No Data");
     return null;
   };
   return (
     <>
       <div className={"mapWrapper"}>
         <MapContainer
-          center={[39.67, -83.0]}
+          center={mNum.mapCenter}
           zoom={5.5}
           minZoom={6}
-          maxBounds={MagicNumbers.mapBounds}
+          maxBounds={mNum.mapBounds}
           maxZoom={10}
         >
           <TileLayer
@@ -91,9 +94,9 @@ const HomePage = () => {
             <option disabled selected>
               Select a State
             </option>
-            <option value="WI">WI</option>
-            <option value="MD">MD</option>
-            <option value="NC">NC</option>
+            <option value={"WI"}>WI</option>
+            <option value={"MD"}>MD</option>
+            <option value={"NC"}>NC</option>
           </select>
         </div>
       </div>

@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import ScatterPlot from "./ClusterScatter.js";
-import MagicNumbers from "../Helpers/magicNumbers.js";
+import mNum from "../Helpers/magicNumbers.js";
 
 const StateOverview = () => {
   const navigate = useNavigate();
@@ -13,9 +13,8 @@ const StateOverview = () => {
   const stateID = location.state.stateID;
 
   const currentDistrictPlan = location.state.currentDistrictPlan;
-  const ensembleList = location.state.ensemble;
-
-  // this is dummy data used to test will be replaced by ensembleList when server is involved
+  const currEnsemble = location.state.ensemble;
+  const ensembleIndex = location.state.buttonIndex;
 
   const goToHomePage = (e) => {
     navigate("/");
@@ -23,8 +22,8 @@ const StateOverview = () => {
   const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
   const clusterScatterHeight = window.innerHeight; // Full height of the screen
 
-  const maxBounds = MagicNumbers.stateZoomBounds.stateID;
-  const center = MagicNumbers.stateCenter[stateID].latlng;
+  const maxBounds = mNum.stateZoomBounds.stateID;
+  const center = mNum.stateCenter[stateID].latlng;
 
   useEffect(() => {
     const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
@@ -57,7 +56,7 @@ const StateOverview = () => {
         </button>
         <div className="clusterScatter">
           <ScatterPlot
-            ensemble={ensembleList[0]}
+            ensemble={currEnsemble}
             stateID={stateID}
             currentDistrictPlan={currentDistrictPlan}
             clusterScatterWidth={clusterScatterWidth}

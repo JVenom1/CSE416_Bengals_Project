@@ -104,10 +104,6 @@ html {
   height: 520px;
 }
 
-
-
-
-
 .ensemble {
   width: 80%;
   max-height: 15%;
@@ -174,4 +170,68 @@ html {
   border: none;
   border-radius: 5px;
   cursor: default;
+}
+
+.detailsModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  max-width: 400px;
+  /* Adjust the width as needed */
+  width: 100%;
+}
+
+.detailsContent {
+  text-align: center;
+}
+
+.detailsContent h2 {
+  margin-bottom: 10px;
+}
+
+.detailsContent ul {
+  list-style: none;
+  padding: 0;
+}
+
+.detailsContent li {
+  margin-bottom: 5px;
+}
+
+.detailsContent button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+.districtsTable {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000;
+  /* Black border around the table */
+}
+
+th,
+td {
+  border: 1px solid #000;
+  /* Black border around each cell */
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #e58f04;
+  /* Light gray background for table header */
 }
