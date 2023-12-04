@@ -1,58 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-const DistrictsScatter = ({ data, onClick }) => {
-  const [scatterData, setScatterData] = useState([]);
+const DistrictsScatter = ({ districtPlan, districtPlanCoordinate }) => {
+  const scatterRef = useRef(null);
 
   useEffect(() => {
-    // Format the data for the scatter plot
-    const formattedData = data.x.map((x, index) => ({
-      x,
-      y: data.y[index],
-      color: data.color[index],
-    }));
+    if (!districtPlan || !districtPlanCoordinate) return;
 
-    setScatterData(formattedData);
-  }, [data]);
+    d3.select(scatterRef.current).selectAll("*").remove();
 
-  useEffect(() => {
-    // Create scatter plot when scatterData changes
-    const width = 300; // Set the desired width of your scatter plot
-    const height = 200; // Set the desired height of your scatter plot
+    const margin = { top: 25, right: 40, bottom: 50, left: 50 };
+    const width = 600 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
 
-    const svg = d3.select("#scatter-plot-container").select("svg");
-
-    svg.selectAll("*").remove(); // Clear previous content
+    const svg = d3
+      .select(scatterRef.current)
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const xScale = d3
       .scaleLinear()
-      .domain([0, d3.max(scatterData, (d) => d.x)])
+      .domain([0, districtPlanCoordinate.x.length])
       .range([0, width]);
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(scatterData, (d) => d.y)])
+      .domain([0, d3.max(districtPlanCoordinate.y)])
       .range([height, 0]);
 
-    // Create circles for each data point
     svg
       .selectAll("circle")
-      .data(scatterData)
+      .data(districtPlanCoordinate.x)
       .enter()
       .append("circle")
-      .attr("cx", (d) => xScale(d.x))
-      .attr("cy", (d) => yScale(d.y))
-      .attr("r", 5) // Set the radius of the circles
-      .attr("fill", (d) => (d.color ? "green" : "grey")) // Color based on boolean value
-      .attr("cursor", (d) => (d.color ? "pointer" : "default")) // Set cursor based on boolean value
-      .on("click", (d) => (d.color ? onClick(d) : null)); // Trigger onClick if the point is clickable
-  }, [scatterData, onClick]);
+      .attr("cx", (d, i) => xScale(i))
+      .attr("cy", (d, i) => yScale(districtPlanCoordinate.y[i]))
+      .attr("r", 5)
+      .attr("fill", (d, i) =>
+        districtPlanCoordinate.color[i] ? "green" : "grey"
+      )
+      .on("click", (event, d, i) => handlePointClick(event, districtPlan[i]));
 
-  return (
-    <div id="scatter-plot-container">
-      {/* SVG container for the scatter plot */}
-      <svg width={300} height={200}></svg>
-    </div>
-  );
+    // Add X-axis
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(xScale));
+
+    // Add Y-axis
+    svg.append("g").call(d3.axisLeft(yScale));
+
+    // Optional: Add chart title and axis labels
+    svg
+      .append("text")
+      .attr("x", width / 2)
+      .attr("y", height + margin.top + 10)
+      .style("text-anchor", "middle")
+      .text("X-Axis Label");
+
+    svg
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x", 0 - height / 2)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Y-Axis Label");
+
+    return () => {
+      svg.selectAll("*").remove();
+    };
+  }, [districtPlan, districtPlanCoordinate]);
+
+  const handlePointClick = (event, selectedPlan) => {
+    console.log("Clicked on plan:", selectedPlan);
+  };
+
+  return <div ref={scatterRef} className="scatter-plot"></div>;
 };
 
 export default DistrictsScatter;

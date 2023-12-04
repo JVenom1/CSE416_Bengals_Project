@@ -15,8 +15,10 @@ const ClusterAnalysis = () => {
   const currEnsemble = location.state.currEnsemble;
   const cluster = currEnsemble.cluster;
   const districtPlan = cluster["districtPlan"];
-  console.log(districtPlan.map((item, index) => item));
-  const districtPlanDetail = cluster["districtPlanDetail"];
+
+  const districtPlanCoordinate = cluster["districtPlanCoordinate"];
+  console.log(districtPlanCoordinate);
+  // const districtPlanDetail = cluster["districtPlanDetail"];
   // const properties = districtPlanDetail[index].features[index].properties;
   // passed from homepage --> stateOverview --> here (default states plan)
   const currentDistrictPlan = location.state.currentDistrictPlan;
@@ -32,7 +34,7 @@ const ClusterAnalysis = () => {
 
   const [districtPlans, setDistrictPlans] = useState([]); // List of district plans
 
-  //   // Use useEffect to handle side effects when the component mounts
+  // Use useEffect to handle side effects when the component mounts
   useEffect(() => {
     changeMapSizeXbyY("100%", "25vw");
     setLeafLetStateCenter(center);
@@ -40,7 +42,6 @@ const ClusterAnalysis = () => {
   useEffect(() => {
     // the districtPlans given a cluster has been clicked
     // districtPlan[0].plan
-    console.log(districtPlans);
     setDistrictPlans(districtPlans);
   }, []);
   //   // Function to change map size
@@ -70,7 +71,6 @@ const ClusterAnalysis = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(null);
 
   const handleDetailsButtonClick = (index, item) => {
-    console.log(item);
     setSelectedDistrict(item);
     setShowDetails(true);
     setDistIndex(index);
@@ -121,7 +121,10 @@ const ClusterAnalysis = () => {
 
         <div className="clusterRight">
           <div className="districtsScatter">
-            {/* <DistrictsScatter data={districtPlans} /> */}
+            <DistrictsScatter
+              districtPlan={districtPlan}
+              districtPlanCoordinate={districtPlanCoordinate}
+            />
           </div>
           <div className="districtsTable">
             <table>
