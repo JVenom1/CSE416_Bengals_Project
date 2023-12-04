@@ -81,9 +81,11 @@ const DistrictsScatter = ({
 
   const handlePointClick = (event) => {
     const distrIndex = event.target.getAttribute("data-value");
-    const selectedPlan = districtPlan[distrIndex].plan;
-    distPlan2Setter(selectedPlan);
-    console.log("Clicked on plan:", selectedPlan);
+    if (event.target.getAttribute("fill") === "green") {
+      const selectedPlan = districtPlan[distrIndex].plan;
+      distPlan2Setter(selectedPlan);
+      console.log("Clicked on plan:", selectedPlan);
+    }
   };
 
   return <div ref={scatterRef} className="scatter-plot"></div>;
