@@ -1,7 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-const DistrictsScatter = ({ districtPlan, districtPlanCoordinate }) => {
+const DistrictsScatter = ({
+  districtPlan,
+  districtPlanCoordinate,
+  distPlan2Setter,
+}) => {
   const scatterRef = useRef(null);
 
   useEffect(() => {
@@ -41,7 +45,8 @@ const DistrictsScatter = ({ districtPlan, districtPlanCoordinate }) => {
       .attr("fill", (d, i) =>
         districtPlanCoordinate.color[i] ? "green" : "grey"
       )
-      .on("click", (event, d, i) => handlePointClick(event, districtPlan[i]));
+      .attr("data-value", (d, i) => i) // Assigning the index as a data attribute
+      .on("click", (event) => handlePointClick(event));
 
     // Add X-axis
     svg
@@ -74,7 +79,10 @@ const DistrictsScatter = ({ districtPlan, districtPlanCoordinate }) => {
     };
   }, [districtPlan, districtPlanCoordinate]);
 
-  const handlePointClick = (event, selectedPlan) => {
+  const handlePointClick = (event) => {
+    const distrIndex = event.target.getAttribute("data-value");
+    const selectedPlan = districtPlan[distrIndex].plan;
+    distPlan2Setter(selectedPlan);
     console.log("Clicked on plan:", selectedPlan);
   };
 

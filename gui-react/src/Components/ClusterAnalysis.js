@@ -124,6 +124,7 @@ const ClusterAnalysis = () => {
             <DistrictsScatter
               districtPlan={districtPlan}
               districtPlanCoordinate={districtPlanCoordinate}
+              distPlan2Setter={setDistPlan2}
             />
           </div>
           <div className="districtsTable">
