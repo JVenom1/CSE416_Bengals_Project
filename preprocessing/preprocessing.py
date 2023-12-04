@@ -41,9 +41,10 @@ def filter_VAP(geodataframe):
     }
     columns_to_remove = {
         "GEOID20", "SUMLEV", "LOGRECNO", "GEOID", "COUNTY"
-    }
+    }   #Summary Level, Log Record Num
     geodataframe = geodataframe.rename(columns=column_mapping)
     geodataframe['Other VAP'] = geodataframe[['P0030008', 'P0030009']].sum(axis=1)
+    #P0030008 is Other Race (Singular). P0030009 is Two or More Races.
     geodataframe = geodataframe.drop(columns=geodataframe.filter(regex=r'P003\d+').columns)
     geodataframe = geodataframe.drop(columns=columns_to_remove)
     return geodataframe
@@ -51,7 +52,7 @@ def filter_VAP(geodataframe):
 def process_csv(input_file, output_file_modify, output_file_remove):
     def shorten_number(value):
         return value[9:14]
-    
+    #1400000US24001000100 to 5 digit geoid of district 24001
     def modify_csv(input_file, output_file):
         with open(input_file, 'r') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
@@ -65,7 +66,6 @@ def process_csv(input_file, output_file_modify, output_file_remove):
             csv_writer.writerow(header)
             csv_writer.writerows(modified_data)
         print(f"Modification complete. CSV file '{output_file}' created.")
-
     def remove_second_column(input_file, output_file):
         with open(input_file, 'r') as csvfile:
             reader = csv.reader(csvfile)
@@ -79,42 +79,40 @@ def process_csv(input_file, output_file_modify, output_file_remove):
     modify_csv(input_file, output_file_modify)
     remove_second_column(output_file_modify, output_file_remove)
 
+def combine_geodataframe_and_csv(geodataframe, input_csv):
+    csv_data = pd.read_csv(input_csv)
+    merged_data = geodataframe.merge(csv_data, on='GEOID')
+    return merged_data
+
 def autorepair_geodataframe(geodataframe):
-    geodataframe = geodataframe.to_crs('EPSG:4326')
+    geodataframe = geodataframe.to_crs('EPSG:3857')
     geodataframe['geometry'] = geodataframe['geometry'].make_valid()
     geodataframe['geometry'] = maup.resolve_overlaps(geodataframe['geometry'])
     geodataframe['geometry'] = maup.close_gaps(geodataframe['geometry'])
     return geodataframe
 
 def create_and_save_dual_graph(geodataframe, output_json):
-    geodataframe = geodataframe.to_crs('EPSG:4326')
+    geodataframe = geodataframe.to_crs('EPSG:3857')
     geodataframe['geometry'] = geodataframe['geometry'].buffer(0)
     dual_graph = Graph.from_geodataframe(geodataframe)
     dual_graph.to_json(output_json)
     print(f"Dual graph saved to {output_json}")
 
-def convert_geojson_to_json(input_geojson, output_json):
-    gdf = gpd.read_file(input_geojson)
-    json_data = gdf.to_json()
-    with open(output_json, 'w') as json_file:
-        json_file.write(json_data)
-    print(f"GeoJSON converted to JSON and saved as {output_json}")
+def add_temp_buffer(geodataframe):
+    geodataframe['temp_geometry'] = geodataframe['geometry']
+    geodataframe['geometry'] = geodataframe['geometry'].buffer(10)
+    return geodataframe
 
-def add_temp_buffer(gdf):
-    gdf['temp_geometry'] = gdf['geometry']
-    gdf['geometry'] = gdf['geometry'].buffer(50)
-    return gdf
+def remove_temp_buffer(geodataframe):
+    geodataframe['geometry'] = geodataframe['temp_geometry']
+    geodataframe.drop('temp_geometry', axis=1, inplace=True)
+    return geodataframe
 
-def remove_temp_buffer(gdf):
-    gdf['geometry'] = gdf['temp_geometry']
-    gdf.drop('temp_geometry', axis=1, inplace=True)
-    return gdf
-
-def aggregate_properties(gdf1, gdf2):
-    gdf1 = gdf1.to_crs('EPSG:3857')
-    gdf2 = gdf2.to_crs('EPSG:3857')
-    gdf1 = add_temp_buffer(gdf1)
-    spatial_joined = gpd.sjoin(gdf1, gdf2, how='left', predicate='contains')
+def aggregate_properties(geodataframe1, geodataframe2):
+    geodataframe1 = geodataframe1.to_crs('EPSG:3857')
+    geodataframe2 = geodataframe2.to_crs('EPSG:3857')
+    geodataframe1 = add_temp_buffer(geodataframe1)
+    spatial_joined = gpd.sjoin(geodataframe1, geodataframe2, how='left', predicate='contains')
     aggregated_properties = spatial_joined.groupby('geometry').agg({
         'Total VAP'                                         :   'sum',
         'White VAP'                                         :   'sum',
@@ -124,18 +122,9 @@ def aggregate_properties(gdf1, gdf2):
         'Native Hawaiian and Other Pacific Islander VAP'    :   'sum',
         'Other VAP'                                         :   'sum'
     }).reset_index()
-    merged_gdf = gdf1.merge(aggregated_properties, on='geometry', how='left')
+    merged_gdf = geodataframe1.merge(aggregated_properties, on='geometry', how='left')
     remove_temp_buffer(merged_gdf)
     return merged_gdf
-
-def filter_geodataframe(gdf):
-    conditions = (
-        (gdf['Democrat Votes'] != 0) &
-        (gdf['Republican Votes'] != 0) &
-        (gdf['Total VAP'] != 0)
-    )
-    filtered_gdf = gdf.loc[conditions].copy()
-    return filtered_gdf
 
 if __name__ == "__main__":
     nc = gpd.read_file('NCCombined.geojson')
@@ -147,7 +136,14 @@ if __name__ == "__main__":
     md = gpd.read_file('MDCombined.geojson')
     fixedMD = autorepair_geodataframe(md)
     graph = Graph.from_geodataframe(fixedMD)
-    additional_edges = {(1667, 1695), (1797, 1808), (1668, 1695), (1656, 1655), (1654, 1662), (1807, 1808)}
+    additional_edges = {
+        (1667, 1695), 
+        (1797, 1808), 
+        (1668, 1695), 
+        (1656, 1655), 
+        (1654, 1662), 
+        (1807, 1808)
+        }
     graph.add_edges_from(additional_edges)
     graph.to_json('MDGraph.json')
 
@@ -219,9 +215,8 @@ def temp():
     md_vap = gpd.read_file('MDCensus.geojson')
     md_votes_2020 = gpd.read_file('MDElec.geojson')
     new = aggregate_properties(md_votes_2020, md_vap)
-    filtered = filter_geodataframe(new)
-    filtered.to_file('MDCombined.geojson', driver='GeoJSON')
-    create_and_save_dual_graph(filtered, 'MDTestGraph.geojson') 
+    new.to_file('MDCombined.geojson', driver='GeoJSON')
+    create_and_save_dual_graph(new, 'MDTestGraph.geojson') 
 
     snapped = gpd.read_file('MDCombined.geojson')
     snapped['geometry'] = snapped['geometry'].to_crs('EPSG:4326')
@@ -238,8 +233,12 @@ def temp():
     merged_data = geojson1.merge(geojson2, left_on='NAME', right_on='NAME', how='inner')
     print(merged_data)
     # Keep only the desired columns (properties from the first file, and geometries from the second file)
-    merged_data = merged_data[[ "SEND", "Democrat Votes", "Republican Votes", "Total VAP", "White VAP", "Black or African American VAP",
-                                "American Indian and Alaska Native VAP", "Asian VAP", "Native Hawaiian and Other Pacific Islander VAP", "Other VAP", "geometry_y"]]
+    merged_data = merged_data[[ 
+        "SEND", "Democrat Votes", "Republican Votes", "Total VAP", "White VAP",
+        "Black or African American VAP", "American Indian and Alaska Native VAP", 
+        "Asian VAP", "Native Hawaiian and Other Pacific Islander VAP", "Other VAP",
+        "geometry_y"
+        ]]
     
     merged_data = merged_data.rename(columns={'geometry_y' : 'geometry'})
     merged_data = gpd.GeoDataFrame(merged_data, geometry='geometry')
@@ -256,6 +255,13 @@ def temp():
     md = gpd.read_file('MDCombined.geojson')
     fixedMD = autorepair_geodataframe(md)
     graph = Graph.from_geodataframe(fixedMD)
-    additional_edges = {(1667, 1695), (1797, 1808), (1668, 1695), (1656, 1655), (1654, 1662), (1807, 1808)}
+    additional_edges = {
+        (1667, 1695), 
+        (1797, 1808), 
+        (1668, 1695), 
+        (1656, 1655), 
+        (1654, 1662), 
+        (1807, 1808)
+        }
     graph.add_edges_from(additional_edges)
     graph.to_json('MDGraph.json')
