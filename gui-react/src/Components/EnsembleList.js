@@ -49,6 +49,29 @@ const EnsembleList = () => {
           },
           averageBoundary: { plan: currentDistrictPlan },
         },
+        {
+          districtPlan: [
+            { plan: currentDistrictPlan },
+            { plan: currentDistrictPlan },
+            { plan: currentDistrictPlan },
+          ],
+
+          districtPlanDetail: [
+            {
+              clusterNum: 0,
+              numberOfDistrictPlans: 3,
+              averageDistance: 0.88,
+              numberOfRep: 5,
+              numberOfDem: 15,
+            },
+          ],
+          districtPlanCoordinate: {
+            x: [12, 22, 32],
+            y: [42, 52, 62],
+            color: [true, true, false],
+          },
+          averageBoundary: { plan: currentDistrictPlan },
+        },
       ],
       clusterDetails: [
         {
@@ -172,12 +195,13 @@ const EnsembleList = () => {
     navigate("/");
   };
   // button index 0 is ensemble 1
+  // need ensemble[buttonIndex].len and ensemble[buttonIndex].cluster.len
   const handleDistMsrClicked = (buttonIndex) => {
     navigate("/Distances", {
       state: {
         stateID: stateID,
         currentDistrictPlan: currentDistrictPlan,
-        ensemble: ensemble[buttonIndex],
+        ensemble: ensemble,
         buttonIndex: buttonIndex,
       },
     });
