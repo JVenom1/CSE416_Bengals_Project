@@ -1,24 +1,32 @@
-import React, { useEffect, useRef } from "react";
+// DistrictsScatter.js
+
+import React, { useState, useEffect } from "react";
 import * as d3 from "d3";
 
-const DistrictScatter = ({ data }) => {
-  const chartRef = useRef();
+const DistrictsScatter = ({ data, onClick }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const districtsPerPage = 4;
+
+  const chartRef = React.useRef();
 
   useEffect(() => {
     if (!data) return;
 
-    const margin = { top: 40, right: 30, bottom: 80, left: 80 }; // Adjust margins as needed
+    const start = (currentPage - 1) * districtsPerPage;
+    const end = start + districtsPerPage;
+
+    const paginatedData = data.slice(start, end);
+
+    const margin = { top: 40, right: 30, bottom: 80, left: 80 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    // Create scales with switched axes
     const xScale = d3
       .scaleLinear()
-      .domain([0, data.length - 1])
+      .domain([0, paginatedData.length - 1])
       .range([0, width]);
     const yScale = d3.scaleLinear().domain([0, 1]).range([height, 0]);
 
-    // Create the scatter plot
     const svg = d3.select(chartRef.current);
 
     svg.selectAll("*").remove(); // Clear previous content
@@ -30,13 +38,14 @@ const DistrictScatter = ({ data }) => {
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Create circles for each data point
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < paginatedData.length; i++) {
       svg
         .append("circle")
         .attr("cx", xScale(i))
-        .attr("cy", yScale(data[i][0]))
+        .attr("cy", yScale(paginatedData[i][0]))
         .attr("r", 5)
-        .style("fill", "steelblue");
+        .style("fill", "steelblue")
+        .on("click", () => onClick(start + i)); // Handle click with the correct index
     }
 
     // Add axes
@@ -59,9 +68,30 @@ const DistrictScatter = ({ data }) => {
       .attr("text-anchor", "middle")
       .attr("transform", `translate(${width / 2},${height + 50})`)
       .text("Districts");
-  }, [data]);
+
+    // Render pagination buttons
+    renderPaginationButtons();
+  }, [data, currentPage]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const renderPaginationButtons = () => {
+    const totalPages = Math.ceil(data.length / districtsPerPage);
+
+    return (
+      <div>
+        {Array.from({ length: totalPages }).map((_, index) => (
+          <button key={index} onClick={() => handlePageChange(index + 1)}>
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    );
+  };
 
   return <svg ref={chartRef} />;
 };
 
-export default DistrictScatter;
+export default DistrictsScatter;
