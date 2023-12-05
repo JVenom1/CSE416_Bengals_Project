@@ -5,17 +5,27 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import ScatterPlot from "./ClusterScatter.js";
 import mNum from "../Helpers/magicNumbers.js";
-
+import axios from "axios";
 const StateOverview = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // unwrapped stateID (eg: WI, MD, NC) from previous page
   const stateID = location.state.stateID;
-
-  const currentDistrictPlan = location.state.currentDistrictPlan;
-  const currEnsemble = location.state.ensemble;
   const ensembleIndex = location.state.buttonIndex;
 
+  // "/{stateID}/2020plan"
+  const currentDistrictPlan = async (stateID) => {
+    const response = await axios.get("/{stateID}/2020plan");
+    return response.data;
+  };
+  // const currentDistrictPlan = location.state.currentDistrictPlan;
+
+  // "/{stateID}/{ensembleIndex}"
+  const currEnsemble = async (stateID) => {
+    const response = await axios.get("/{stateID}/{ensembleIndex}");
+    return response.data;
+  };
+  // const currEnsemble = location.state.ensemble;
   const goToHomePage = (e) => {
     navigate("/");
   };
