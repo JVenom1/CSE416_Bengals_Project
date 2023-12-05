@@ -1,6 +1,6 @@
 // description comments are used for the combination with server part (can be deleted later by anyone)
 import axios from "axios";
-import { React } from "react";
+import { useState, React } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ import WIPlan from "../Data/DistrictPlans/WI.json";
 import mNum from "../Helpers/magicNumbers";
 
 const HomePage = () => {
+  const [selectedState, setSelectedState] = useState("");
   const navigate = useNavigate();
 
   // Handlers
@@ -37,13 +38,16 @@ const HomePage = () => {
   const handleStateSelect = (e) => {
     let stateOutlineID = null;
     if (e.sourceTarget) {
-      // String of either WI/MD/NC
+      // State Select - String of either WI/MD/NC
       stateOutlineID = e.sourceTarget.feature.properties.State;
+      setSelectedState(e.sourceTarget.feature.properties.State);
     } else {
+      // dropdown
       stateOutlineID = e.target.value;
+      setSelectedState(e.target.value);
     }
     // current districtplan is the default one
-    const [stateID, currDistPlan] = getCurrDistPlan(stateOutlineID);
+    const [stateID, currDistPlan] = getDistrPlan(stateOutlineID);
     navigate(`/EnsembleList`, {
       state: {
         stateID: stateID,
@@ -53,7 +57,7 @@ const HomePage = () => {
   };
 
   //GUI-3 Step 1 Retrieve the data
-  const getCurrDistPlan2 = async (stateID) => {
+  const getDistrPlan2 = async (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
       const response = await axios.get(
         "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/0/2020plan"
@@ -73,7 +77,7 @@ const HomePage = () => {
     alert("No Data");
     return null;
   };
-  const getCurrDistPlan = (stateID) => {
+  const getDistrPlan = (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
       return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
     } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
@@ -107,13 +111,13 @@ const HomePage = () => {
         </button>
         <div className="dropdown">
           <p>Please select from the dropdown</p>
-          <select onChange={handleStateSelect}>
-            <option disabled selected>
+          <select value={selectedState} onChange={handleStateSelect}>
+            <option value="" disabled>
               Select a State
             </option>
-            <option value={"WI"}>WI</option>
-            <option value={"MD"}>MD</option>
-            <option value={"NC"}>NC</option>
+            <option value="WI">WI</option>
+            <option value="MD">MD</option>
+            <option value="NC">NC</option>
           </select>
         </div>
       </div>
