@@ -9,12 +9,14 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
-// import MDPlan from "../Data/DistrictPlans/MD.json";
-// import NCPlan from "../Data/DistrictPlans/NC.json";
-// import WIPlan from "../Data/DistrictPlans/WI.json";
+import MDPlan from "../Data/DistrictPlans/MD.json";
+import NCPlan from "../Data/DistrictPlans/NC.json";
+import WIPlan from "../Data/DistrictPlans/WI.json";
 
 import mNum from "../Helpers/magicNumbers";
-
+// so link is in one location
+export const api =
+  "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi";
 const HomePage = () => {
   const [selectedState, setSelectedState] = useState("");
   const navigate = useNavigate();
@@ -59,19 +61,13 @@ const HomePage = () => {
   //GUI-3 Step 1 Retrieve the data
   const getDistrPlan = async (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-      const response = await axios.get(
-        "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/0/2020plan"
-      );
+      const response = await axios.get("${api}/0/2020plan");
       return ["WI", response.data]; // retrieve the default plans from the server here
     } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-      const response = await axios.get(
-        "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/1/2020plan"
-      );
+      const response = await axios.get("${api}/1/2020plan");
       return ["MD", response.data];
     } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-      const response = await axios.get(
-        "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/2/2020plan"
-      );
+      const response = await axios.get("${api}/2/2020plan");
       return [mNum.stateNumbers, response.data];
     }
     alert("No Data");
