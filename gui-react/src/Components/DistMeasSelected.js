@@ -3,6 +3,8 @@ import * as d3 from "d3";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import hammingDistanceArray from "../Data/DistanceMeasure5plans/hamming_distance.json";
+import optimalTransportArray from "../Data/DistanceMeasure5plans/optimal_transport.json";
 
 const DistMeasPage = () => {
   const navigate = useNavigate();
@@ -10,54 +12,59 @@ const DistMeasPage = () => {
   const goToHomePage = () => {
     navigate("/");
   };
+  // gets ensemble data
   const ensemble = location.state.ensemble;
   const svgRef = useRef(null);
   const [selectedMeasure, setSelectedMeasure] = useState("hamming_distance");
 
   const distanceMatrixData = {
-    hamming_distance: [
-      [
-        0.0, 0.875140607424072, 0.9028871391076115, 0.9520059992500938,
-        0.901387326584177,
-      ],
-      [
-        0.875140607424072, 0.0, 0.8245219347581553, 0.9171353580802399,
-        0.9745031871016123,
-      ],
-      [0.9028871391076115, 0.8245219347581553, 0.0, 1.0, 0.9505061867266592],
-      [0.9520059992500938, 0.9171353580802399, 1.0, 0.0, 0.9426321709786277],
-      [
-        0.901387326584177, 0.9745031871016123, 0.9505061867266592,
-        0.9426321709786277, 0.0,
-      ],
-    ],
-    optimal_transport: [
-      // Data for optimal_transport
-      // ...
-    ],
-    total_variation: [
-      // Data for total_variation
-      // ...
-    ],
+    hamming_distance: hammingDistanceArray,
+    optimal_transport: optimalTransportArray,
+    // total_variation: totalVariationArray,
   };
 
   const handleChangeMeasure = (measure) => {
     setSelectedMeasure(measure);
   };
   const MatrixDisplay = ({ matrix }) => {
-    // Render the matrix as needed
+    const numRows = matrix.length;
+    const numCols = matrix[0]?.length || 0;
+
+    // Generate row and column headers
+    const rowHeaders = Array.from(
+      { length: numRows },
+      (_, index) => `D${index + 1}`
+    );
+    const colHeaders = Array.from(
+      { length: numCols },
+      (_, index) => `D${index + 1}`
+    );
+
+    // Render the matrix with row and column headers
     return (
-      <table>
-        <tbody>
-          {matrix.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <td key={cellIndex}>{cell}</td>
+      <div className="matrix-display">
+        <div className="matrix-title">District x vs District y Distances</div>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              {colHeaders.map((colHeader, index) => (
+                <th key={index}>{colHeader}</th>
               ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {Object.keys(matrix).map((rowKey, rowIndex) => (
+              <tr key={rowIndex}>
+                <th>{rowHeaders[rowIndex]}</th>
+                {matrix[rowKey].map((cell, cellIndex) => (
+                  <td key={cellIndex}>{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
