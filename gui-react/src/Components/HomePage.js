@@ -53,7 +53,7 @@ const HomePage = () => {
   };
 
   //GUI-3 Step 1 Retrieve the data
-  const getCurrDistPlan2 = async (stateID) => {
+  const getCurrDistPlan = async (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
       const response = await axios.get(
         "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/0/2020plan"
@@ -73,7 +73,7 @@ const HomePage = () => {
     alert("No Data");
     return null;
   };
-  const getCurrDistPlan = (stateID) => {
+  const getCurrDistPlan2 = (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
       return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
     } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
