@@ -9,9 +9,9 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
-import MDPlan from "../Data/DistrictPlans/MD.json";
-import NCPlan from "../Data/DistrictPlans/NC.json";
-import WIPlan from "../Data/DistrictPlans/WI.json";
+// import MDPlan from "../Data/DistrictPlans/MD.json";
+// import NCPlan from "../Data/DistrictPlans/NC.json";
+// import WIPlan from "../Data/DistrictPlans/WI.json";
 
 import mNum from "../Helpers/magicNumbers";
 
@@ -40,11 +40,11 @@ const HomePage = () => {
     if (e.sourceTarget) {
       // State Select - String of either WI/MD/NC
       stateOutlineID = e.sourceTarget.feature.properties.State;
-      setSelectedState(e.sourceTarget.feature.properties.State);
+      setSelectedState(stateOutlineID);
     } else {
       // dropdown
       stateOutlineID = e.target.value;
-      setSelectedState(e.target.value);
+      setSelectedState(stateOutlineID);
     }
     // current districtplan is the default one
     const [stateID, currDistPlan] = getDistrPlan(stateOutlineID);
@@ -57,7 +57,7 @@ const HomePage = () => {
   };
 
   //GUI-3 Step 1 Retrieve the data
-  const getDistrPlan2 = async (stateID) => {
+  const getDistrPlan = async (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
       const response = await axios.get(
         "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/0/2020plan"
@@ -77,17 +77,17 @@ const HomePage = () => {
     alert("No Data");
     return null;
   };
-  const getDistrPlan = (stateID) => {
-    if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-      return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
-    } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-      return [mNum.stateNumbers.MD, MDPlan];
-    } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-      return [mNum.stateNumbers.NC, NCPlan];
-    }
-    alert("No Data");
-    return null;
-  };
+  // const getDistrPlan = (stateID) => {
+  //   if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
+  //     return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
+  //   } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
+  //     return [mNum.stateNumbers.MD, MDPlan];
+  //   } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
+  //     return [mNum.stateNumbers.NC, NCPlan];
+  //   }
+  //   alert("No Data");
+  //   return null;
+  // };
   return (
     <>
       <div className={"mapWrapper"}>
