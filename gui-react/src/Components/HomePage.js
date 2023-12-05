@@ -1,5 +1,5 @@
 // description comments are used for the combination with server part (can be deleted later by anyone)
-
+import axios from "axios";
 import { React } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
@@ -9,7 +9,6 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
-// District Data (once stateID retrieved make a server call to grab it, so not all needs to be loaded)
 import MDPlan from "../Data/DistrictPlans/MD.json";
 import NCPlan from "../Data/DistrictPlans/NC.json";
 import WIPlan from "../Data/DistrictPlans/WI.json";
@@ -25,7 +24,7 @@ const HomePage = () => {
       <GeoJSON
         data={geoData}
         eventHandlers={{
-          click: handleStateClick,
+          click: handleStateSelect,
         }}
       />
     );
@@ -34,19 +33,15 @@ const HomePage = () => {
   const goToHomePage = (e) => {
     navigate("/");
   };
-  const handleStateClick = (e) => {
-    const stateOutlineID = e.sourceTarget.feature.properties.State;
-    const [stateID, currDistPlan] = getCurrDistPlan(stateOutlineID);
-    navigate(`/EnsembleList`, {
-      state: {
-        stateID: stateID,
-        currentDistrictPlan: currDistPlan,
-      },
-    });
-  };
 
-  const handleDropDownClick = (e) => {
-    const stateOutlineID = e.target.value;
+  const handleStateSelect = (e) => {
+    let stateOutlineID = null;
+    if (e.sourceTarget) {
+      // String of either WI/MD/NC
+      stateOutlineID = e.sourceTarget.feature.properties.State;
+    } else {
+      stateOutlineID = e.target.value;
+    }
     // current districtplan is the default one
     const [stateID, currDistPlan] = getCurrDistPlan(stateOutlineID);
     navigate(`/EnsembleList`, {
@@ -56,13 +51,35 @@ const HomePage = () => {
       },
     });
   };
+
+  //GUI-3 Step 1 Retrieve the data
+  const getCurrDistPlan2 = async (stateID) => {
+    if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
+      const response = await axios.get(
+        "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/0/2020plan"
+      );
+      return ["WI", response.data]; // retrieve the default plans from the server here
+    } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
+      const response = await axios.get(
+        "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/1/2020plan"
+      );
+      return ["MD", response.data];
+    } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
+      const response = await axios.get(
+        "https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi/2/2020plan"
+      );
+      return [mNum.stateNumbers, response.data];
+    }
+    alert("No Data");
+    return null;
+  };
   const getCurrDistPlan = (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-      return ["WI", WIPlan]; // retrieve the default plans from the server here
+      return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
     } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-      return ["MD", MDPlan];
+      return [mNum.stateNumbers.MD, MDPlan];
     } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-      return ["NC", NCPlan];
+      return [mNum.stateNumbers.NC, NCPlan];
     }
     alert("No Data");
     return null;
@@ -90,7 +107,7 @@ const HomePage = () => {
         </button>
         <div className="dropdown">
           <p>Please select from the dropdown</p>
-          <select onChange={handleDropDownClick}>
+          <select onChange={handleStateSelect}>
             <option disabled selected>
               Select a State
             </option>

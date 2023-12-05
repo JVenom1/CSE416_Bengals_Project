@@ -12,6 +12,54 @@ const DistMeasPage = () => {
   };
   const ensemble = location.state.ensemble;
   const svgRef = useRef(null);
+  const [selectedMeasure, setSelectedMeasure] = useState("hamming_distance");
+
+  const distanceMatrixData = {
+    hamming_distance: [
+      [
+        0.0, 0.875140607424072, 0.9028871391076115, 0.9520059992500938,
+        0.901387326584177,
+      ],
+      [
+        0.875140607424072, 0.0, 0.8245219347581553, 0.9171353580802399,
+        0.9745031871016123,
+      ],
+      [0.9028871391076115, 0.8245219347581553, 0.0, 1.0, 0.9505061867266592],
+      [0.9520059992500938, 0.9171353580802399, 1.0, 0.0, 0.9426321709786277],
+      [
+        0.901387326584177, 0.9745031871016123, 0.9505061867266592,
+        0.9426321709786277, 0.0,
+      ],
+    ],
+    optimal_transport: [
+      // Data for optimal_transport
+      // ...
+    ],
+    total_variation: [
+      // Data for total_variation
+      // ...
+    ],
+  };
+
+  const handleChangeMeasure = (measure) => {
+    setSelectedMeasure(measure);
+  };
+  const MatrixDisplay = ({ matrix }) => {
+    // Render the matrix as needed
+    return (
+      <table>
+        <tbody>
+          {matrix.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {row.map((cell, cellIndex) => (
+                <td key={cellIndex}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -100,7 +148,23 @@ const DistMeasPage = () => {
   return (
     <>
       <button onClick={goToHomePage}>Home</button>
-
+      <div className="matrix-container">
+        <div className="dropdown-container">
+          <label htmlFor="distanceMeasure">Choose a distance measure:</label>
+          <select
+            id="distanceMeasure"
+            value={selectedMeasure}
+            onChange={(e) => handleChangeMeasure(e.target.value)}
+          >
+            <option value="hamming_distance">Hamming Distance</option>
+            <option value="optimal_transport">Optimal Transport</option>
+            <option value="total_variation">Total Variation</option>
+          </select>
+        </div>
+        <div className="matrix-display">
+          <MatrixDisplay matrix={distanceMatrixData[selectedMeasure]} />
+        </div>
+      </div>
       <svg ref={svgRef} width={500} height={400} />
     </>
   );

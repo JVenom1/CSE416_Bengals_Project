@@ -8,40 +8,40 @@ const mNum = {
   ],
   // stateZoomBounds ([lat], [long])
   stateZoomBounds: {
-    WI: [
+    0: [
       [47, -92.0], // Southwestern corner
       [42.5, -87.0], // Northeastern corner
     ],
-    MD: [
+    1: [
       [35.5, -79.5],
       [40.5, -74.0],
     ],
-    NC: [
+    2: [
       [36.5, -84.0],
       [33.5, -75.0],
     ],
   }, // Default State Center Coords
   stateCenter: {
-    NC: {
+    2: {
       latlng: [35.7796, -78.6382],
     },
-    MD: {
+    1: {
       latlng: [39.0458, -76.6413],
     },
-    WI: {
+    0: {
       latlng: [44.0731, -89.4012],
     },
   },
   // left map in compare stage
   // (leaflet needs a predetermined width otherwise its 0 for some reason)
   leafLeftStateCenter: {
-    NC: {
+    2: {
       latlng: [34.9165, -74.6382],
     },
-    MD: {
+    1: {
       latlng: [38.1, -71.6413],
     },
-    WI: {
+    0: {
       latlng: [45.0, -85.4012],
     },
   },
