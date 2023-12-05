@@ -8,12 +8,3 @@ npm install d3
 npm install react-d3-graph
 
 npm start
-
----
-
-used before dont need now
-
-npm install react-chartjs-2 chart.js
-
-npm install react-plotly.js plotly.js
-npm install chartjs-chart-wordcloud
