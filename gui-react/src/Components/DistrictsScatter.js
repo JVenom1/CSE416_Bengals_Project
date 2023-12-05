@@ -63,7 +63,7 @@ const DistrictsScatter = ({
       .attr("x", width / 2)
       .attr("y", height + margin.top + 10)
       .style("text-anchor", "middle")
-      .text("X-Axis Label");
+      .text("District Coords X");
 
     svg
       .append("text")
@@ -72,7 +72,7 @@ const DistrictsScatter = ({
       .attr("x", 0 - height / 2)
       .attr("dy", "1em")
       .style("text-anchor", "middle")
-      .text("Y-Axis Label");
+      .text("District Coords Y");
 
     return () => {
       svg.selectAll("*").remove();
