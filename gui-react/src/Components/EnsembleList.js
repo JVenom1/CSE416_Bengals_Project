@@ -5,7 +5,9 @@ import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import mNum from "../Helpers/magicNumbers.js";
-import { api } from "./HomePage.js";
+const api = axios.create({
+  baseURL: "http://localhost:8080/server/BengalsAPI",
+});
 // Scatter Plot Linear Feature Broken
 const EnsembleList = () => {
   const navigate = useNavigate();
@@ -15,7 +17,22 @@ const EnsembleList = () => {
   // set on homepage using the outline geojsons
   // stateID has been switched to a number [0,1,2]
   const stateID = location.state.stateID;
-  const currentDistrictPlan = location.state.currentDistrictPlan;
+  console.log(stateID);
+  const [currentDistrictPlan, setCurrentDistrictPlan] = useState(
+    location.state.currentDistrictPlan
+  ); //location.state.currentDistrictPlan;
+  useEffect(() => {
+    // const fetchData = async () => {
+    //   try{
+    //     const response = await api.get(`/${stateID}/2020plan`);
+    //     setCurrentDistrictPlan(response.data);
+
+    // } catch (err){
+    //     console.log(err);
+    //   }
+    // fetchData();
+    changeMapSizeXbyY("100%", "50vw");
+  }, []);
 
   // workaround for leaflet 0px width default
   const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
@@ -181,10 +198,6 @@ const EnsembleList = () => {
   //   const response = await axios.get(`${api}/${stateID}`);
   //   return response.data;
   // };
-
-  useEffect(() => {
-    changeMapSizeXbyY("100%", "50vw");
-  }, []);
 
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(0);
