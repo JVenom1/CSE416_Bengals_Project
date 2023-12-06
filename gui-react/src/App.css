@@ -7,7 +7,7 @@ html {
   height: 100%;
   width: 100%;
   display: flex;
-  background-color: #bdbdbd;
+  background-color: #d65d06;
 }
 
 .home-button {
@@ -134,7 +134,7 @@ html {
   /* Increased padding for larger buttons */
   font-size: 18px;
   /* Increased the font size */
-  background-color: #0074d9;
+  background-color: rgb(238, 160, 3);
   color: #fff;
   text-decoration: none;
   border: none;
@@ -153,7 +153,7 @@ html {
 .pagination button {
   margin: 5px;
   padding: 5px 10px;
-  background-color: #0074d9;
+  background-color: rgb(238, 160, 3);
   color: #fff;
   text-decoration: none;
   border: none;
