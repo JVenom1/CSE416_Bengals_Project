@@ -24,7 +24,7 @@ const StateOverview = () => {
 
   // "/{stateID}/{ensembleIndex}"
   const currEnsemble = async (stateID) => {
-    const response = await axios.get(`${api}/${stateID}/{ensembleIndex}`);
+    const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
     return response.data;
   };
   // const currEnsemble = location.state.ensemble;
@@ -73,6 +73,7 @@ const StateOverview = () => {
             currentDistrictPlan={currentDistrictPlan}
             clusterScatterWidth={clusterScatterWidth}
             clusterScatterHeight={clusterScatterHeight}
+            ensembleIndex={ensembleIndex}
           />
         </div>
       </div>

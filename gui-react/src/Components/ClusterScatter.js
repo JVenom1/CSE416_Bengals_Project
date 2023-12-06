@@ -9,6 +9,7 @@ const ScatterPlot = ({
   currentDistrictPlan,
   clusterScatterWidth,
   clusterScatterHeight,
+  ensembleIndex,
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,7 +20,7 @@ const ScatterPlot = ({
     return response.data;
   };
   const currEnsembleThis = async (stateID) => {
-    const response = await axios.get(`${api}/${state}/${ensembleIndex}`);
+    const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
     return response.data;
   };
   // const currentDistrictPlanThis = currentDistrictPlan;
