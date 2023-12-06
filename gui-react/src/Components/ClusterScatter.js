@@ -124,7 +124,7 @@ const ScatterPlot = ({
 
   const selectOrangeColor = () => {
     const randomShade = Math.floor(Math.random() * 255);
-    return `rgb(255, ${randomShade}, 0)`;
+    return `rgb(238, 160, 3)`;
   };
 
   return <svg ref={svgRef}></svg>;
