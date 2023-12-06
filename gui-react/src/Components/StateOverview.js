@@ -6,6 +6,8 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import ScatterPlot from "./ClusterScatter.js";
 import mNum from "../Helpers/magicNumbers.js";
 import axios from "axios";
+import { api } from "./HomePage.js";
+
 const StateOverview = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,14 +17,14 @@ const StateOverview = () => {
 
   // "/{stateID}/2020plan"
   const currentDistrictPlan = async (stateID) => {
-    const response = await axios.get("/{stateID}/2020plan");
+    const response = await axios.get(`${api}/${stateID}/2020plan`);
     return response.data;
   };
   // const currentDistrictPlan = location.state.currentDistrictPlan;
 
   // "/{stateID}/{ensembleIndex}"
   const currEnsemble = async (stateID) => {
-    const response = await axios.get("/{stateID}/{ensembleIndex}");
+    const response = await axios.get(`${api}/${stateID}/{ensembleIndex}`);
     return response.data;
   };
   // const currEnsemble = location.state.ensemble;
@@ -66,7 +68,7 @@ const StateOverview = () => {
         </button>
         <div className="clusterScatter">
           <ScatterPlot
-            ensemble={currEnsemble}
+            currEnsemble={currEnsemble}
             stateID={stateID}
             currentDistrictPlan={currentDistrictPlan}
             clusterScatterWidth={clusterScatterWidth}

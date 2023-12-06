@@ -178,7 +178,7 @@ const EnsembleList = () => {
   //   },
   // ];
   const getStateEnsembleArr = async (stateID) => {
-    const response = await axios.get("${api}/{state}");
+    const response = await axios.get(`${api}/${state}`);
     return response.data;
   };
 

@@ -61,13 +61,13 @@ const HomePage = () => {
   //GUI-3 Step 1 Retrieve the data
   const getDistrPlan = async (stateID) => {
     if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-      const response = await axios.get("${api}/0/2020plan");
+      const response = await axios.get(`${api}/0/2020plan`);
       return ["WI", response.data]; // retrieve the default plans from the server here
     } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-      const response = await axios.get("${api}/1/2020plan");
+      const response = await axios.get(`${api}/1/2020plan`);
       return ["MD", response.data];
     } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-      const response = await axios.get("${api}/2/2020plan");
+      const response = await axios.get(`${api}/2/2020plan`);
       return [mNum.stateNumbers, response.data];
     }
     alert("No Data");
