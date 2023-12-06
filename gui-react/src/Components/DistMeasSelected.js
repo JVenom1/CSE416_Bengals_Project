@@ -7,6 +7,7 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import mNum from "../Helpers/magicNumbers.js";
 import hammingDistanceArray from "../Data/DistanceMeasure5plans/hamming_distance.json";
 import optimalTransportArray from "../Data/DistanceMeasure5plans/optimal_transport.json";
+import totalVariationArray from "../Data/DistanceMeasure5plans/total_variation.json";
 
 const DistMeasPage = () => {
   const navigate = useNavigate();
@@ -15,6 +16,7 @@ const DistMeasPage = () => {
   const currentDistrictPlan = location.state.currentDistrictPlan;
   const mapMaxBounds = mNum.stateZoomBounds.stateID;
   const mapCenter = mNum.stateCenter[stateID].latlng;
+  const ensembleIndex = location.state.buttonIndex;
   const goToHomePage = () => {
     navigate("/");
   };
@@ -34,11 +36,12 @@ const DistMeasPage = () => {
   const distanceMatrixData = {
     hamming_distance: hammingDistanceArray,
     optimal_transport: optimalTransportArray,
-    // total_variation: totalVariationArray,
+    total_variation: totalVariationArray,
   };
 
   const handleChangeMeasure = (measure) => {
     setSelectedMeasure(measure);
+    updateScatterPlot(measure);
   };
   const MatrixDisplay = ({ matrix }) => {
     const numRows = matrix.length;
@@ -81,17 +84,35 @@ const DistMeasPage = () => {
       </div>
     );
   };
-
-  useEffect(() => {
+  const updateScatterPlot = (measure) => {
     const svg = d3.select(svgRef.current);
+    svg.selectAll("*").remove();
+    // Choose the appropriate xCoords based on the selected measure
+    const xCoords =
+      measure === "hamming_distance"
+        ? ensemble[ensembleIndex].clusterAssociationCoordinate.hammingDistance
+            .Coords.x
+        : measure === "optimal_transport"
+        ? ensemble[ensembleIndex].clusterAssociationCoordinate.optimalTransport
+            .Coords.x
+        : ensemble[ensembleIndex].clusterAssociationCoordinate.totalVariation
+            .Coords.x;
 
-    // Calculate data for scatter plot
-    const data = ensemble.map((item, ensembleIndex) => ({
-      ensembleSize: item.cluster.reduce(
-        (total, cluster) => total + cluster.districtPlanCoordinate.x.length,
-        0
-      ),
-      clusterNumber: ensembleIndex + 1,
+    // Choose the appropriate yCoords based on the selected measure
+    const yCoords =
+      measure === "hamming_distance"
+        ? ensemble[ensembleIndex].clusterAssociationCoordinate.hammingDistance
+            .Coords.y
+        : measure === "optimal_transport"
+        ? ensemble[ensembleIndex].clusterAssociationCoordinate.optimalTransport
+            .Coords.y
+        : ensemble[ensembleIndex].clusterAssociationCoordinate.totalVariation
+            .Coords.y;
+
+    const data = xCoords.map((x, index) => ({
+      ensembleSize: yCoords[index],
+      clusterNumber: x,
+      // Additional properties if needed
     }));
 
     // Set up scales
@@ -164,7 +185,11 @@ const DistMeasPage = () => {
       .style("text-anchor", "middle")
       .style("font-size", "18px")
       .text("Connected Scatter Plot");
-  }, [ensemble]);
+  };
+
+  useEffect(() => {
+    updateScatterPlot(selectedMeasure);
+  }, [ensemble, ensembleIndex, selectedMeasure, svgRef]);
 
   return (
     <>
