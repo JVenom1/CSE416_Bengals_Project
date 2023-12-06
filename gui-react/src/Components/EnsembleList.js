@@ -26,161 +26,161 @@ const EnsembleList = () => {
 
   const mapMaxBounds = mNum.stateZoomBounds.stateID;
   const mapCenter = mNum.stateCenter[stateID].latlng;
-  // const stateEnsembleArr = [
-  //   {
-  //     cluster: [
-  //       {
-  //         districtPlan: [
-  //           { plan: currentDistrictPlan },
-  //           { plan: currentDistrictPlan },
-  //           { plan: currentDistrictPlan },
-  //         ],
+  const getStateEnsembleArr = [
+    {
+      cluster: [
+        {
+          districtPlan: [
+            { plan: currentDistrictPlan },
+            { plan: currentDistrictPlan },
+            { plan: currentDistrictPlan },
+          ],
 
-  //         districtPlanDetail: [
-  //           {
-  //             clusterNum: 0,
-  //             numberOfDistrictPlans: 3,
-  //             averageDistance: 0.88,
-  //             numberOfRep: 5,
-  //             numberOfDem: 15,
-  //           },
-  //         ],
-  //         districtPlanCoordinate: {
-  //           x: [1, 2, 3],
-  //           y: [4, 5, 6],
-  //           color: [true, true, false],
-  //         },
-  //         averageBoundary: { plan: currentDistrictPlan },
-  //       },
-  //       {
-  //         districtPlan: [
-  //           { plan: currentDistrictPlan },
-  //           { plan: currentDistrictPlan },
-  //           { plan: currentDistrictPlan },
-  //         ],
+          districtPlanDetail: [
+            {
+              clusterNum: 0,
+              numberOfDistrictPlans: 3,
+              averageDistance: 0.88,
+              numberOfRep: 5,
+              numberOfDem: 15,
+            },
+          ],
+          districtPlanCoordinate: {
+            x: [1, 2, 3],
+            y: [4, 5, 6],
+            color: [true, true, false],
+          },
+          averageBoundary: { plan: currentDistrictPlan },
+        },
+        {
+          districtPlan: [
+            { plan: currentDistrictPlan },
+            { plan: currentDistrictPlan },
+            { plan: currentDistrictPlan },
+          ],
 
-  //         districtPlanDetail: [
-  //           {
-  //             clusterNum: 0,
-  //             numberOfDistrictPlans: 3,
-  //             averageDistance: 0.88,
-  //             numberOfRep: 5,
-  //             numberOfDem: 15,
-  //           },
-  //         ],
-  //         districtPlanCoordinate: {
-  //           x: [12, 22, 32],
-  //           y: [42, 52, 62],
-  //           color: [true, true, false],
-  //         },
-  //         averageBoundary: { plan: currentDistrictPlan },
-  //       },
-  //     ],
-  //     clusterDetails: [
-  //       {
-  //         clusterNum: 0,
-  //         numberOfDistrictPlans: 3,
-  //         averageDistance: 0.88,
-  //         numberOfRep: 5,
-  //         numberOfDem: 15,
-  //       },
-  //     ],
-  //     clusterCoordinate: {
-  //       x: [10, 20, 30],
-  //       y: [4, 5, 6],
-  //       radius: [10, 15, 20],
-  //     },
-  //     clusterAssociationCoordinate: {
-  //       optimalTransport: { Coords: { x: [1, 2, 3], y: [4, 5, 6] } },
-  //       hammingDistance: { Coords: { x: [3, 4, 5], y: [4, 5, 6] } },
-  //       totalVariation: { Coords: { x: [5, 7, 9], y: [4, 5, 6] } },
-  //     },
-  //     distanceMeasure: {
-  //       optimalTransport: [0.88, 0.56, 0.43],
-  //       hammingDistance: [0.73, 0.59, 0.42],
-  //       totalVariation: [0.45, 0.12, 0.41],
-  //     },
-  //   },
-  //   {
-  //     cluster: [],
-  //     clusterDetails: [],
-  //     clusterCoordinate: {
-  //       x: [4, 5, 6],
-  //       y: [7, 50, 75],
-  //       radius: [11, 13, 2],
-  //     },
-  //     clusterAssociationCoordinate: { x: [], y: [] },
-  //     distanceMeasure: {
-  //       optimalTransport: [],
-  //       hammingDistance: [],
-  //       totalVariation: [],
-  //     },
-  //   },
-  //   {
-  //     cluster: [],
-  //     clusterDetails: [],
-  //     clusterCoordinate: {
-  //       x: [4, 5, 6],
-  //       y: [7, 50, 75],
-  //       radius: [11, 13, 2],
-  //     },
-  //     clusterAssociationCoordinate: { x: [], y: [] },
-  //     distanceMeasure: {
-  //       optimalTransport: [],
-  //       hammingDistance: [],
-  //       totalVariation: [],
-  //     },
-  //   },
-  //   {
-  //     cluster: [],
-  //     clusterDetails: [],
-  //     clusterCoordinate: {
-  //       x: [4, 5, 6],
-  //       y: [7, 50, 75],
-  //       radius: [11, 13, 2],
-  //     },
-  //     clusterAssociationCoordinate: { x: [], y: [] },
-  //     distanceMeasure: {
-  //       optimalTransport: [],
-  //       hammingDistance: [],
-  //       totalVariation: [],
-  //     },
-  //   },
-  //   {
-  //     cluster: [],
-  //     clusterDetails: [],
-  //     clusterCoordinate: {
-  //       x: [4, 5, 6],
-  //       y: [7, 50, 75],
-  //       radius: [11, 13, 2],
-  //     },
-  //     clusterAssociationCoordinate: { x: [], y: [] },
-  //     distanceMeasure: {
-  //       optimalTransport: [],
-  //       hammingDistance: [],
-  //       totalVariation: [],
-  //     },
-  //   },
-  //   {
-  //     cluster: [],
-  //     clusterDetails: [],
-  //     clusterCoordinate: {
-  //       x: [4, 5, 6],
-  //       y: [7, 50, 75],
-  //       radius: [11, 13, 2],
-  //     },
-  //     clusterAssociationCoordinate: { x: [], y: [] },
-  //     distanceMeasure: {
-  //       optimalTransport: [],
-  //       hammingDistance: [],
-  //       totalVariation: [],
-  //     },
-  //   },
-  // ];
-  const getStateEnsembleArr = async (stateID) => {
-    const response = await axios.get(`${api}/${stateID}`);
-    return response.data;
-  };
+          districtPlanDetail: [
+            {
+              clusterNum: 0,
+              numberOfDistrictPlans: 3,
+              averageDistance: 0.88,
+              numberOfRep: 5,
+              numberOfDem: 15,
+            },
+          ],
+          districtPlanCoordinate: {
+            x: [12, 22, 32],
+            y: [42, 52, 62],
+            color: [true, true, false],
+          },
+          averageBoundary: { plan: currentDistrictPlan },
+        },
+      ],
+      clusterDetails: [
+        {
+          clusterNum: 0,
+          numberOfDistrictPlans: 3,
+          averageDistance: 0.88,
+          numberOfRep: 5,
+          numberOfDem: 15,
+        },
+      ],
+      clusterCoordinate: {
+        x: [10, 20, 30],
+        y: [4, 5, 6],
+        radius: [10, 15, 20],
+      },
+      clusterAssociationCoordinate: {
+        optimalTransport: { Coords: { x: [1, 2, 3], y: [4, 5, 6] } },
+        hammingDistance: { Coords: { x: [3, 4, 5], y: [4, 5, 6] } },
+        totalVariation: { Coords: { x: [5, 7, 9], y: [4, 5, 6] } },
+      },
+      distanceMeasure: {
+        optimalTransport: [0.88, 0.56, 0.43],
+        hammingDistance: [0.73, 0.59, 0.42],
+        totalVariation: [0.45, 0.12, 0.41],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+    {
+      cluster: [],
+      clusterDetails: [],
+      clusterCoordinate: {
+        x: [4, 5, 6],
+        y: [7, 50, 75],
+        radius: [11, 13, 2],
+      },
+      clusterAssociationCoordinate: { x: [], y: [] },
+      distanceMeasure: {
+        optimalTransport: [],
+        hammingDistance: [],
+        totalVariation: [],
+      },
+    },
+  ];
+  // const getStateEnsembleArr = async (stateID) => {
+  //   const response = await axios.get(`${api}/${stateID}`);
+  //   return response.data;
+  // };
 
   useEffect(() => {
     changeMapSizeXbyY("100%", "50vw");

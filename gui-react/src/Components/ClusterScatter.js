@@ -15,17 +15,17 @@ const ScatterPlot = ({
   const location = useLocation();
   const svgRef = useRef();
   const margin = { top: 40, right: 30, bottom: 250, left: 80 };
-  const currentDistrictPlanThis = async (stateID) => {
-    const response = await axios.get(`${api}/${stateID}/2020plan`);
-    return response.data;
-  };
-  const currEnsembleThis = async (stateID) => {
-    const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
-    return response.data;
-  };
-  // const currentDistrictPlanThis = currentDistrictPlan;
+  // const currentDistrictPlanThis = async (stateID) => {
+  //   const response = await axios.get(`${api}/${stateID}/2020plan`);
+  //   return response.data;
+  // };
+  // const currEnsemble = async (stateID) => {
+  //   const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
+  //   return response.data;
+  // };
+  const currentDistrictPlanThis = currentDistrictPlan;
   useEffect(() => {
-    if (!currEnsembleThis) return;
+    if (!currEnsemble) return;
     const width = clusterScatterWidth - margin.left - margin.right;
     const height = clusterScatterHeight - margin.top - margin.bottom;
     const mainTitle = "Cluster Scatter";
@@ -41,12 +41,12 @@ const ScatterPlot = ({
 
     const xScale = d3
       .scaleLinear()
-      .domain([0, d3.max(currEnsembleThis.clusterCoordinate.x)])
+      .domain([0, d3.max(currEnsemble.clusterCoordinate.x)])
       .range([0, width]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(currEnsembleThis.clusterCoordinate.y)])
+      .domain([0, d3.max(currEnsemble.clusterCoordinate.y)])
       .range([height, 0]);
 
     // Add X-axis
@@ -88,16 +88,16 @@ const ScatterPlot = ({
 
     svg
       .selectAll("circle")
-      .data(currEnsembleThis.clusterCoordinate.x)
+      .data(currEnsemble.clusterCoordinate.x)
       .enter()
       .append("circle")
       .attr("cx", (d, i) => xScale(d))
-      .attr("cy", (d, i) => yScale(currEnsembleThis.clusterCoordinate.y[i]))
-      .attr("r", (d, i) => currEnsembleThis.clusterCoordinate.radius[i])
+      .attr("cy", (d, i) => yScale(currEnsemble.clusterCoordinate.y[i]))
+      .attr("r", (d, i) => currEnsemble.clusterCoordinate.radius[i])
       .attr("fill", () => selectOrangeColor())
       .attr("data-value", (d, i) => i) // Assigning the index as a data attribute
       .on("click", (event) => handlePointClick(event));
-  }, [currEnsembleThis, clusterScatterWidth, clusterScatterHeight]);
+  }, [currEnsemble, clusterScatterWidth, clusterScatterHeight]);
 
   const handlePointClick = (e) => {
     let clusterPointIndex = e.target.getAttribute("data-value");
@@ -107,16 +107,16 @@ const ScatterPlot = ({
       state: {
         // removed not needed distance measures for this part
         currEnsemble: {
-          cluster: currEnsembleThis.cluster[clusterPointIndex],
-          clusterDetails: currEnsembleThis.clusterDetails[clusterPointIndex],
+          cluster: currEnsemble.cluster[clusterPointIndex],
+          clusterDetails: currEnsemble.clusterDetails[clusterPointIndex],
           clusterCoordinate: {
-            x: currEnsembleThis.clusterCoordinate.x[clusterPointIndex],
-            y: currEnsembleThis.clusterCoordinate.y[clusterPointIndex],
-            radius:
-              currEnsembleThis.clusterCoordinate.radius[clusterPointIndex],
+            x: currEnsemble.clusterCoordinate.x[clusterPointIndex],
+            y: currEnsemble.clusterCoordinate.y[clusterPointIndex],
+            radius: currEnsemble.clusterCoordinate.radius[clusterPointIndex],
           },
         },
         stateID: stateID,
+        ensembleIndex: ensembleIndex,
         currentDistrictPlan: currentDistrictPlanThis,
       },
     });

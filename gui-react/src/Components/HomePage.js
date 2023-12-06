@@ -59,31 +59,32 @@ const HomePage = () => {
   };
 
   //GUI-3 Step 1 Retrieve the data
-  const getDistrPlan = async (stateID) => {
-    if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-      const response = await axios.get(`${api}/0/2020plan`);
-      return ["WI", response.data]; // retrieve the default plans from the server here
-    } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-      const response = await axios.get(`${api}/1/2020plan`);
-      return ["MD", response.data];
-    } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-      const response = await axios.get(`${api}/2/2020plan`);
-      return [mNum.stateNumbers, response.data];
-    }
-    alert("No Data");
-    return null;
-  };
-  // const getDistrPlan = (stateID) => {
+  // const getDistrPlan = async (stateID) => {
   //   if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-  //     return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
+  //     const response = await axios.get(`${api}/0/2020plan`);
+  //     return ["WI", response.data]; // retrieve the default plans from the server here
   //   } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-  //     return [mNum.stateNumbers.MD, MDPlan];
+  //     const response = await axios.get(`${api}/1/2020plan`);
+  //     return ["MD", response.data];
   //   } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-  //     return [mNum.stateNumbers.NC, NCPlan];
+  //     const response = await axios.get(`${api}/2/2020plan`);
+  //     return [mNum.stateNumbers, response.data];
   //   }
   //   alert("No Data");
   //   return null;
   // };
+
+  const getDistrPlan = (stateID) => {
+    if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
+      return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
+    } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
+      return [mNum.stateNumbers.MD, MDPlan];
+    } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
+      return [mNum.stateNumbers.NC, NCPlan];
+    }
+    alert("No Data");
+    return null;
+  };
   return (
     <>
       <div className={"mapWrapper"}>
@@ -106,7 +107,10 @@ const HomePage = () => {
           Home
         </button>
         <div className="dropdown">
-          <p>Please select from the dropdown</p>
+          <p>
+            Welcome to Bengals!!{" "}
+            <p>Please select a state from below or on the map.</p>
+          </p>
           <select value={selectedState} onChange={handleStateSelect}>
             <option value="" disabled>
               Select a State

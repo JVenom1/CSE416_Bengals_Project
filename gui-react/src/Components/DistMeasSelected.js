@@ -3,14 +3,28 @@ import * as d3 from "d3";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import mNum from "../Helpers/magicNumbers.js";
 import hammingDistanceArray from "../Data/DistanceMeasure5plans/hamming_distance.json";
 import optimalTransportArray from "../Data/DistanceMeasure5plans/optimal_transport.json";
 
 const DistMeasPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const stateID = location.state.stateID;
+  const currentDistrictPlan = location.state.currentDistrictPlan;
+  const mapMaxBounds = mNum.stateZoomBounds.stateID;
+  const mapCenter = mNum.stateCenter[stateID].latlng;
   const goToHomePage = () => {
     navigate("/");
+  };
+  useEffect(() => {
+    changeMapSizeXbyY("100%", "30vw");
+  }, []);
+  const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
+    const leafletContainer = document.querySelector(".leaflet-container");
+    leafletContainer.style.width = width;
+    leafletContainer.style.height = height;
   };
   // gets ensemble data
   const ensemble = location.state.ensemble;
@@ -154,25 +168,49 @@ const DistMeasPage = () => {
 
   return (
     <>
-      <button onClick={goToHomePage}>Home</button>
-      <div className="matrix-container">
-        <div className="dropdown-container">
-          <label htmlFor="distanceMeasure">Choose a distance measure:</label>
-          <select
-            id="distanceMeasure"
-            value={selectedMeasure}
-            onChange={(e) => handleChangeMeasure(e.target.value)}
-          >
-            <option value="hamming_distance">Hamming Distance</option>
-            <option value="optimal_transport">Optimal Transport</option>
-            <option value="total_variation">Total Variation</option>
-          </select>
-        </div>
-        <div className="matrix-display">
-          <MatrixDisplay matrix={distanceMatrixData[selectedMeasure]} />
+      <div className="mapWrapper">
+        <MapContainer
+          center={mapCenter}
+          zoom={7}
+          minZoom={7}
+          maxBounds={mapMaxBounds}
+          maxZoom={7}
+          dragging={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <GeoJSON data={currentDistrictPlan} />
+        </MapContainer>
+        <button className="home-button" onClick={goToHomePage}>
+          Home
+        </button>
+
+        <div className="main-container">
+          <div className="matrix-container">
+            <div className="dropdown-container">
+              <label htmlFor="distanceMeasure">
+                Choose a distance measure:
+              </label>
+              <select
+                id="distanceMeasure"
+                value={selectedMeasure}
+                onChange={(e) => handleChangeMeasure(e.target.value)}
+              >
+                <option value="hamming_distance">Hamming Distance</option>
+                <option value="optimal_transport">Optimal Transport</option>
+                <option value="total_variation">Total Variation</option>
+              </select>
+            </div>
+            <div className="matrix-display">
+              <MatrixDisplay matrix={distanceMatrixData[selectedMeasure]} />
+            </div>
+          </div>
+
+          <svg ref={svgRef} width={500} height={400} />
         </div>
       </div>
-      <svg ref={svgRef} width={500} height={400} />
     </>
   );
 };

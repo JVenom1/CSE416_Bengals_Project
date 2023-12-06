@@ -6,12 +6,17 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import mNum from "../Helpers/magicNumbers.js";
 import DistrictsScatter from "./DistrictsScatter.js";
-
+import { api } from "./HomePage.js";
+import axios from "axios";
 // Define the ClusterAnalysis component
 const ClusterAnalysis = () => {
   //   Initialize state and router hooks
   const navigate = useNavigate();
   const location = useLocation();
+  // const getStateEnsembleArr = async (stateID) => {
+  //   const response = await axios.get(`${api}/${stateID}`);
+  //   return response.data;
+  // };
   const currEnsemble = location.state.currEnsemble;
   const cluster = currEnsemble.cluster;
   const districtPlan = cluster["districtPlan"];

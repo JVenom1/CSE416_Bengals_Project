@@ -16,18 +16,18 @@ const StateOverview = () => {
   const ensembleIndex = location.state.buttonIndex;
 
   // "/{stateID}/2020plan"
-  const currentDistrictPlan = async (stateID) => {
-    const response = await axios.get(`${api}/${stateID}/2020plan`);
-    return response.data;
-  };
-  // const currentDistrictPlan = location.state.currentDistrictPlan;
+  // const currentDistrictPlan = async (stateID) => {
+  //   const response = await axios.get(`${api}/${stateID}/2020plan`);
+  //   return response.data;
+  // };
+  const currentDistrictPlan = location.state.currentDistrictPlan;
 
   // "/{stateID}/{ensembleIndex}"
-  const currEnsemble = async (stateID) => {
-    const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
-    return response.data;
-  };
-  // const currEnsemble = location.state.ensemble;
+  // const currEnsemble = async (stateID) => {
+  //   const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
+  //   return response.data;
+  // };
+  const currEnsemble = location.state.ensemble;
   const goToHomePage = (e) => {
     navigate("/");
   };
