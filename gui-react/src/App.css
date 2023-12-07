@@ -1,241 +1,98 @@
-/* Remove default margin and padding from body and html */
-body,
+/* App.css */
 
-html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  background-color: #d65d06;
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255, 247, 235);
 }
 
-.home-button {
-  position: absolute;
-  top: 80px;
-  left: 10px;
-  z-index: 1000;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  cursor: pointer;
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.home-button:hover {
-  position: absolute;
-  top: 80px;
-  left: 10px;
-  z-index: 1000;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  cursor: pointer;
+.header {
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: burlywood;
+    padding: 0 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.mapWrapper {
-  height: 99%;
-  width: 99vw;
-  /* 100% or 100vw adds a scroll bar */
-  overflow: hidden;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.reset-button {
+    background-color: rgb(0, 0, 0);
+    color: #ffffff;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
+.header-text {
+    font-size: xx-large;
+    ;
+}
 
-/* change size in future:
-  function changeMapSizeXbyY(height = "100%", width = "70vw") {
-    const leafletContainer = document.querySelector(".leaflet-container");
-    leafletContainer.style.width = width;
-    leafletContainer.style.height = height;
-  }
-*/
+.main-container {
+    height: 90%;
+    display: flex;
+}
+
 .leaflet-container {
-  height: 100%;
-  width: 70vw;
-  flex: 1;
+    height: 100%;
+    width: 40vw;
+    flex: 1;
 
 }
 
-.dropdown {
-  width: 30%;
-  padding: 20px;
-  margin-bottom: 10px;
-  text-align: center;
-  /* Center the text within the dropdown */
-  font-size: 40px;
-  /* Set the font size to make it larger */
-
+.map-container {
+    width: 40%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
 }
 
-.clusterScatter {
-  width: 50%;
-  height: 70%;
-  padding: 20px;
-  margin-bottom: 10px;
-  text-align: center;
-  /* Center the text within the dropdown */
-  /* Set the font size to make it larger */
-
+.welcome-container {
+    width: 60%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.ensembleSelect {
-  width: 50%;
-  padding: 20px;
-  margin-bottom: 10px;
-  text-align: center;
-  /* Center the text within the dropdown */
-  font-size: 40px;
-  /* Set the font size to make it larger */
-
+.welcome-text {
+    text-align: center;
 }
 
-.clusterRight {
-  width: 50%;
-  padding: 20px;
-  margin-bottom: 10px;
-  text-align: center;
-  height: 90%;
-
+.dropdown-menu {
+    margin-top: 20px;
+    text-align: center;
+    /* Add styles for your dropdown menu */
 }
 
-.districtsScatter {
-  margin-top: 20px;
-  height: 520px;
-}
-
-.ensemble {
-  width: 80%;
-  max-height: 15%;
-  border: 1px solid #ccc;
-  margin: 20px;
-  /* Increased margin for more spacing */
-  padding: 20px;
-  /* Increased padding for more spacing */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.ensemble-header {
-  font-size: 28px;
-  /* Increased the font size */
-  font-weight: bold;
-}
+/* Add these styles to your App.css file */
 
 .button-container {
-  display: flex;
+    display: flex;
+    width: 100%;
 }
 
-.button {
-  margin: 0 15px;
-  /* Increased horizontal spacing */
-  padding: 15px 30px;
-  /* Increased padding for larger buttons */
-  font-size: 18px;
-  /* Increased the font size */
-  background-color: rgb(238, 160, 3);
-  color: #fff;
-  text-decoration: none;
-  border: none;
-  border-radius: 8px;
-  /* Increased border radius for rounded corners */
-  cursor: pointer;
+.control-button {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-
-
-.pagination {
-  margin-top: 10px;
-  /* Adjust as needed */
+.control-button.active {
+    background-color: #297fb8;
 }
-
-.pagination button {
-  margin: 5px;
-  padding: 5px 10px;
-  background-color: rgb(238, 160, 3);
-  color: #fff;
-  text-decoration: none;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.pagination button:disabled {
-  margin: 5px;
-  padding: 5px 10px;
-  background-color: #494949;
-  color: #fff;
-  text-decoration: none;
-  border: none;
-  border-radius: 5px;
-  cursor: default;
-}
-
-.detailsModal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 999;
-  max-width: 400px;
-  /* Adjust the width as needed */
-  width: 100%;
-}
-
-.detailsContent {
-  text-align: center;
-}
-
-.detailsContent h2 {
-  margin-bottom: 10px;
-}
-
-.detailsContent ul {
-  list-style: none;
-  padding: 0;
-}
-
-.detailsContent li {
-  margin-bottom: 5px;
-}
-
-.detailsContent button {
-  background-color: #3498db;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-}
-
-.districtsTable {
-  margin-top: 20px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #000;
-  /* Black border around the table */
-}
-
-th,
-td {
-  border: 1px solid #000;
-  /* Black border around each cell */
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #e58f04;
-  /* Light gray background for table header */
-}
-
-
-
-/* Add any additional styling for MatrixDisplay and scatter plot as needed */

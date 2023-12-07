@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import ScatterPlot from "./ClusterScatter.js";
-import mNum from "../Helpers/magicNumbers.js";
+import mNum from "../Helpers/mNum.js";
 import axios from "axios";
 const api = axios.create({
   baseURL: "https://flat-banks-flow.loca.lt/server/BengalsAPI",
@@ -37,12 +37,14 @@ const StateOverview = () => {
         leafletContainer.style.height = height;
       };
       changeMapSizeXbyY("100%", "50vw");
-    }
+    };
     const fetchData = async () => {
       try {
-        const response = await api.get(`/${stateID}/${buttonIndex}/cluster_details`);
+        const response = await api.get(
+          `/${stateID}/${buttonIndex}/cluster_details`
+        );
         setClusterArr(response.data);
-      } catch (err) { }
+      } catch (err) {}
     };
     fetchData();
   }, [stateID, buttonIndex]);
@@ -87,9 +89,7 @@ const StateOverview = () => {
           <div id="ensembles">
             {visibleEnsembles.map((cluster, index) => (
               <div key={index} className="ensemble">
-                <div className="ensemble-header">
-                  {cluster.name}
-                </div>
+                <div className="ensemble-header">{cluster.name}</div>
                 <p>cluster Size: {cluster.plancount}</p>
                 <p>cluster Count: {cluster.averagesplit}</p>
                 <p>opportunity districts: {cluster.opportunitydistricts}</p>

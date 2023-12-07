@@ -4,9 +4,8 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import mNum from "../Helpers/magicNumbers.js";
+import mNum from "../Helpers/mNum.js";
 import DistrictsScatter from "./DistrictsScatter.js";
-import { api } from "./HomePage.js";
 import axios from "axios";
 // Define the ClusterAnalysis component
 const ClusterAnalysis = () => {
@@ -172,12 +171,12 @@ const ClusterAnalysis = () => {
           {/* Buttons to remove displayed district plans */}
           {((distPlan1 !== null && distPlan1 !== currentDistrictPlan) ||
             distPlan2 !== null) && (
-              <div>
-                <button onClick={removeDistrictPlans}>
-                  Remove District Plans
-                </button>
-              </div>
-            )}
+            <div>
+              <button onClick={removeDistrictPlans}>
+                Remove District Plans
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {showDetails && (

@@ -7,8 +7,6 @@ const api = axios.create({
   baseURL: "http://localhost:8080/server/BengalsAPI",
 });
 
-
-
 const ScatterPlot = ({
   stateID,
   currentDistrictPlan,
@@ -16,8 +14,13 @@ const ScatterPlot = ({
   clusterScatterHeight,
   ensembleIndex,
 }) => {
-
-  console.log(stateID, currentDistrictPlan, clusterScatterWidth, clusterScatterHeight, ensembleIndex);
+  console.log(
+    stateID,
+    currentDistrictPlan,
+    clusterScatterWidth,
+    clusterScatterHeight,
+    ensembleIndex
+  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,13 +30,12 @@ const ScatterPlot = ({
   const [getCoordinates, setCoordinates] = useState([]);
 
   useEffect(() => {
-
     const fetchData = async () => {
       try {
         const response = await api.get(`/0/0/cluster_coordinates`);
         setCoordinates(response.data);
         console.log(getCoordinates);
-      } catch (err) { }
+      } catch (err) {}
     };
 
     const width = clusterScatterWidth - margin.left - margin.right;
@@ -49,15 +51,9 @@ const ScatterPlot = ({
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const xScale = d3
-      .scaleLinear()
-      .domain([0, 30])
-      .range([0, width]);
+    const xScale = d3.scaleLinear().domain([0, 30]).range([0, width]);
 
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, 20])
-      .range([height, 0]);
+    const yScale = d3.scaleLinear().domain([0, 20]).range([height, 0]);
 
     // Add X-axis
     const xAxisGroup = svg
@@ -108,7 +104,6 @@ const ScatterPlot = ({
       .attr("data-value", (d, i) => i) // Assigning the index as a data attribute
       .on("click", (event) => handlePointClick(event));
     fetchData();
-
   }, [stateID, ensembleIndex, clusterScatterWidth, clusterScatterHeight]);
 
   const handlePointClick = (e) => {
@@ -126,12 +121,8 @@ const ScatterPlot = ({
         //  radius: currEnsemble.clusterCoordinate.radius[clusterPointIndex],
         //},
       },
-    },
-    )
+    });
   };
-
-
-
 
   const selectOrangeColor = () => {
     const randomShade = Math.floor(Math.random() * 255);

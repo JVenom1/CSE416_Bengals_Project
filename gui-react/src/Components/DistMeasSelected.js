@@ -4,7 +4,7 @@ import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import mNum from "../Helpers/magicNumbers.js";
+import mNum from "../Helpers/mNum.js";
 import hammingDistanceArray from "../Data/DistanceMeasure5plans/hamming_distance.json";
 import optimalTransportArray from "../Data/DistanceMeasure5plans/optimal_transport.json";
 import totalVariationArray from "../Data/DistanceMeasure5plans/total_variation.json";
