@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import mNum from "../Helpers/mNum.js";
 import api from "../api/posts.js";
 import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
+import EnsembleTable from "./EnsembleTable.js"
 // testing delete later
 const EnsembleList = () => {
   /* data required:
@@ -22,39 +23,13 @@ const EnsembleList = () => {
   const location = useLocation();
   const stateID = location.state.stateID;
   const currentDistrPlan = location.state.currDistrPlan;
-  const currentState = location.state.currState;
+  const ensemblesAssoc = location.state.ensemblesAssoc;
 
   const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
   const clusterScatterHeight = window.innerHeight;
 
-  const getClusterAssocCoords = (stateID) => {
-    // use currentState to get the coords 
-  };
-  const getStateData = async (stateID) => {
-    try {
-      const response = await api.get(`/${stateID}`);
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const [clustAssocCoords, setClustAssocCoords] = useState(null);
-  // const stateEnsembleArr = getStateData(stateID);
-
   // Retrieve Data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchData();
-    // setCurrentDistrPlan(getCurrentDistrPlan(stateID));
-    // setClustAssocCoords(getClusterAssocCoords(stateID, 0)); // for default only
-    // setStateEnsembleArr(getStateData(stateID));
-
     changeMapSizeXbyY("90%", "40vw"); // test later when server up
   }, []);
 
@@ -65,24 +40,24 @@ const EnsembleList = () => {
     leafletContainer.style.height = height;
   };
 
-  const itemsPerPage = 4;
-  const [currentPage, setCurrentPage] = useState(0);
+  // const itemsPerPage = 4;
+  // const [currentPage, setCurrentPage] = useState(0);
 
-  // const totalPages = Math.ceil(stateEnsembleArr.length / itemsPerPage);
+  // // const totalPages = Math.ceil(stateEnsembleArr.length / itemsPerPage);
 
-  const handleNextPage = () => {
-    // setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
-  };
+  // const handleNextPage = () => {
+  //   // setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
+  // };
 
-  const handlePrevPage = () => {
-    // setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
-  };
+  // const handlePrevPage = () => {
+  //   // setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
+  // };
   const goToHomePage = () => {
     navigate("/");
   };
-  const handleClusterSelected = (buttonIndex) => {
-    // go to navigate('/ClusterAnalysis',{state:{}});
-  };
+  // const handleClusterSelected = (buttonIndex) => {
+  //   // go to navigate('/ClusterAnalysis',{state:{}});
+  // };
 
   // chaning below to component instead
 
@@ -106,8 +81,8 @@ const EnsembleList = () => {
   //   });
   // };
 
-  const startIndex = currentPage * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  // const startIndex = currentPage * itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
   // const visibleEnsembles = stateEnsembleArr.slice(startIndex, endIndex);
   const [selectedComponent, setSelectedComponent] = useState("ensemble");
 
@@ -116,16 +91,14 @@ const EnsembleList = () => {
       // Return the Ensemble Selection component
       return (
         <div>
-
-          {/* {unknown amount of rows}x3 table component goes here */}
-          <p>Ensemble Selection Table</p>
+          <EnsembleTable ensembleDetails={ensemblesAssoc} ensembleTableWidth={clusterScatterWidth} ensembleTableHeight={clusterScatterHeight} />
         </div>
       );
     } else if (selectedComponent === "cluster") {
       // Return the Cluster Association component
       return (
         <div>
-          <ClusterAssociationScatter currentState={currentState} clusterScatterWidth={clusterScatterWidth} clusterScatterHeight={clusterScatterHeight} />
+          <ClusterAssociationScatter currentState={ensemblesAssoc} clusterScatterWidth={clusterScatterWidth} clusterScatterHeight={clusterScatterHeight} />
         </div>
       );
     }
