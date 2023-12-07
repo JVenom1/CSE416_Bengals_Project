@@ -50,23 +50,22 @@ const HomePage = () => {
     } else {
       stateID = mNum.stateNumbers.NC;
     }
-    const currState = await getStateData(stateID);
+    const ensemblesAssoc = await getEnsemDetails(stateID);
     const currDistPlan = await getDistrPlan(stateID);
-    console.log(currDistPlan)
-    console.log(currState)
     navigate(`/EnsembleList`, {
       state: {
         stateID: stateID,
         currDistrPlan: currDistPlan,
-        currState: currState,
+        ensemblesAssoc: ensemblesAssoc,
       },
     });
   };
-  const getStateData = async (stateID) => {
+
+  const getEnsemDetails = async (stateID) => {
     try {
       const response = await api.get(`/${stateID}/ensemble_details`);
-      const state = response.data;
-      return state;
+      const clustAssoc = response.data;
+      return clustAssoc;
     } catch (err) {
       console.log(err);
       return null;
