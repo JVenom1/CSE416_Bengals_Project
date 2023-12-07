@@ -8,7 +8,7 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
-
+import api from "../api/posts.js";
 import mNum from "../Helpers/mNum.js";
 
 const HomePage = () => {
@@ -50,31 +50,38 @@ const HomePage = () => {
     } else {
       stateID = mNum.stateNumbers.NC;
     }
-    // const currDistPlan = await getDistrPlan(stateOutlineID);
+    const currState = await getStateData(stateID);
+    const currDistPlan = await getDistrPlan(stateID);
+    console.log(currDistPlan)
+    console.log(currState)
     navigate(`/EnsembleList`, {
       state: {
         stateID: stateID,
+        currDistrPlan: currDistPlan,
+        currState: currState,
       },
     });
   };
-
-  // const getDistrPlan = async (stateID) => {
-  //   try {
-  //     if (stateID === 0) {
-  //       const response = await api.get("/0/2020plan");
-  //       const WIPlan = response.data;
-
-  //       return WIPlan; // retrieve the default plans from the server here
-  //     } else if (stateID === 1) {
-  //       return MDPlan;
-  //     } else if (stateID === 2) {
-  //       return NCPlan;
-  //     }
-  //   } catch (error) {
-  //     console.log("Error fetching data:", error);
-  //     return null;
-  //   }
-  // };
+  const getStateData = async (stateID) => {
+    try {
+      const response = await api.get(`/${stateID}/ensemble_details`);
+      const state = response.data;
+      return state;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  }
+  const getDistrPlan = async (stateID) => {
+    try {
+      const response = await api.get(`/${stateID}/2020plan`);
+      const currentDistPlan = response.data;
+      return currentDistPlan; // retrieve the default plans from the server here
+    } catch (error) {
+      console.log("Error fetching data:", error);
+      return null;
+    }
+  };
 
   return (
     <>
