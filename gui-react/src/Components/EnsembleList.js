@@ -20,30 +20,13 @@ const EnsembleList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const stateID = location.state.stateID;
+  const currentDistrPlan = location.state.currDistrPlan;
+  const currentState = location.state.currState;
 
-  // look in getURL&DataNotes.txt for notes
-  // set on homepage using the outline geojsons
-  // stateID has been switched to a number [0,1,2]
-
-  const getCurrentDistrPlan = async (stateID) => {
-    try {
-      const response = await api.get(`/${stateID}/2020plan`);
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  console.log(currentState);
   // get largest ensemble size
-  const getClusterAssocCoords = async (stateID, ensembleIndex) => {
-    try {
-      const response = await api.get(
-        `/${stateID}/${ensembleIndex}/cluster_association_coordinates`
-      );
-      return response.data;
-    } catch (err) {
-      console.log(err);
-    }
+  const getClusterAssocCoords = (stateID) => {
+    // use currentState to get the coords 
   };
   const getStateData = async (stateID) => {
     try {
@@ -53,18 +36,25 @@ const EnsembleList = () => {
       console.log(err);
     }
   };
-  const [currentDistrPlan, setCurrentDistrPlan] = useState([]);
-  const [clustAssocCoords, setClustAssocCoords] = useState([]);
-  const [stateEnsembleArr, setStateEnsembleArr] = useState([]);
+
+  const [clustAssocCoords, setClustAssocCoords] = useState(null);
+  // const stateEnsembleArr = getStateData(stateID);
 
   // Retrieve Data
   useEffect(() => {
-    const largestEnsembleIndex = 0; // dont actually know yet
-    setCurrentDistrPlan(getCurrentDistrPlan(stateID));
-    setClustAssocCoords(getClusterAssocCoords(stateID, largestEnsembleIndex)); // for default only
-    //setStateEnsembleArr(getStateData(stateID));
-    // changeMapSizeXbyY("100%", "40vw"); // test later when server up
-  }, [stateID]);
+    const fetchData = async () => {
+      try {
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+    // setCurrentDistrPlan(getCurrentDistrPlan(stateID));
+    // setClustAssocCoords(getClusterAssocCoords(stateID, 0)); // for default only
+    // setStateEnsembleArr(getStateData(stateID));
+
+    changeMapSizeXbyY("90%", "40vw"); // test later when server up
+  }, []);
 
   // workaround for leaflet 0px width default
   const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
@@ -76,14 +66,14 @@ const EnsembleList = () => {
   const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(0);
 
-  const totalPages = Math.ceil(stateEnsembleArr.length / itemsPerPage);
+  // const totalPages = Math.ceil(stateEnsembleArr.length / itemsPerPage);
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
+    // setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
   };
 
   const handlePrevPage = () => {
-    setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
+    // setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
   };
   const goToHomePage = () => {
     navigate("/");
@@ -116,7 +106,7 @@ const EnsembleList = () => {
 
   const startIndex = currentPage * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const visibleEnsembles = stateEnsembleArr.slice(startIndex, endIndex);
+  // const visibleEnsembles = stateEnsembleArr.slice(startIndex, endIndex);
   const [selectedComponent, setSelectedComponent] = useState("ensemble");
 
   const renderComponent = () => {
@@ -152,24 +142,35 @@ const EnsembleList = () => {
         </div>
         <div className="main-container">
           <div className="map-container">
-            <h2>StateID District Plan</h2>
-            {/* Your map component goes here */}
+            <h2>{stateID} District Plan</h2>
+            <MapContainer
+              center={mNum.stateCenter[stateID].latlng}
+              zoom={6}
+              minZoom={4}
+              maxBounds={mNum.stateZoomBounds.stateID}
+              maxZoom={7}
+              dragging={true}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {<GeoJSON data={currentDistrPlan} />}
+            </MapContainer>
             <p>Map Component</p>
           </div>
           <div className="controls-container">
             <div className="button-container">
               <button
-                className={`control-button ${
-                  selectedComponent === "ensemble" && "active"
-                }`}
+                className={`control-button ${selectedComponent === "ensemble" && "active"
+                  }`}
                 onClick={() => setSelectedComponent("ensemble")}
               >
                 Ensemble Selection
               </button>
               <button
-                className={`control-button ${
-                  selectedComponent === "cluster" && "active"
-                }`}
+                className={`control-button ${selectedComponent === "cluster" && "active"
+                  }`}
                 onClick={() => setSelectedComponent("cluster")}
               >
                 Cluster Association
