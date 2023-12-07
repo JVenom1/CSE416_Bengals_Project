@@ -1,5 +1,3 @@
-import { render } from "react-dom";
-
 const EnsembleTable = (state) => {
 
 
