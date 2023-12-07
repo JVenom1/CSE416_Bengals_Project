@@ -62,7 +62,7 @@ const EnsembleList = () => {
     const largestEnsembleIndex = 0; // dont actually know yet
     setCurrentDistrPlan(getCurrentDistrPlan(stateID));
     setClustAssocCoords(getClusterAssocCoords(stateID, largestEnsembleIndex)); // for default only
-    setStateEnsembleArr(getStateData(stateID));
+    //setStateEnsembleArr(getStateData(stateID));
     // changeMapSizeXbyY("100%", "40vw"); // test later when server up
   }, [stateID]);
 
@@ -91,6 +91,7 @@ const EnsembleList = () => {
   const handleClusterSelected = (buttonIndex) => {
     // go to navigate('/ClusterAnalysis',{state:{}});
   };
+
   // chaning below to component instead
 
   // const handleDistMsrClicked = (buttonIndex) => {
