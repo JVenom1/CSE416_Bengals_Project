@@ -172,12 +172,12 @@ const ClusterAnalysis = () => {
           {/* Buttons to remove displayed district plans */}
           {((distPlan1 !== null && distPlan1 !== currentDistrictPlan) ||
             distPlan2 !== null) && (
-            <div>
-              <button onClick={removeDistrictPlans}>
-                Remove District Plans
-              </button>
-            </div>
-          )}
+              <div>
+                <button onClick={removeDistrictPlans}>
+                  Remove District Plans
+                </button>
+              </div>
+            )}
         </div>
       </div>
       {showDetails && (

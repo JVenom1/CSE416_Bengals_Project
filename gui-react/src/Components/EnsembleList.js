@@ -6,33 +6,32 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import mNum from "../Helpers/magicNumbers.js";
 const api = axios.create({
-  baseURL: "http://localhost:8080/server/BengalsAPI",
+  baseURL: "https://flat-banks-flow.loca.lt/server/BengalsAPI",
 });
 // Scatter Plot Linear Feature Broken
 const EnsembleList = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [getStateEnsembleArr, setStateEnsembleArr] = useState([]);
   // look in getURL&DataNotes.txt for notes
   // set on homepage using the outline geojsons
   // stateID has been switched to a number [0,1,2]
   const stateID = location.state.stateID;
-  console.log(stateID);
-  const [currentDistrictPlan, setCurrentDistrictPlan] = useState(
-    location.state.currentDistrictPlan
-  ); //location.state.currentDistrictPlan;
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   try{
-    //     const response = await api.get(`/${stateID}/2020plan`);
-    //     setCurrentDistrictPlan(response.data);
+  const currentDistrictPlan = location.state.currentDistrictPlan;
 
-    // } catch (err){
-    //     console.log(err);
-    //   }
-    // fetchData();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/${stateID}/ensemble_details`);
+        console.log(response.data);
+
+        setStateEnsembleArr(response.data);
+      } catch (err) {
+      }
+    };
+    fetchData();
     changeMapSizeXbyY("100%", "50vw");
-  }, []);
+  }, [stateID]);
 
   // workaround for leaflet 0px width default
   const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
@@ -43,157 +42,7 @@ const EnsembleList = () => {
 
   const mapMaxBounds = mNum.stateZoomBounds.stateID;
   const mapCenter = mNum.stateCenter[stateID].latlng;
-  const getStateEnsembleArr = [
-    {
-      cluster: [
-        {
-          districtPlan: [
-            { plan: currentDistrictPlan },
-            { plan: currentDistrictPlan },
-            { plan: currentDistrictPlan },
-          ],
 
-          districtPlanDetail: [
-            {
-              clusterNum: 0,
-              numberOfDistrictPlans: 3,
-              averageDistance: 0.88,
-              numberOfRep: 5,
-              numberOfDem: 15,
-            },
-          ],
-          districtPlanCoordinate: {
-            x: [1, 2, 3],
-            y: [4, 5, 6],
-            color: [true, true, false],
-          },
-          averageBoundary: { plan: currentDistrictPlan },
-        },
-        {
-          districtPlan: [
-            { plan: currentDistrictPlan },
-            { plan: currentDistrictPlan },
-            { plan: currentDistrictPlan },
-          ],
-
-          districtPlanDetail: [
-            {
-              clusterNum: 0,
-              numberOfDistrictPlans: 3,
-              averageDistance: 0.88,
-              numberOfRep: 5,
-              numberOfDem: 15,
-            },
-          ],
-          districtPlanCoordinate: {
-            x: [12, 22, 32],
-            y: [42, 52, 62],
-            color: [true, true, false],
-          },
-          averageBoundary: { plan: currentDistrictPlan },
-        },
-      ],
-      clusterDetails: [
-        {
-          clusterNum: 0,
-          numberOfDistrictPlans: 3,
-          averageDistance: 0.88,
-          numberOfRep: 5,
-          numberOfDem: 15,
-        },
-      ],
-      clusterCoordinate: {
-        x: [10, 20, 30],
-        y: [4, 5, 6],
-        radius: [10, 15, 20],
-      },
-      clusterAssociationCoordinate: {
-        optimalTransport: { Coords: { x: [1, 2, 3], y: [4, 5, 6] } },
-        hammingDistance: { Coords: { x: [3, 4, 5], y: [4, 5, 6] } },
-        totalVariation: { Coords: { x: [5, 7, 9], y: [4, 5, 6] } },
-      },
-      distanceMeasure: {
-        optimalTransport: [0.88, 0.56, 0.43],
-        hammingDistance: [0.73, 0.59, 0.42],
-        totalVariation: [0.45, 0.12, 0.41],
-      },
-    },
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [4, 5, 6],
-        y: [7, 50, 75],
-        radius: [11, 13, 2],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [4, 5, 6],
-        y: [7, 50, 75],
-        radius: [11, 13, 2],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [4, 5, 6],
-        y: [7, 50, 75],
-        radius: [11, 13, 2],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [4, 5, 6],
-        y: [7, 50, 75],
-        radius: [11, 13, 2],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-    {
-      cluster: [],
-      clusterDetails: [],
-      clusterCoordinate: {
-        x: [4, 5, 6],
-        y: [7, 50, 75],
-        radius: [11, 13, 2],
-      },
-      clusterAssociationCoordinate: { x: [], y: [] },
-      distanceMeasure: {
-        optimalTransport: [],
-        hammingDistance: [],
-        totalVariation: [],
-      },
-    },
-  ];
   // const getStateEnsembleArr = async (stateID) => {
   //   const response = await axios.get(`${api}/${stateID}`);
   //   return response.data;
@@ -221,7 +70,6 @@ const EnsembleList = () => {
       state: {
         stateID: stateID,
         currentDistrictPlan: currentDistrictPlan,
-        ensemble: getStateEnsembleArr,
         buttonIndex: buttonIndex,
       },
     });
@@ -232,7 +80,6 @@ const EnsembleList = () => {
       state: {
         stateID: stateID,
         currentDistrictPlan: currentDistrictPlan,
-        ensemble: getStateEnsembleArr[buttonIndex],
         buttonIndex: buttonIndex,
       },
     });
@@ -247,11 +94,11 @@ const EnsembleList = () => {
       <div className="mapWrapper">
         <MapContainer
           center={mapCenter}
-          zoom={7}
-          minZoom={7}
+          zoom={6}
+          minZoom={4}
           maxBounds={mapMaxBounds}
           maxZoom={7}
-          dragging={false}
+          dragging={true}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -267,8 +114,10 @@ const EnsembleList = () => {
             {visibleEnsembles.map((ensemble, index) => (
               <div key={index} className="ensemble">
                 <div className="ensemble-header">
-                  Ensemble {startIndex + index + 1}
+                  {ensemble.name}
                 </div>
+                <p>Ensemble Size: {ensemble.ensemblesize}</p>
+                <p>Cluster Count: {ensemble.clustercount}</p>
                 <div className="button-container">
                   <button
                     onClick={() => handleDistMsrClicked(index)}
@@ -282,6 +131,8 @@ const EnsembleList = () => {
                   >
                     Cluster Analysis
                   </button>
+
+
                 </div>
               </div>
             ))}

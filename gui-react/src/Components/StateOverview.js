@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,45 +6,62 @@ import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import ScatterPlot from "./ClusterScatter.js";
 import mNum from "../Helpers/magicNumbers.js";
 import axios from "axios";
-import { api } from "./HomePage.js";
+const api = axios.create({
+  baseURL: "https://flat-banks-flow.loca.lt/server/BengalsAPI",
+});
 
 const StateOverview = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  // unwrapped stateID (eg: WI, MD, NC) from previous page
   const stateID = location.state.stateID;
-  const ensembleIndex = location.state.buttonIndex;
-
-  // "/{stateID}/2020plan"
-  // const currentDistrictPlan = async (stateID) => {
-  //   const response = await axios.get(`${api}/${stateID}/2020plan`);
-  //   return response.data;
-  // };
+  const buttonIndex = location.state.buttonIndex;
   const currentDistrictPlan = location.state.currentDistrictPlan;
 
-  // "/{stateID}/{ensembleIndex}"
-  // const currEnsemble = async (stateID) => {
-  //   const response = await axios.get(`${api}/${stateID}/${ensembleIndex}`);
-  //   return response.data;
-  // };
-  const currEnsemble = location.state.ensemble;
   const goToHomePage = (e) => {
     navigate("/");
   };
   const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
   const clusterScatterHeight = window.innerHeight; // Full height of the screen
 
+  const [getClusterArr, setClusterArr] = useState([]);
+
   const maxBounds = mNum.stateZoomBounds.stateID;
   const center = mNum.stateCenter[stateID].latlng;
 
   useEffect(() => {
-    const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
+    const changeMapSizeXbyY = () => {
       const leafletContainer = document.querySelector(".leaflet-container");
-      leafletContainer.style.width = width;
-      leafletContainer.style.height = height;
+      const changeMapSizeXbyY = (height = "100%", width = "50vw") => {
+        const leafletContainer = document.querySelector(".leaflet-container");
+        leafletContainer.style.width = width;
+        leafletContainer.style.height = height;
+      };
+      changeMapSizeXbyY("100%", "50vw");
+    }
+    const fetchData = async () => {
+      try {
+        const response = await api.get(`/${stateID}/${buttonIndex}/cluster_details`);
+        setClusterArr(response.data);
+      } catch (err) { }
     };
-    changeMapSizeXbyY("100%", "50vw");
-  }, []);
+    fetchData();
+  }, [stateID, buttonIndex]);
+
+  const itemsPerPage = 4;
+  const [currentPage, setCurrentPage] = useState(0);
+  const totalPages = Math.ceil(getClusterArr.length / itemsPerPage);
+
+  const startIndex = currentPage * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const visibleEnsembles = getClusterArr.slice(startIndex, endIndex);
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => (prevPage + 1) % totalPages);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);
+  };
 
   return (
     <>
@@ -66,15 +83,30 @@ const StateOverview = () => {
         <button className="home-button" onClick={goToHomePage}>
           Home
         </button>
-        <div className="clusterScatter">
-          <ScatterPlot
-            currEnsemble={currEnsemble}
-            stateID={stateID}
-            currentDistrictPlan={currentDistrictPlan}
-            clusterScatterWidth={clusterScatterWidth}
-            clusterScatterHeight={clusterScatterHeight}
-            ensembleIndex={ensembleIndex}
-          />
+        <div className="ensembleSelect">
+          <div id="ensembles">
+            {visibleEnsembles.map((cluster, index) => (
+              <div key={index} className="ensemble">
+                <div className="ensemble-header">
+                  {cluster.name}
+                </div>
+                <p>cluster Size: {cluster.plancount}</p>
+                <p>cluster Count: {cluster.averagesplit}</p>
+                <p>opportunity districts: {cluster.opportunitydistricts}</p>
+              </div>
+            ))}
+            <div className="pagination">
+              <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                Prev
+              </button>
+              <button
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages - 1}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>

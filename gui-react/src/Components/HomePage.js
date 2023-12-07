@@ -17,7 +17,7 @@ import mNum from "../Helpers/magicNumbers";
 // https://7df5-130-245-192-6.ngrok-free.app/server/BengalsApi
 // http://localhost:8080/server/BengalsAPI
 const api = axios.create({
-  baseURL: "http://localhost:8080/server/BengalsAPI",
+  baseURL: "https://flat-banks-flow.loca.lt/server/BengalsAPI",
 });
 const HomePage = () => {
   const [selectedState, setSelectedState] = useState("");
@@ -39,7 +39,7 @@ const HomePage = () => {
     navigate("/");
   };
 
-  const handleStateSelect = (e) => {
+  const handleStateSelect = async (e) => {
     let stateOutlineID = null;
     if (e.sourceTarget) {
       // State Select - String of either WI/MD/NC
@@ -51,10 +51,20 @@ const HomePage = () => {
       setSelectedState(stateOutlineID);
     }
     // current districtplan is the default one
-    const [stateID, currDistPlan] = getDistrPlan(stateOutlineID);
+    if (stateOutlineID === "WI") {
+      stateOutlineID = 0;
+    } else if (stateOutlineID === "MD") {
+      stateOutlineID = 1;
+    } else {
+      stateOutlineID = 2;
+    }
+
+
+    const currDistPlan = await getDistrPlan(stateOutlineID);
+
     navigate(`/EnsembleList`, {
       state: {
-        stateID: stateID,
+        stateID: stateOutlineID,
         currentDistrictPlan: currDistPlan,
       },
     });
@@ -79,17 +89,29 @@ const HomePage = () => {
   //   }
   // };
 
-  const getDistrPlan = (stateID) => {
-    if (stateID === "WI" || stateID === mNum.stateNumbers.WI) {
-      return [mNum.stateNumbers.WI, WIPlan]; // retrieve the default plans from the server here
-    } else if (stateID === "MD" || stateID === mNum.stateNumbers.MD) {
-      return [mNum.stateNumbers.MD, MDPlan];
-    } else if (stateID === "NC" || stateID === mNum.stateNumbers.NC) {
-      return [mNum.stateNumbers.NC, NCPlan];
+  const getDistrPlan = async (stateID) => {
+    try {
+
+      if (stateID === 0) {
+        const response = await api.get('/0/2020plan');
+        const WIPlan = response.data;
+
+        return WIPlan; // retrieve the default plans from the server here
+      } else if (stateID === 1) {
+        return MDPlan;
+      } else if (stateID === 2) {
+        return NCPlan;
+      }
+
+
+    } catch (error) {
+      console.log("Error fetching data:", error);
+      return null;
     }
-    alert("No Data");
-    return null;
   };
+
+
+
   return (
     <>
       <div className={"mapWrapper"}>
