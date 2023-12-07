@@ -96,3 +96,12 @@ body {
 .control-button.active {
     background-color: #297fb8;
 }
+
+.component-container{
+    text-align: center;
+}
+.inner-component-container{
+    text-align: center;
+}
+/* styles.css */
+  

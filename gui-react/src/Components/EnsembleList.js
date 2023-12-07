@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import mNum from "../Helpers/mNum.js";
 import api from "../api/posts.js";
+import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
 // testing delete later
 const EnsembleList = () => {
   /* data required:
@@ -23,8 +24,9 @@ const EnsembleList = () => {
   const currentDistrPlan = location.state.currDistrPlan;
   const currentState = location.state.currState;
 
-  console.log(currentState);
-  // get largest ensemble size
+  const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
+  const clusterScatterHeight = window.innerHeight;
+
   const getClusterAssocCoords = (stateID) => {
     // use currentState to get the coords 
   };
@@ -114,6 +116,7 @@ const EnsembleList = () => {
       // Return the Ensemble Selection component
       return (
         <div>
+
           {/* {unknown amount of rows}x3 table component goes here */}
           <p>Ensemble Selection Table</p>
         </div>
@@ -122,8 +125,7 @@ const EnsembleList = () => {
       // Return the Cluster Association component
       return (
         <div>
-          {/* scatter plot component goes here */}
-          <p>Cluster Association Scatter Plot</p>
+          <ClusterAssociationScatter currentState={currentState} clusterScatterWidth={clusterScatterWidth} clusterScatterHeight={clusterScatterHeight} />
         </div>
       );
     }
@@ -157,7 +159,6 @@ const EnsembleList = () => {
               />
               {<GeoJSON data={currentDistrPlan} />}
             </MapContainer>
-            <p>Map Component</p>
           </div>
           <div className="controls-container">
             <div className="button-container">
@@ -173,7 +174,7 @@ const EnsembleList = () => {
                   }`}
                 onClick={() => setSelectedComponent("cluster")}
               >
-                Cluster Association
+                ClusterAssociationScatter
               </button>
             </div>
             <div className="component-container">{renderComponent()}</div>
