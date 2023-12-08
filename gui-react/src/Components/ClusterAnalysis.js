@@ -6,16 +6,23 @@ import { useLocation } from "react-router-dom";
 import Header from "./Header.js";
 import DefaultDistrMap from "./DefaultDistrMap.js";
 import ClusterScatter from "./ClusterScatter.js";
+import ClustSumTable from "./ClustSumTable.js";
 
 const ClusterAnalysis = () => {
-    const [selectedComponent, setSelectedComponent] = useState("summary");
+    const [selectedComponent, setSelectedComponent] = useState("scatter");//summary
     const location = useLocation();
     const stateID = location.state.stateID;
     const headerText = location.state.headerText + " > Cluster Analysis";
     const currentDistrPlan = location.state.currentDistrPlan;
     const clusterCoords = location.state.clusterCoords;
+    const clusterSum = location.state.clusterSum;
+    const ensembleName = location.state.ensembleName;
+    console.log(ensembleName)
+
+    console.log(clusterSum)
     const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
     const clusterScatterHeight = window.innerHeight;
+
     const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
         const leafletContainer = document.querySelector(".leaflet-container");
         leafletContainer.style.width = width;
@@ -29,7 +36,9 @@ const ClusterAnalysis = () => {
             // Return the ClustSumTable Selection component
             return (
                 <div>
-                    {/* ClustSumTable */}
+                    <ClustSumTable
+                        ensembleName={ensembleName}
+                        clusterSum={clusterSum} />
                 </div>
             );
         } else if (selectedComponent === "scatter") {

@@ -24,16 +24,16 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             setCurrentPage(currentPage + 1);
         }
     };
-    // const getEnsemble = async (stateID, index) => {
-    //     try {
-    //         const response = api.get(`/${stateID}/${index}`);
-    //         const ensemble = response.data;
-    //         return ensemble;
-    //     } catch (err) {
-    //         console.log(err)
-    //         return null;
-    //     }
-    // }
+    const getEnsemble = async (stateID, ensembleIndex) => {
+        try {
+            const response = await api.get(`/${stateID}/${ensembleIndex}/inital_summary`);
+            const ensemble = response.data;
+            return ensemble;
+        } catch (err) {
+            console.log(err)
+            return null;
+        }
+    }
     // Cluster Distances 
     const getClustCoords = async (stateID, ensemIndex) => {
         try {
@@ -44,12 +44,13 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             console.log(error);
         }
     }
-    const handleEnsemClick = async (e) => {
-        const ensembleIndex = parseInt(e.charAt(e.length - 1), 10) - 1;
+    const handleEnsemClick = async (ensembleName) => {
+        console.log(ensembleName)
+        const ensembleIndex = parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
         // then the details like Hispanic population vs black population
         const clusterCoords = await getClustCoords(stateID, ensembleIndex);
         // pass list of cluster in said ensemble
-        // const clusterList = await getEnsemble(stateID, ensembleIndex);
+        const clusterSum = await getEnsemble(stateID, ensembleIndex);
         navigate("/ClusterAnalysis",
             {
                 state: {
@@ -59,6 +60,8 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
                     clusterCoords: clusterCoords,
                     clusterScatterWidth: clusterScatterWidth,
                     clusterScatterHeight: clusterScatterHeight,
+                    clusterSum: clusterSum,
+                    ensembleName: ensembleName,
                 }
             });
     }
