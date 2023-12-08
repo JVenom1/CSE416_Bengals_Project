@@ -88,6 +88,14 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
       .attr('cy', (d, i) => yScale(coords.y[i]))
       .attr('r', (d, i) => coords.radius[i])
       .attr('clustIndex', (d, i) => i)
+      .on("mouseover", function () {
+        // Change cursor to pointer on hover
+        d3.select(this).style('cursor', 'pointer');
+      })
+      .on("mouseout", function () {
+        // Reset cursor on mouseout
+        d3.select(this).style('cursor', 'default');
+      })
       .on("click", (event) => handleScatterPlotClick(event))
       .style('fill', 'green');
 
@@ -95,6 +103,8 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
 
 
   const handleScatterPlotClick = async (event) => {
+    console.log("Hi");
+    console.log(event)
     // assuming x[i] where i is cluster index
     let clusterIndex = event.target.getAttribute("clustIndex");
     alert(`point ${clusterIndex} clicked`)
