@@ -15,10 +15,10 @@ const ClusterAssociationScatter = ({
     const svgRef = useRef();
 
     const getCoordinates = (state) => {
-        let coords = { x: [], y: [] };
+        let coords = { ensemSize: [], clustCount: [] };
         for (let i = 0; i < state.length; i++) {
-            coords.x.push(state[i].ensemblesize);
-            coords.y.push(state[i].clustercount);
+            coords.ensemSize.push(state[i].ensemblesize);
+            coords.clustCount.push(state[i].clustercount);
         }
         return coords;
     };
@@ -30,12 +30,12 @@ const ClusterAssociationScatter = ({
 
         const xScale = d3
             .scaleLinear()
-            .domain([0, d3.max(coords.x)])
+            .domain([0, d3.max(coords.ensemSize)])
             .range([margin.left, width + margin.left]);
 
         const yScale = d3
             .scaleLinear()
-            .domain([0, d3.max(coords.y)])
+            .domain([0, d3.max(coords.clustCount)])
             .range([height + margin.top, margin.top]);
 
         const xAxis = d3.axisBottom(xScale);
@@ -84,11 +84,11 @@ const ClusterAssociationScatter = ({
         // Add Circles
         svg
             .selectAll('circle')
-            .data(coords.x)
+            .data(coords.ensemSize)
             .enter()
             .append('circle')
             .attr('cx', (d) => xScale(d))
-            .attr('cy', (d, i) => yScale(coords.y[i]))
+            .attr('cy', (d, i) => yScale(coords.clustCount[i]))
             .attr('r', 5)
             .style('fill', 'blue');
     }, [currentState, width, height, margin, xAxTitle, yAxTitle, mainTitle]);
