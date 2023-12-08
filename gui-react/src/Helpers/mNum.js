@@ -50,6 +50,11 @@ const mNum = {
     MD: 1,
     NC: 2,
   },
+  stateNumsToPrefix: {
+    0: "WI",
+    1: "MD",
+    2: "NC",
+  }
 };
 
 export default mNum;
