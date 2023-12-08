@@ -2,21 +2,19 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
-import HomePage from "./Components/HomePage.js";
-import EnsembleList from "./Components/EnsembleList.js";
+import StateSelection from "./Components/StateSelection.js";
+import EnsembleSelection from "./Components/EnsembleSelection.js";
 import DistMeasPage from "./Components/DistMeasSelected.js";
-import StateOverview from "./Components/StateOverview.js";
-import ClusterAnalysis from "./Components/ClusterAnalysis.js";
+import ClusterScatter from "./Components/ClusterScatter.js";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" exact element={<HomePage />} />
-        <Route path="/EnsembleList" exact element={<EnsembleList />} />
+        <Route path="/" exact element={<StateSelection />} />
+        <Route path="/EnsembleSelection" exact element={<EnsembleSelection />} />
+        <Route path="/ClusterScatter" exact element={<ClusterScatter />} />
         <Route path="/Distances" exact element={<DistMeasPage />} />
-        <Route path="/StateOverview" exact element={<StateOverview />} />
-        <Route path="/ClusterAnalysis" exact element={<ClusterAnalysis />} />
       </Routes>
     </BrowserRouter>
   );
