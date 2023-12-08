@@ -1,135 +1,137 @@
+// Import necessary libraries
 import { useState, useEffect, useRef } from "react";
+import "../App.css";
+import "leaflet/dist/leaflet.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import Header from "./Header.js";
+import DefaultDistrMap from "./DefaultDistrMap.js";
 import * as d3 from "d3";
-import axios from "axios";
 
-const api = axios.create({
-  baseURL: "http://localhost:8080/server/BengalsAPI",
-});
-
-const ScatterPlot = ({
-  stateID,
-  currentDistrictPlan,
-  clusterScatterWidth,
-  clusterScatterHeight,
-  ensembleIndex,
-}) => {
-  console.log(
-    stateID,
-    currentDistrictPlan,
-    clusterScatterWidth,
-    clusterScatterHeight,
-    ensembleIndex
-  );
-
+const ClusterScatter = () => {
+  // Ensemble CLicked
   const navigate = useNavigate();
   const location = useLocation();
 
+  const stateID = location.state.stateID;
+  const currentDistrPlan = location.state.currentDistrPlan;
+
+  const coords = location.state.clusterCoords;
+  const width = location.state.clusterScatterWidth;
+  const height = location.state.clusterScatterHeight;
+  const margin = { top: 40, right: 30, bottom: -250, left: 80 };
+  const headerText = location.state.headerText + " > Cluster Scatter";
+  const mainTitle = "Cluster Scatter";
+  const xAxTitle = "Measure 1";
+  const yAxTitle = "Measure 2";
   const svgRef = useRef();
-  const margin = { top: 40, right: 30, bottom: 250, left: 80 };
-  const [getCoordinates, setCoordinates] = useState([]);
 
+  // Use useEffect to handle side effects when the component mounts
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(`/0/0/cluster_coordinates`);
-        setCoordinates(response.data);
-        console.log(getCoordinates);
-      } catch (err) {}
-    };
+    changeMapSizeXbyY("85%", "40vw");
 
-    const width = clusterScatterWidth - margin.left - margin.right;
-    const height = clusterScatterHeight - margin.top - margin.bottom;
-    const mainTitle = "Cluster Scatter";
-    const xAxTitle = "African American Pop";
-    const yAxTitle = "African American Pop > 50";
+    const svg = d3.select(svgRef.current);
+    svg.selectAll('*').remove();
 
-    const svg = d3
-      .select(svgRef.current)
-      .attr("width", clusterScatterWidth)
-      .attr("height", clusterScatterHeight)
-      .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+    const xScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(coords.x)])
+      .range([margin.left, width - margin.left]);
 
-    const xScale = d3.scaleLinear().domain([0, 30]).range([0, width]);
+    const yScale = d3
+      .scaleLinear()
+      .domain([0, d3.max(coords.y)])
+      .range([height / 2 + margin.top + 60, margin.top]);
 
-    const yScale = d3.scaleLinear().domain([0, 20]).range([height, 0]);
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale);
 
-    // Add X-axis
-    const xAxisGroup = svg
-      .append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(0);
-
-    // Add X-axis title
+    // Add X Axis
     svg
-      .append("text")
-      .attr("x", margin.left + width / 2) // Adjusted to consider left margin
-      .attr("y", clusterScatterHeight - margin.bottom + 10) // Adjusted to consider bottom margin
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text(xAxTitle);
+      .append('g')
+      .attr('transform', `translate(0, ${height / 2 + 3 * margin.top - 20})`)
+      .call(xAxis);
 
-    // Add Y-axis
-    svg.append("g").call(0);
-
+    // Add Y Axis
     svg
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left)
-      .attr("x", 0 - (margin.top + height / 2)) // Adjusted to consider top margin and center it vertically
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text(yAxTitle);
+      .append('g')
+      .attr('transform', `translate(${margin.left}, 0)`)
+      .call(yAxis);
 
-    // Add main title
+    // Add Title
     svg
-      .append("text")
-      .attr("x", width / 2)
-      .attr("y", -margin.top / 2)
-      .attr("text-anchor", "middle")
-      .style("font-size", "20px")
-      .style("text-decoration", "underline")
+      .append('text')
+      .attr('x', width / 2 + margin.left)
+      .attr('y', margin.top / 2)
+      .attr('text-anchor', 'middle')
+      .style('font-size', '1.5em')
       .text(mainTitle);
 
+    // Add X Axis Label
     svg
-      .selectAll("circle")
-      .data(getCoordinates.x)
+      .append('text')
+      .attr('x', width / 2 + margin.left - 50)
+      .attr('y', height + margin.top + margin.bottom)
+      .attr('text-anchor', 'middle')
+      .style('dy', '1.5em')  // Adjust the vertical offset as needed
+      .text(xAxTitle);
+
+
+    // Add Y Axis Label
+    svg
+      .append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -height / 2 + margin.top + 60)
+      .attr('y', margin.left - 30)
+      .attr('text-anchor', 'middle')
+      .text(yAxTitle);
+
+    // Add Circles
+    svg
+      .selectAll('circle')
+      .data(coords.x)
       .enter()
-      .append("circle")
-      .attr("cx", (d, i) => xScale(d))
-      .attr("cy", (d, i) => yScale(getCoordinates.y[i]))
-      .attr("r", (d, i) => getCoordinates.radius[i])
-      .attr("fill", () => selectOrangeColor())
-      .attr("data-value", (d, i) => i) // Assigning the index as a data attribute
-      .on("click", (event) => handlePointClick(event));
-    fetchData();
-  }, [stateID, ensembleIndex, clusterScatterWidth, clusterScatterHeight]);
+      .append('circle')
+      .attr('cx', (d) => xScale(d))
+      .attr('cy', (d, i) => yScale(coords.y[i]))
+      .attr('r', (d, i) => coords.radius[i])
+      .attr('clustIndex', (d, i) => i)
+      .on("click", (event) => handleScatterPlotClick(event))
+      .style('fill', 'green');
 
-  const handlePointClick = (e) => {
-    let clusterPointIndex = e.target.getAttribute("data-value");
-    // check if theres data
-    navigate("/ClusterAnalysis", {
-      state: {
-        // removed not needed distance measures for this part
-        //currEnsemble: {
-        //cluster: currEnsemble.cluster[clusterPointIndex],
-        //clusterDetails: currEnsemble.clusterDetails[clusterPointIndex],
-        //clusterCoordinate: {
-        //  x: currEnsemble[0].clusterCoordinate.x[clusterPointIndex],
-        //  y: currEnsemble[0].clusterCoordinate.y[clusterPointIndex],
-        //  radius: currEnsemble.clusterCoordinate.radius[clusterPointIndex],
-        //},
-      },
-    });
+  }, [width, height, margin, xAxTitle, yAxTitle, mainTitle]);
+
+
+  //   // Function to change map size
+  const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
+    const leafletContainer = document.querySelector(".leaflet-container");
+    leafletContainer.style.width = width;
+    leafletContainer.style.height = height;
   };
+  const handleScatterPlotClick = async (event) => {
+    // assuming x[i] where i is cluster index
+    let clusterIndex = event.target.getAttribute("clustIndex");
+    alert(`point ${clusterIndex} clicked`)
+    try {
+      // navigate('/DistrictCompare', { state: { clusterIndex: clusterIndex } });
+    } catch (error) {
 
-  const selectOrangeColor = () => {
-    const randomShade = Math.floor(Math.random() * 255);
-    return `rgb(255, ${randomShade}, 0)`;
+    }
+
   };
-
-  return <svg ref={svgRef}></svg>;
+  return (
+    <>
+      <div className="app-container">
+        <Header headerText={headerText} />
+        <div className="main-container">
+          <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
+          <div className="clustScatContainer">
+            <svg ref={svgRef} width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}></svg>
+            {/* <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`}></svg> */}
+          </div>
+        </div>
+      </div>
+    </>);
 };
 
-export default ScatterPlot;
+// Export the ClusterAnalysis component
+export default ClusterScatter;
