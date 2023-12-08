@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from "../api/posts.js"
 const ClustSumTable = ({ ensembleDetails, ensembleTableWidth, ensembleTableHeight, stateID, currentDistrPlan }) => {
-    // dont think ill need this .js
     const navigate = useNavigate();
     const rowsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);

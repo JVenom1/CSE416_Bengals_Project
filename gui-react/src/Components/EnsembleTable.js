@@ -50,7 +50,7 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
         const clusterCoords = await getClustCoords(stateID, ensembleIndex);
         // pass list of cluster in said ensemble
         // const clusterList = await getEnsemble(stateID, ensembleIndex);
-        navigate("/ClusterScatter",
+        navigate("/ClusterAnalysis",
             {
                 state: {
                     stateID: stateID,

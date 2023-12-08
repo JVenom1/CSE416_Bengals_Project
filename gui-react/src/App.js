@@ -5,7 +5,7 @@ import React from "react";
 import StateSelection from "./Components/StateSelection.js";
 import EnsembleSelection from "./Components/EnsembleSelection.js";
 import DistMeasPage from "./Components/DistMeasSelected.js";
-import ClusterScatter from "./Components/ClusterScatter.js";
+import ClusterAnalysis from "./Components/ClusterAnalysis.js";
 
 const App = () => {
   return (
@@ -13,7 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" exact element={<StateSelection />} />
         <Route path="/EnsembleSelection" exact element={<EnsembleSelection />} />
-        <Route path="/ClusterScatter" exact element={<ClusterScatter />} />
+        <Route path="/ClusterAnalysis" exact element={<ClusterAnalysis />} />
         <Route path="/Distances" exact element={<DistMeasPage />} />
       </Routes>
     </BrowserRouter>
