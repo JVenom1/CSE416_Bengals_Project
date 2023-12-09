@@ -121,6 +121,7 @@ const DistrictScatter = ({
     const handleScatterPlotClick = (e) => {
         if (e.target.getAttribute('available')) {
             districtIndex = e.target.getAttribute('district-index');
+            // const response = api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`)
             if (buttonIndex === 1) {
                 // setDistrictPlan1()
                 alert("button1");
