@@ -90,7 +90,7 @@ const DistrictScatter = ({
         svg
             .append('text')
             .attr('transform', 'rotate(-90)')
-            .attr('x', -height / 2 + margin.top)
+            .attr('x', -height / 2 + margin.top - 70)
             .attr('y', margin.left - 30)
             .attr('text-anchor', 'middle')
             .text(yAxTitle);

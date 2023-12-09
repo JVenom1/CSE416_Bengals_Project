@@ -57,6 +57,7 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
         console.log(ensembleName)
         const ensembleIndex = parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
         // then the details like Hispanic population vs black population
+        document.body.style.cursor = 'wait';
         const clusterCoords = await getClustCoords(stateID, ensembleIndex);
         // pass list of cluster in said ensemble
         const clusterSum = await getEnsemble(stateID, ensembleIndex);

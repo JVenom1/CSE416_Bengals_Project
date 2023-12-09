@@ -8,6 +8,7 @@ import DefaultDistrMap from "./DefaultDistrMap.js";
 import Header from "./Header.js";
 
 const EnsembleSelection = () => {
+  document.body.style.cursor = 'default';
   const location = useLocation();
   const stateID = location.state.stateID;
   const currentDistrPlan = location.state.currDistrPlan;

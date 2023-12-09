@@ -5,9 +5,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Header from "./Header";
 import CompareDistrMap from "./CompareDistrMap";
 import DistrictScatter from "./DistrictScatter";
+import DistrictSummaryTable from "./DistrictSummaryTable";
 
 
 const DistrictAnalysis = () => {
+    document.body.style.cursor = 'default';
     const location = useLocation();
     const [selectedScatter, setSelectedScatter] = useState(null);
     const mapOneID = 1;
@@ -63,8 +65,7 @@ const DistrictAnalysis = () => {
                     </div>
 
                     <div className="bottom-right">
-                        District Summary Table - PLACE HERE
-                        {/* Distr Table */}
+                        <DistrictSummaryTable distPlanList={districtPlanList} />
                     </div>
                 </div>
             </div>

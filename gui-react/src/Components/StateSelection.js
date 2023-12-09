@@ -47,6 +47,7 @@ const StateSelection = () => {
     } else {
       stateID = mNum.stateNumbers.NC;
     }
+    document.body.style.cursor = 'wait';
     const ensemblesAssoc = await getEnsemDetails(stateID);
     const currDistPlan = await getDistrPlan(stateID);
     navigate(`/EnsembleSelection`, {

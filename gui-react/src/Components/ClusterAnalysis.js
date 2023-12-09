@@ -11,6 +11,7 @@ import DistanceMatrix from "./DistanceMatrix.js";
 
 
 const ClusterAnalysis = () => {
+    document.body.style.cursor = 'default';
     const [selectedComponent, setSelectedComponent] = useState("scatter");//summary
     const location = useLocation();
     const stateID = location.state.stateID;

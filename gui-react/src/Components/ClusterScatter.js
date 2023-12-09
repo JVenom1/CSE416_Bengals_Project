@@ -127,13 +127,10 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
   const handleScatterPlotClick = async (event) => {
     // assuming x[i] where i is cluster index
     const clusterIndex = event.target.getAttribute("clustIndex");
-    // alert(`point ${clusterIndex} clicked`)
     try {
+      document.body.style.cursor = 'wait';
       const coords = await getCoords(stateID, ensembleIndex, clusterIndex)
       const districtPlanList = await getAllDistrictPlans(stateID, ensembleIndex, clusterIndex);
-      // console.log(coords);
-      // console.log(districtPlanList);
-      // console.log(distanceMeas);
       navigate('/DistrictAnalysis',
         {
           state:
