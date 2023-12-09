@@ -7,6 +7,8 @@ import Header from "./Header.js";
 import DefaultDistrMap from "./DefaultDistrMap.js";
 import ClusterScatter from "./ClusterScatter.js";
 import ClustSumTable from "./ClustSumTable.js";
+import DistanceMatrix from "./DistanceMatrix.js";
+
 
 const ClusterAnalysis = () => {
     const [selectedComponent, setSelectedComponent] = useState("scatter");//summary
@@ -17,9 +19,9 @@ const ClusterAnalysis = () => {
     const clusterCoords = location.state.clusterCoords;
     const clusterSum = location.state.clusterSum;
     const ensembleName = location.state.ensembleName;
-    console.log(ensembleName)
+    const ensembleIndex = location.state.ensembleIndex;
+    const matrixList = location.state.distanceMatrixObj;
 
-    console.log(clusterSum)
     const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
     const clusterScatterHeight = window.innerHeight;
 
@@ -39,6 +41,7 @@ const ClusterAnalysis = () => {
                     <ClustSumTable
                         ensembleName={ensembleName}
                         clusterSum={clusterSum} />
+                    <DistanceMatrix matrixList={matrixList} />
                 </div>
             );
         } else if (selectedComponent === "scatter") {
@@ -51,7 +54,10 @@ const ClusterAnalysis = () => {
                         _currentDistrPlan={currentDistrPlan}
                         _clusterCoords={clusterCoords}
                         _clusterScatterWidth={clusterScatterWidth}
-                        _clusterScatterHeight={clusterScatterHeight} />
+                        _clusterScatterHeight={clusterScatterHeight}
+                        _ensembleIndex={ensembleIndex}
+                        _headerText={headerText}
+                    />
                 </div>
             );
         }
@@ -63,19 +69,20 @@ const ClusterAnalysis = () => {
                 <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
                 <div className="controls-container">
                     <div className="button-container">
-                        <button
-                            className={`control-button ${selectedComponent === "summary" && "active"
-                                }`}
-                            onClick={() => setSelectedComponent("summary")}
-                        >
-                            Cluster Summary
-                        </button>
+
                         <button
                             className={`control-button ${selectedComponent === "scatter" && "active"
                                 }`}
                             onClick={() => setSelectedComponent("scatter")}
                         >
                             Cluster Scatter
+                        </button>
+                        <button
+                            className={`control-button ${selectedComponent === "summary" && "active"
+                                }`}
+                            onClick={() => setSelectedComponent("summary")}
+                        >
+                            Cluster Summary & Distance Matrix
                         </button>
                     </div>
                     <div className="component-container">{renderComponent()}</div>

@@ -1,17 +1,19 @@
 // Import necessary libraries
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
-import { useLocation } from "react-router-dom";
-import Header from "./Header.js";
-import DefaultDistrMap from "./DefaultDistrMap.js";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as d3 from "d3";
+import api from "../api/posts.js";
 
-const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterScatterWidth, _clusterScatterHeight }) => {
+const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterScatterWidth, _clusterScatterHeight, _ensembleIndex, _headerText }) => {
   // Ensemble CLicked
+  const navigate = useNavigate();
   const stateID = _stateID;
+  const headerText = _headerText;
   const currentDistrPlan = _currentDistrPlan;
   const coords = _clusterCoords;
+  const ensembleIndex = _ensembleIndex;
   const margin = { top: 40, right: 30, bottom: 250, left: 50 };
   const width = _clusterScatterWidth - margin.left - margin.right;;
   const height = _clusterScatterHeight - margin.top - margin.bottom;
@@ -101,17 +103,53 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
 
   }, [width, height, margin, xAxTitle, yAxTitle, mainTitle]);
 
+  const getCoords = async (stateID, ensembleIndex, clusterIndex) => {
 
+    try {
+      const response = await api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinates`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+  const getAllDistrictPlans = async (stateID, ensembleIndex, clusterIndex) => {
+    try {
+      const response = await api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}`);
+      return response.data;
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
   const handleScatterPlotClick = async (event) => {
-    console.log("Hi");
-    console.log(event)
     // assuming x[i] where i is cluster index
     let clusterIndex = event.target.getAttribute("clustIndex");
-    alert(`point ${clusterIndex} clicked`)
+    // alert(`point ${clusterIndex} clicked`)
     try {
-      // navigate('/DistrictCompare', { state: { clusterIndex: clusterIndex } });
+      const coords = await getCoords(stateID, ensembleIndex, clusterIndex)
+      const districtPlanList = await getAllDistrictPlans(stateID, ensembleIndex, clusterIndex);
+      // console.log(coords);
+      // console.log(districtPlanList);
+      // console.log(distanceMeas);
+      navigate('/DistrictAnalysis',
+        {
+          state:
+          {
+            stateID: stateID,
+            currentDistrPlan: currentDistrPlan,
+            clusterIndex: clusterIndex,
+            ensembleIndex: ensembleIndex,
+            // .availibility .x .y
+            districtCoords: coords,
+            // [i].availability .averageoppertunitydistrictcount .name .split
+            districtPlanList: districtPlanList,
+            headerText: headerText,
+          }
+        });
     } catch (error) {
-
+      console.log(error);
     }
 
   };
