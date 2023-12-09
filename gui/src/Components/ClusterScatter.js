@@ -18,8 +18,8 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
   const width = _clusterScatterWidth - margin.left - margin.right;;
   const height = _clusterScatterHeight - margin.top - margin.bottom;
   const mainTitle = "Cluster Scatter";
-  const xAxTitle = "Measure 1";
-  const yAxTitle = "Measure 2";
+  const xAxTitle = "African American Pop";
+  const yAxTitle = "African American Pop > 50";
   const svgRef = useRef();
 
   // Use useEffect to handle side effects when the component mounts

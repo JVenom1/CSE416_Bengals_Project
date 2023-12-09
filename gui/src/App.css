@@ -172,16 +172,14 @@ body {
     width: 100%;
     border-collapse: collapse;
   }
-  
+
   th, td {
     background-color: rgb(238, 186, 119);
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #ddd;
+    border: 1px solid #000000;
   }
 
-  
-  
   th {
     background-color: rgb(215, 124, 5);
   }
@@ -208,7 +206,6 @@ body {
   
   .ensemble-button {
     cursor: pointer;
-    background: #ccc;
     padding: 8px 12px; /* Adjust padding as needed */
     border: 1px solid #666;
     border-radius: 4px; /* Add rounded corners */
@@ -221,7 +218,8 @@ body {
 }
 
 .ensemble-button:hover {
-    background: #ddd; /* Change background color on hover */
+    background-color: rgb(155, 124, 78);
+
 }
 .disabled-button {
     cursor: not-allowed;
