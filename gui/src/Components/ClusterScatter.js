@@ -75,8 +75,8 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
     svg
       .append('text')
       .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2 + margin.top)
-      .attr('y', margin.left - 30)
+      .attr('x', -height / 2 + margin.top - 70)
+      .attr('y', margin.left - 35)
       .attr('text-anchor', 'middle')
       .text(yAxTitle);
 
