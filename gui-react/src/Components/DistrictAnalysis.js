@@ -2,10 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
 import Header from "./Header";
-import DefaultDistrMap from "./DefaultDistrMap";
-import * as d3 from "d3";
 import CompareDistrMap from "./CompareDistrMap";
 
 
