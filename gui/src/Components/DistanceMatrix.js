@@ -9,10 +9,7 @@ const MatrixTable = ({ matrixList }) => {
             convertedObject2DArr[key] = matrixList[key].map(obj => obj.item);
         }
     }
-
-    console.log(convertedObject2DArr);
     matrixList = { "key1": [[0, 1, 2], [0, 1, 2], [0, 1, 2]], "key2": [[9999, 1, 2], [0, 1, 2], [0, 1, 2]] }
-    console.log(matrixList)
 
     const [selectedKey, setSelectedKey] = useState(Object.keys(convertedObject2DArr)[0]);
 
