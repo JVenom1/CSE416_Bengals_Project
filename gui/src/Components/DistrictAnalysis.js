@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import CompareDistrMap from "./CompareDistrMap";
 import DistrictScatter from "./DistrictScatter";
@@ -11,9 +11,6 @@ import mNum from "../Helpers/mNum";
 const DistrictAnalysis = () => {
   document.body.style.cursor = "default";
   const location = useLocation();
-  const [selectedScatter, setSelectedScatter] = useState(null);
-  const mapOneID = 1;
-  const mapTwoID = 2;
   const headerText = location.state.headerText + " > District Analysis";
   const stateID = location.state.stateID;
   const currentDistPlan = location.state.currentDistrPlan;

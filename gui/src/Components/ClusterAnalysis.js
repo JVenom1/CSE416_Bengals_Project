@@ -1,5 +1,5 @@
 // Import necessary libraries
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation } from "react-router-dom";

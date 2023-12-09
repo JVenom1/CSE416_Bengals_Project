@@ -2,7 +2,7 @@
 import { useEffect, useRef } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as d3 from "d3";
 import api from "../api/posts.js";
 
@@ -101,7 +101,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
       .on("click", (event) => handleScatterPlotClick(event))
       .style('fill', 'green');
 
-  }, [width, height, margin, xAxTitle, yAxTitle, mainTitle]);
+  });
 
   const getCoords = async (stateID, ensembleIndex, clusterIndex) => {
 

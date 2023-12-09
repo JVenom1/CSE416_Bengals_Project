@@ -91,7 +91,7 @@ const ClusterAssociationScatter = ({
             .attr('cy', (d, i) => yScale(coords.clustCount[i]))
             .attr('r', 5)
             .style('fill', 'blue');
-    }, [currentState, width, height, margin, xAxTitle, yAxTitle, mainTitle]);
+    });
 
     return <svg ref={svgRef} viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight}`}></svg>;
 };

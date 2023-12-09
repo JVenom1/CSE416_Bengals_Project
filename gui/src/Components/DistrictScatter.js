@@ -1,6 +1,6 @@
 import "../App.css";
 import * as d3 from "d3";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import api from "../api/posts.js";
 
 const DistrictScatter = ({
@@ -20,7 +20,7 @@ const DistrictScatter = ({
   const stateID = _stateID;
   const ensembleIndex = _ensembleIndex;
   const clusterIndex = _clusterIndex;
-  const districtPlans = _districtPlans;
+  // const districtPlans = _districtPlans;
   const margin = { top: 40, right: 30, bottom: 250, left: 50 };
   const coords = _coords;
   const setDistrictPlan1 = _setDistrictPlan1;
@@ -111,7 +111,7 @@ const DistrictScatter = ({
       })
       .on("click", (event) => handleScatterPlotClick(event))
       .style("fill", (d, i) => (coords.available[i] ? "green" : "grey"));
-  }, [width, height, margin, xAxTitle, yAxTitle, mainTitle]);
+  });
 
   const handleScatterPlotClick = async (e) => {
     if (e.target.getAttribute("available")) {

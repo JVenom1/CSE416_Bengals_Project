@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from "../api/posts.js"
+import React from 'react';
 const ClustSumTable = ({ ensembleName, clusterSum }) => {
 
 

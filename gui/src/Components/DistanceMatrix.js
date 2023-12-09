@@ -21,7 +21,6 @@ const MatrixTable = ({ matrixList }) => {
     };
 
     const selectedMatrix = convertedObject2DArr[selectedKey];
-    const numRows = selectedMatrix.length;
     const numCols = selectedMatrix[0].length;
 
     return (
