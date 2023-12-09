@@ -118,6 +118,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
     try {
       const response = await api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}`);
       return response.data;
+
     }
     catch (error) {
       console.log(error)
@@ -125,7 +126,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
   }
   const handleScatterPlotClick = async (event) => {
     // assuming x[i] where i is cluster index
-    let clusterIndex = event.target.getAttribute("clustIndex");
+    const clusterIndex = event.target.getAttribute("clustIndex");
     // alert(`point ${clusterIndex} clicked`)
     try {
       const coords = await getCoords(stateID, ensembleIndex, clusterIndex)

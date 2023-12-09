@@ -9,6 +9,7 @@ body {
 .app-container {
     height: 100vh;
     display: flex;
+    overflow: hidden;
     flex-direction: column;
 }
 
