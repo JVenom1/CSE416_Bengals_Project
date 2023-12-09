@@ -44,6 +44,15 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             console.log(error);
         }
     }
+    const getAllDistanceMeasures = async (stateID, ensembleIndex) => {
+        try {
+            const response = await api.get(`/${stateID}/${ensembleIndex}/distance_measures`);
+            return response.data;
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
     const handleEnsemClick = async (ensembleName) => {
         console.log(ensembleName)
         const ensembleIndex = parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
@@ -51,6 +60,7 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
         const clusterCoords = await getClustCoords(stateID, ensembleIndex);
         // pass list of cluster in said ensemble
         const clusterSum = await getEnsemble(stateID, ensembleIndex);
+        const allDistanceMeasuresMatrix = await getAllDistanceMeasures(stateID, ensembleIndex);
         navigate("/ClusterAnalysis",
             {
                 state: {
@@ -62,6 +72,10 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
                     clusterScatterHeight: clusterScatterHeight,
                     clusterSum: clusterSum,
                     ensembleName: ensembleName,
+                    ensembleIndex: ensembleIndex,
+                    //  matrix soon to have 3 key:value pairs for the 3 distances (now its just data)
+                    //  .data=array[ixi]
+                    distanceMatrixObj: allDistanceMeasuresMatrix,
                 }
             });
     }
