@@ -121,6 +121,7 @@ const DistrictScatter = ({
           `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
         );
         const plan = response.data;
+
         if (plan === true) {
           if (buttonIndex === 1) {
             setDistrictPlan1(plan);
@@ -130,6 +131,15 @@ const DistrictScatter = ({
             alert("Buttom Map Selected");
           } else {
             alert("Please Select A Button");
+          }
+        }
+        // for testing
+        else {
+          if (buttonIndex === 1 || buttonIndex === 2) {
+            alert("District Plan Failed to Retrieve");
+          }
+          else {
+            alert("Please Select A Button")
           }
         }
       } catch (err) {
