@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation } from "react-router-dom";
@@ -20,6 +20,19 @@ const DistrictAnalysis = () => {
   const districtPlanList = location.state.districtPlanList;
   const [districtPlan1, setDistrictPlan1] = useState(currentDistPlan);
   const [districtPlan2, setDistrictPlan2] = useState(null); // if error change to []
+  const [newDistrictPlan1, setNewDistrictPlan1] = useState(currentDistPlan);
+  const [newDistrictPlan2, setNewDistrictPlan2] = useState(null);
+
+  useEffect(() => {
+    setDistrictPlan1(newDistrictPlan1);
+  }, [newDistrictPlan1])
+
+  useEffect(() => {
+    console.log(newDistrictPlan2)
+    setDistrictPlan2(newDistrictPlan2);
+  }, [newDistrictPlan2])
+
+
   const [buttonIndex, setButtonIndex] = useState(0);
 
   const handleRestoreMaps = () => {
@@ -70,8 +83,8 @@ const DistrictAnalysis = () => {
                 _width={window.innerWidth / 2}
                 _height={window.innerHeight / 2 + 90}
                 _coords={districtCoords}
-                _setDistrictPlan1={setDistrictPlan1}
-                _setDistrictPlan2={setDistrictPlan2}
+                _setDistrictPlan1={setNewDistrictPlan1}
+                _setDistrictPlan2={setNewDistrictPlan2}
                 _districtPlans={districtPlanList}
                 _buttonIndex={buttonIndex}
               />

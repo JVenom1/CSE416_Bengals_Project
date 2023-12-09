@@ -118,17 +118,19 @@ const DistrictScatter = ({
       const districtIndex = e.target.getAttribute("district-index");
       try {
         const response = await api.get(
-          `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
+          `/2/0/0/1`
         );
+        // const response = await api.get(
+        //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
+        // );
         const plan = response.data;
-
-        if (plan === true) {
+        if (plan) {
           if (buttonIndex === 1) {
             setDistrictPlan1(plan);
             alert("Top Map Selected");
           } else if (buttonIndex === 2) {
             setDistrictPlan2(plan);
-            alert("Buttom Map Selected");
+            alert("Bottom Map Selected");
           } else {
             alert("Please Select A Button");
           }

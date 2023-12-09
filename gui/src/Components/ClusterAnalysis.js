@@ -12,7 +12,7 @@ import DistanceMatrix from "./DistanceMatrix.js";
 
 const ClusterAnalysis = () => {
     document.body.style.cursor = 'default';
-    const [selectedComponent, setSelectedComponent] = useState("scatter");//summary
+    const [selectedComponent, setSelectedComponent] = useState("summary");//summary
     const location = useLocation();
     const stateID = location.state.stateID;
     const headerText = location.state.headerText + " > Cluster Analysis";
@@ -70,14 +70,6 @@ const ClusterAnalysis = () => {
                 <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
                 <div className="controls-container">
                     <div className="button-container">
-
-                        <button
-                            className={`control-button ${selectedComponent === "scatter" && "active"
-                                }`}
-                            onClick={() => setSelectedComponent("scatter")}
-                        >
-                            Cluster Scatter
-                        </button>
                         <button
                             className={`control-button ${selectedComponent === "summary" && "active"
                                 }`}
@@ -85,6 +77,14 @@ const ClusterAnalysis = () => {
                         >
                             Cluster Summary & Distance Matrix
                         </button>
+                        <button
+                            className={`control-button ${selectedComponent === "scatter" && "active"
+                                }`}
+                            onClick={() => setSelectedComponent("scatter")}
+                        >
+                            Cluster Scatter
+                        </button>
+
                     </div>
                     <div className="component-container">{renderComponent()}</div>
 
