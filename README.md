@@ -4,7 +4,7 @@ Main Project Folder For Our Bengals Project
 
 # GUI
 
-cd gui-react
+cd gui
 
 npm install npm
 npm install react react-dom leaflet
