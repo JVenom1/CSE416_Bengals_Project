@@ -6,7 +6,7 @@ const ClusterAssociationScatter = ({
     clusterScatterWidth,
     clusterScatterHeight,
 }) => {
-    const margin = { top: 40, right: 30, bottom: 250, left: 80 };
+    const margin = { top: 70, right: 30, bottom: 250, left: 80 };
     const width = clusterScatterWidth - margin.left - margin.right;
     const height = clusterScatterHeight - margin.top - margin.bottom;
     const mainTitle = "Ensemble vs Cluster";
@@ -59,7 +59,7 @@ const ClusterAssociationScatter = ({
             .attr('x', width / 2 + margin.left)
             .attr('y', margin.top / 2)
             .attr('text-anchor', 'middle')
-            .style('font-size', '1.5em')
+            .style('font-size', '2.5em')
             .text(mainTitle);
 
         // Add X Axis Label
@@ -69,6 +69,7 @@ const ClusterAssociationScatter = ({
             .attr('y', height + margin.top + margin.bottom - 200)
             .attr('text-anchor', 'middle')
             .style('dy', '1.5em')  // Adjust the vertical offset as needed
+            .style('font-size', "1.2em")
             .text(xAxTitle);
 
 
@@ -76,9 +77,10 @@ const ClusterAssociationScatter = ({
         svg
             .append('text')
             .attr('transform', 'rotate(-90)')
-            .attr('x', -height / 4 - margin.top)
-            .attr('y', margin.left - 30)
+            .attr('x', -height / 2 - margin.top)
+            .attr('y', margin.left - 40)
             .attr('text-anchor', 'middle')
+            .style('font-size', "1.2em")
             .text(yAxTitle);
 
         // Add Circles
@@ -90,8 +92,8 @@ const ClusterAssociationScatter = ({
             .attr('cx', (d) => xScale(d))
             .attr('cy', (d, i) => yScale(coords.clustCount[i]))
             .attr('r', 5)
-            .style('fill', 'blue');
-    });
+            .style('fill', 'grey');
+    }, [currentState, clusterScatterWidth, clusterScatterHeight, width, height]);
 
     return <svg ref={svgRef} viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight}`}></svg>;
 };

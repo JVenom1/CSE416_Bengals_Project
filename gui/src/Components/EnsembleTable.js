@@ -53,6 +53,21 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             console.log(error)
         }
     }
+    const handleDistanceMeasClick = async (ensembleName) => {
+        const ensembleIndex = parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
+        document.body.style.cursor = 'wait';
+        const allDistanceMeasuresMatrix = await getAllDistanceMeasures(stateID, ensembleIndex);
+        navigate("/DistMatrixTable",
+            {
+                state:
+                {
+                    stateID: stateID,
+                    headerText: headerText,
+                    currentDistrPlan: currentDistrPlan,
+                    matrixList: allDistanceMeasuresMatrix
+                }
+            });
+    }
     const handleEnsemClick = async (ensembleName) => {
         const ensembleIndex = parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
         // then the details like Hispanic population vs black population
@@ -60,7 +75,6 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
         const clusterCoords = await getClustCoords(stateID, ensembleIndex);
         // pass list of cluster in said ensemble
         const clusterSum = await getEnsemble(stateID, ensembleIndex);
-        const allDistanceMeasuresMatrix = await getAllDistanceMeasures(stateID, ensembleIndex);
         navigate("/ClusterAnalysis",
             {
                 state: {
@@ -75,37 +89,49 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
                     ensembleIndex: ensembleIndex,
                     //  matrix soon to have 3 key:value pairs for the 3 distances (now its just data)
                     //  .data=array[ixi]
-                    distanceMatrixObj: allDistanceMeasuresMatrix,
+
                 }
             });
     }
 
     return (
         <div className="table-container" >
-            <table>
+            <table style={{ padding: '10px' }}>
                 <thead>
                     <tr>
                         <th>Ensemble Name</th>
                         <th>Ensemble Size</th>
                         <th>Cluster Count</th>
+                        <th>Cluster Analysis</th>
+                        <th>Distance Measures</th>
                     </tr>
                 </thead>
                 <tbody>
                     {displayedEnsembleDetails.map((row, index) => (
                         <tr key={index}>
-                            <td className='ensemble-button' onClick={() => handleEnsemClick(row.name)}>{row.name}</td>
+                            <td>{row.name}</td>
                             <td>{row.ensemblesize}</td>
                             <td>{row.clustercount}</td>
+                            <td>
+                                <button onClick={() => handleEnsemClick(row.name)}>
+                                    {`CA-${index + 1}`}
+                                </button>
+                            </td>
+                            <td>
+                                <button onClick={() => handleDistanceMeasClick(row.name)}>
+                                    {`DM-${index + 1}`}
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            <div>
+            <div style={{ padding: '10px' }}>
                 <button onClick={handlePrevClick} disabled={currentPage === 1}>
                     Prev
                 </button>
-                <span>{`Page ${currentPage}`}</span>
+                <span style={{ padding: '5px' }}>{`Page ${currentPage}`}</span>
                 <button onClick={handleNextClick} disabled={currentPage === Math.ceil(ensembleDetails.length / rowsPerPage)}>
                     Next
                 </button>

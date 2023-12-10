@@ -115,34 +115,23 @@ const DistrictScatter = ({
 
   const handleScatterPlotClick = async (e) => {
     if (e.target.getAttribute("available")) {
-      const districtIndex = e.target.getAttribute("district-index");
       try {
         const response = await api.get(
           `/2/0/0/1`
         );
+        // const districtIndex = e.target.getAttribute("district-index");
         // const response = await api.get(
         //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
         // );
         const plan = response.data;
-        if (plan) {
-          if (buttonIndex === 1) {
-            setDistrictPlan1(plan);
-            alert("Top Map Selected");
-          } else if (buttonIndex === 2) {
-            setDistrictPlan2(plan);
-            alert("Bottom Map Selected");
-          } else {
-            alert("Please Select A Button");
-          }
-        }
-        // for testing
-        else {
-          if (buttonIndex === 1 || buttonIndex === 2) {
-            alert("District Plan Failed to Retrieve");
-          }
-          else {
-            alert("Please Select A Button")
-          }
+        if (buttonIndex === 1) {
+          setDistrictPlan1(plan);
+          alert("Top Map Selected");
+        } else if (buttonIndex === 2) {
+          setDistrictPlan2(plan);
+          alert("Bottom Map Selected");
+        } else {
+          alert("Please Select A Button");
         }
       } catch (err) {
         console.log(err);

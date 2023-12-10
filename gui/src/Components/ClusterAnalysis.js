@@ -7,7 +7,6 @@ import Header from "./Header.js";
 import DefaultDistrMap from "./DefaultDistrMap.js";
 import ClusterScatter from "./ClusterScatter.js";
 import ClustSumTable from "./ClustSumTable.js";
-import DistanceMatrix from "./DistanceMatrix.js";
 
 
 const ClusterAnalysis = () => {
@@ -21,7 +20,6 @@ const ClusterAnalysis = () => {
     const clusterSum = location.state.clusterSum;
     const ensembleName = location.state.ensembleName;
     const ensembleIndex = location.state.ensembleIndex;
-    const matrixList = location.state.distanceMatrixObj;
 
     const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
     const clusterScatterHeight = window.innerHeight;
@@ -42,7 +40,7 @@ const ClusterAnalysis = () => {
                     <ClustSumTable
                         ensembleName={ensembleName}
                         clusterSum={clusterSum} />
-                    <DistanceMatrix matrixList={matrixList} />
+
                 </div>
             );
         } else if (selectedComponent === "scatter") {

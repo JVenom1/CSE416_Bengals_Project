@@ -106,14 +106,14 @@ const StateSelection = () => {
           </div>
           <div className="welcome-container">
             <div className="welcome-text">
-              <h1>Welcome to Bengals</h1>
-              <h4>
+              <h1 style={{ fontSize: '50px' }}>Welcome to Bengals</h1>
+              <h4 style={{ fontSize: '25px' }}>
                 Have fun with our cluster analysis on sets of random district
                 plans.
               </h4>
             </div>
             <div className="dropdown-menu">
-              <h5>Please Select A State From Below Or On The Map</h5>
+              <h5 style={{ fontSize: '20px' }}>Please Select A State From Below Or On The Map</h5>
               <select value={selectedState} onChange={handleStateSelect}>
                 <option value="" disabled>
                   Select a State

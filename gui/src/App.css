@@ -8,7 +8,7 @@ body {
     cursor: wait !important;
   }
 .app-container {
-    background-color: rgb(247, 186, 93);
+    background-color: rgb(251, 213, 156);
     height: 100vh;
     display: flex;
     overflow: hidden;
@@ -25,14 +25,18 @@ body {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.reset-button {
+.header-button {
     background-color: rgb(0, 0, 0);
     color: #ffffff;
-    padding: 8px 12px;
+    padding: 6px 12px;
+    margin-right: 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
+/* .header-button-list {
+
+} */
 
 .header-text {
     font-size: x-large;
@@ -52,6 +56,7 @@ body {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px;
     padding: 20px;
+    border-radius: 10px;
 }
 .bottom-right{
     background-color: rgb(248, 233, 211);
@@ -60,6 +65,7 @@ body {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px;
     padding: 20px;
+    border-radius: 10px;
 }
 
 .leaflet-container {
@@ -77,6 +83,7 @@ body {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px;
     padding: 20px;
+    border-radius: 10px;
 }
 .mini-map-container {
     background-color: rgb(248, 233, 211);
@@ -87,10 +94,12 @@ body {
 .controls-container{
     background-color: rgb(248, 233, 211);
     width:60%;
+    text-align: center;
     overflow: hidden;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px;
     padding: 20px;
+    border-radius: 5px;
 }
 
 .welcome-container {
@@ -98,6 +107,7 @@ body {
     width: 60%;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     margin: 20px;
+    border-radius: 10px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -114,16 +124,33 @@ body {
     text-align: center;
     /* Add styles for your dropdown menu */
 }
+.header .header-button[disabled] {
+    cursor: not-allowed;
+  }
+select {
+    text-align: center;
+    background-color: #d9cea8;
+    width: 100%; /* Make the dropdown full-width */
+    padding: 10px; /* Add some padding to the dropdown */
+    border: 1px solid #ccc; /* Add a border for better visibility */
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
 
+  select:hover{
+    cursor: pointer;
+  }
 /* Add these styles to your App.css file */
 
 .button-container {
+    border-radius: 5px;
     display: flex;
     width: 100%;
 }
 
 .control-button {
     flex-grow: 1;
+    border-radius: 5px;
     padding: 10px;
     border: none;
     background-color: rgb(236, 190, 120);
@@ -133,11 +160,13 @@ body {
 }
 
 .control-button.active {
+    border-radius: 5px;
     border: #000000;
     background-color: rgb(155, 124, 78);
 }
 
 .component-container{
+    padding: 20px;
     text-align: center;
 }
 
@@ -166,8 +195,23 @@ body {
     margin: 20px;
     padding: 20px;
   }
-  
+  button{
+    background-color: rgb(237, 218, 194);
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid #000000;
+  }
+  button:hover{
+    cursor: pointer;
+    background-color: rgb(164, 150, 134);
+  }
+  button:disabled{
+    cursor: not-allowed;
+    background-color: #ccc;
+  }
   table {
+    border-radius: 5px;
     background-color: rgb(248, 233, 211);
     width: 100%;
     border-collapse: collapse;
@@ -199,16 +243,11 @@ body {
     cursor: pointer;
   }
   
-  .pagination-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
   .ensemble-button {
     cursor: pointer;
     padding: 8px 12px; /* Adjust padding as needed */
     border: 1px solid #666;
-    border-radius: 4px; /* Add rounded corners */
+    border-radius: 5px;
     /* display: inline-block; */
     text-align: center;
     text-decoration: none; /* Remove underline for anchor tags */
@@ -219,10 +258,12 @@ body {
 
 .ensemble-button:hover {
     background-color: rgb(155, 124, 78);
+    border-radius: 5px;
 
 }
 .disabled-button {
+    border-radius: 5px;
     cursor: not-allowed;
-    opacity: 0.6;
+    /* opacity: 0.6; */
     /* Add any other styles to visually indicate that the button is disabled */
   }
