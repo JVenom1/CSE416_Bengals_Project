@@ -14,9 +14,9 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
   const currentDistrPlan = _currentDistrPlan;
   const coords = _clusterCoords;
   const ensembleIndex = _ensembleIndex;
-  const margin = { top: 40, right: 30, bottom: 250, left: 50 };
-  const width = _clusterScatterWidth - margin.left - margin.right;;
-  const height = _clusterScatterHeight - margin.top - margin.bottom;
+  const margin = { top: 60, right: 30, bottom: 250, left: -70 };
+  const width = _clusterScatterWidth - margin.left - margin.right + 100;
+  const height = _clusterScatterHeight - margin.top - margin.bottom + 200;
   const mainTitle = "Cluster Scatter";
   const xAxTitle = "African American Pop";
   const yAxTitle = "African American Pop > 50";
@@ -29,12 +29,12 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
 
     const xScale = d3
       .scaleLinear()
-      .domain([0, d3.max(coords.x)])
+      .domain([0, d3.max(coords.x) * 1.2])
       .range([margin.left, width + margin.left]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(coords.y)])
+      .domain([0, d3.max(coords.y) * 1.2])
       .range([height + margin.top, margin.top]);
 
     const xAxis = d3.axisBottom(xScale);
@@ -58,7 +58,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
       .attr('x', width / 2 + margin.left)
       .attr('y', margin.top / 2)
       .attr('text-anchor', 'middle')
-      .style('font-size', '1.5em')
+      .style('font-size', '2.5em')
       .text(mainTitle);
 
     // Add X Axis Label
@@ -68,6 +68,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
       .attr('y', height + margin.top + margin.bottom - 200)
       .attr('text-anchor', 'middle')
       .style('dy', '1.5em')  // Adjust the vertical offset as needed
+      .style('font-size', '1.8em')
       .text(xAxTitle);
 
 
@@ -78,6 +79,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
       .attr('x', -height / 2 + margin.top - 70)
       .attr('y', margin.left - 35)
       .attr('text-anchor', 'middle')
+      .style('font-size', '1.8em')
       .text(yAxTitle);
 
     // Add Circles
@@ -153,10 +155,13 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
   };
   return (
     <>
-      {/* <svg ref={svgRef} viewBox={`0 0 ${width} ${height}`}></svg> */}
-      {/* <div className="clustScatContainer"> */}
-      <svg ref={svgRef} width={width + margin.left + margin.right} height={height + margin.top + margin.bottom}></svg>
-
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${_clusterScatterWidth + 30} ${_clusterScatterHeight + 30}`}
+        preserveAspectRatio="xMidYMid meet"
+        width="100%"
+        height="100%"
+      ></svg>
     </>);
 };
 

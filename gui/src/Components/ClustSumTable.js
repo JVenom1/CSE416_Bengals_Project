@@ -1,19 +1,21 @@
 import React from 'react';
 const ClustSumTable = ({ ensembleName, clusterSum }) => {
-
-
-
     const keys = Object.keys(clusterSum);
-
+    // averagedistancehd | averagedistanceot | numberofplans
+    // console.log(keys)
     return (
         <div className="table-container">
             <table>
                 <thead>
                     <tr>
                         <th>Ensemble</th>
-                        {keys.map((key) => (
+                        <th>Avg Hamming</th>
+                        <th>Avg Optimal Transport</th>
+                        <th># of Plans</th>
+                        {/* {keys.map((key) => (
                             <th key={key}>{key}</th>
-                        ))}
+                        ))} */}
+
                     </tr>
                 </thead>
                 <tbody>

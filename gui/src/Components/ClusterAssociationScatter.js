@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 const ClusterAssociationScatter = ({
-    currentState,
+    _coords,
     clusterScatterWidth,
     clusterScatterHeight,
 }) => {
@@ -13,29 +13,20 @@ const ClusterAssociationScatter = ({
     const xAxTitle = "Ensemble Size";
     const yAxTitle = "Cluster Count";
     const svgRef = useRef();
-
-    const getCoordinates = (state) => {
-        let coords = { ensemSize: [], clustCount: [] };
-        for (let i = 0; i < state.length; i++) {
-            coords.ensemSize.push(state[i].ensemblesize);
-            coords.clustCount.push(state[i].clustercount);
-        }
-        return coords;
-    };
+    const coords = _coords;
 
     useEffect(() => {
-        const coords = getCoordinates(currentState);
         const svg = d3.select(svgRef.current);
         svg.selectAll('*').remove();
 
         const xScale = d3
             .scaleLinear()
-            .domain([0, d3.max(coords.ensemSize)])
+            .domain([0, d3.max(coords.x)])
             .range([margin.left, width + margin.left]);
 
         const yScale = d3
             .scaleLinear()
-            .domain([0, d3.max(coords.clustCount)])
+            .domain([0, d3.max(coords.y)])
             .range([height + margin.top, margin.top]);
 
         const xAxis = d3.axisBottom(xScale);
@@ -72,7 +63,6 @@ const ClusterAssociationScatter = ({
             .style('font-size', "1.2em")
             .text(xAxTitle);
 
-
         // Add Y Axis Label
         svg
             .append('text')
@@ -86,14 +76,29 @@ const ClusterAssociationScatter = ({
         // Add Circles
         svg
             .selectAll('circle')
-            .data(coords.ensemSize)
+            .data(coords.x)
             .enter()
             .append('circle')
             .attr('cx', (d) => xScale(d))
-            .attr('cy', (d, i) => yScale(coords.clustCount[i]))
+            .attr('cy', (d, i) => yScale(coords.y[i]))
             .attr('r', 5)
-            .style('fill', 'grey');
-    }, [currentState, clusterScatterWidth, clusterScatterHeight, width, height]);
+            .style('fill', 'black');
+
+        // Add Line
+        const line = d3.line()
+            .x((d, i) => xScale(coords.x[i]))
+            .y((d, i) => yScale(d))
+            .curve(d3.curveMonotoneX);  // You can choose a different curve type if needed
+
+        svg
+            .append('path')
+            .data([coords.y])
+            .attr('d', line)
+            .attr('fill', 'none')
+            .attr('stroke', 'blue')
+            .attr('stroke-width', 2);
+    }, [_coords, clusterScatterWidth, clusterScatterHeight, width, height]);
+
 
     return <svg ref={svgRef} viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight}`}></svg>;
 };

@@ -7,53 +7,48 @@ import CompareDistrMap from "./CompareDistrMap";
 import DistrictScatter from "./DistrictScatter";
 import DistrictSummaryTable from "./DistrictSummaryTable";
 import mNum from "../Helpers/mNum";
+import { select } from "d3";
 
 const DistrictAnalysis = () => {
   document.body.style.cursor = "default";
   const location = useLocation();
   const headerText = location.state.headerText + " > District Analysis";
   const stateID = location.state.stateID;
-  const currentDistPlan = location.state.currentDistrPlan;
+  const districtPlan1 = location.state.currentDistrPlan;
   const clusterIndex = location.state.clusterIndex;
   const ensembleIndex = location.state.ensembleIndex;
   const districtCoords = location.state.districtCoords;
   const districtPlanList = location.state.districtPlanList;
-  const [districtPlan1, setDistrictPlan1] = useState(currentDistPlan);
-  const [districtPlan2, setDistrictPlan2] = useState(null); // if error change to []
-  const [newDistrictPlan1, setNewDistrictPlan1] = useState(currentDistPlan);
-  const [newDistrictPlan2, setNewDistrictPlan2] = useState(null);
+
+  const [scatterClickedIndex, setScatterClickedIndex] = useState(null)
+  const [selectedPlans, setSelectedPlans] = useState([]);
 
   useEffect(() => {
-    setDistrictPlan1(newDistrictPlan1);
-  }, [newDistrictPlan1])
+
+  }, [scatterClickedIndex])
+
 
   useEffect(() => {
-    console.log(newDistrictPlan2)
-    setDistrictPlan2(newDistrictPlan2);
-  }, [newDistrictPlan2])
+    changeMapSizeXbyY("80%", "40vw");
+  }, [])
+  const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
+    const leafletContainer = document.querySelector(".leaflet-container");
+    leafletContainer.style.width = width;
+    leafletContainer.style.height = height;
+  };
 
-
-  const [buttonIndex, setButtonIndex] = useState(0);
 
   const handleRestoreMaps = () => {
-    setDistrictPlan1(currentDistPlan);
-    setDistrictPlan2(null); // if error switch to []
+    setSelectedPlans([]); // Reset selected plans when restoring maps
+  };
+  const handleCheckboxChange = (index) => {
+    // Handle checkbox change
+    const updatedSelectedPlans = [...selectedPlans];
+    updatedSelectedPlans[index] = !selectedPlans[index];
+    setSelectedPlans(updatedSelectedPlans);
   };
 
-  const handleTopMap = () => {
-    setButtonIndex(1);
-  };
-  const handleBottomMap = () => {
-    setButtonIndex(2);
-  };
-  const TwoMaps = () => {
-    return (
-      <>
-        <CompareDistrMap stateID={stateID} currentDistrPlan={districtPlan1} />
-        <CompareDistrMap stateID={stateID} currentDistrPlan={districtPlan2} />
-      </>
-    );
-  };
+
 
   return (
     <>
@@ -61,17 +56,19 @@ const DistrictAnalysis = () => {
         <Header headerText={headerText} />
         <div className="main-container">
           <div className="map-container">
-            <button id="top-map" value={1} onClick={handleTopMap}>
+            {/* <button id="top-map" value={1} onClick={handleTopMap}>
               Select Top Map
             </button>
             <button id="bottom-map" value={2} onClick={handleBottomMap}>
               Select Bottom Map
-            </button>
-            <button id="restore" value={3} onClick={handleRestoreMaps}>
-              Reset Maps
-            </button>
-            <h2>{mNum.stateNumsToPrefix[stateID]} District Plan</h2>
-            <TwoMaps />
+            </button> */}
+
+            <h2>
+              {/* <button id="restore" value={3} onClick={handleRestoreMaps}>
+                Reset Map
+              </button> */}
+              {mNum.stateNumsToPrefix[stateID]} District Plan </h2>
+            <CompareDistrMap stateID={stateID} currentDistrPlan={districtPlan1} selectedPlans={selectedPlans} distPlanList={districtPlanList} />
           </div>
 
           <div className="right-pane">
@@ -83,10 +80,10 @@ const DistrictAnalysis = () => {
                 _width={window.innerWidth / 2}
                 _height={window.innerHeight / 2 + 90}
                 _coords={districtCoords}
-                _setDistrictPlan1={setNewDistrictPlan1}
-                _setDistrictPlan2={setNewDistrictPlan2}
                 _districtPlans={districtPlanList}
-                _buttonIndex={buttonIndex}
+                _setDistrictPlan={setSelectedPlans}
+                _selectedPlans={selectedPlans}
+                _scatterClickedIndex={setScatterClickedIndex}
               />
             </div>
 

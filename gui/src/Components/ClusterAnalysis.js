@@ -7,16 +7,20 @@ import Header from "./Header.js";
 import DefaultDistrMap from "./DefaultDistrMap.js";
 import ClusterScatter from "./ClusterScatter.js";
 import ClustSumTable from "./ClustSumTable.js";
+import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
+import ClusterDetailTable from "./ClusterDetailTable.js";
 
 
 const ClusterAnalysis = () => {
     document.body.style.cursor = 'default';
-    const [selectedComponent, setSelectedComponent] = useState("summary");//summary
+    const [selectedComponent, setSelectedComponent] = useState("details");//details
     const location = useLocation();
     const stateID = location.state.stateID;
     const headerText = location.state.headerText + " > Cluster Analysis";
     const currentDistrPlan = location.state.currentDistrPlan;
     const clusterCoords = location.state.clusterCoords;
+    const clusterAssocCoords = location.state.clusterAssocCoords;
+    const clusterNameList = location.state.clusters;
     const clusterSum = location.state.clusterSum;
     const ensembleName = location.state.ensembleName;
     const ensembleIndex = location.state.ensembleIndex;
@@ -30,50 +34,55 @@ const ClusterAnalysis = () => {
         leafletContainer.style.height = height;
     };
     useEffect(() => {
-        changeMapSizeXbyY("85%", "40vw");
+        changeMapSizeXbyY("66%", "40vw");
     })
     const renderComponent = () => {
-        if (selectedComponent === "summary") {
-            // Return the ClustSumTable Selection component
-            return (
-                <div>
-                    <ClustSumTable
-                        ensembleName={ensembleName}
-                        clusterSum={clusterSum} />
+        if (selectedComponent === "details") {
+            // console.log(clusterNameList)
 
-                </div>
+            return (<>Cluster Details -- isn't details per cluster aka district plans?</>
+                // <ClusterDetailTable clusterDet={clusterNameList} />
             );
         } else if (selectedComponent === "scatter") {
             // Return the Cluster Scatter component
 
             return (
-                <div>
-                    <ClusterScatter
-                        _stateID={stateID}
-                        _currentDistrPlan={currentDistrPlan}
-                        _clusterCoords={clusterCoords}
-                        _clusterScatterWidth={clusterScatterWidth}
-                        _clusterScatterHeight={clusterScatterHeight}
-                        _ensembleIndex={ensembleIndex}
-                        _headerText={headerText}
-                    />
-                </div>
+                <ClusterScatter
+                    _stateID={stateID}
+                    _currentDistrPlan={currentDistrPlan}
+                    _clusterCoords={clusterCoords}
+                    _clusterScatterWidth={clusterScatterWidth}
+                    _clusterScatterHeight={clusterScatterHeight}
+                    _ensembleIndex={ensembleIndex}
+                    _headerText={headerText}
+                />
+
             );
+        } else if (selectedComponent === "assoc") {
+            return (<div>
+                <ClusterAssociationScatter _coords={clusterAssocCoords} clusterScatterWidth={clusterScatterWidth} clusterScatterHeight={clusterScatterHeight} />
+            </div>)
         }
     };
     return <>
         <div className="app-container">
             <Header headerText={headerText} />
             <div className="main-container">
-                <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
+                <div className="map-container">
+                    <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
+                    <ClustSumTable
+                        ensembleName={ensembleName}
+                        clusterSum={clusterSum} />
+                </div>
+
                 <div className="controls-container">
                     <div className="button-container">
                         <button
-                            className={`control-button ${selectedComponent === "summary" && "active"
+                            className={`control-button ${selectedComponent === "details" && "active"
                                 }`}
-                            onClick={() => setSelectedComponent("summary")}
+                            onClick={() => setSelectedComponent("details")}
                         >
-                            Cluster Summary & Distance Matrix
+                            Cluster Details
                         </button>
                         <button
                             className={`control-button ${selectedComponent === "scatter" && "active"
@@ -81,6 +90,13 @@ const ClusterAnalysis = () => {
                             onClick={() => setSelectedComponent("scatter")}
                         >
                             Cluster Scatter
+                        </button>
+                        <button
+                            className={`control-button ${selectedComponent === "assoc" && "active"
+                                }`}
+                            onClick={() => setSelectedComponent("assoc")}
+                        >
+                            Cluster Association
                         </button>
 
                     </div>

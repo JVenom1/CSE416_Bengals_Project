@@ -11,11 +11,11 @@ import "leaflet/dist/leaflet.css";
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
-
+import test from "../Data/test.json";
 const StateSelection = () => {
   const [selectedState, setSelectedState] = useState("");
   const navigate = useNavigate();
-  const headerText = "Bengals > State Selection";
+  const headerText = "States";
   // Handlers
   const handleStateOutline = (geoData) => {
     return (
@@ -48,14 +48,14 @@ const StateSelection = () => {
       stateID = mNum.stateNumbers.NC;
     }
     document.body.style.cursor = 'wait';
-    const ensemblesAssoc = await getEnsemDetails(stateID);
+    const ensembleDetails = await getEnsemDetails(stateID);
     const currDistPlan = await getDistrPlan(stateID);
     navigate(`/EnsembleSelection`, {
       state: {
         stateID: stateID,
         headerText: headerText,
         currDistrPlan: currDistPlan,
-        ensemblesAssoc: ensemblesAssoc,
+        ensembleDetails: ensembleDetails,
       },
     });
   };
@@ -99,6 +99,7 @@ const StateSelection = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+              {/* {handleStateOutline(test)} */}
               {handleStateOutline(WIOutline)}
               {handleStateOutline(MDOutline)}
               {handleStateOutline(NCOutline)}
@@ -131,3 +132,5 @@ const StateSelection = () => {
 };
 
 export default StateSelection;
+
+

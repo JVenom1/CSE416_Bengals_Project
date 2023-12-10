@@ -1,10 +1,10 @@
 import "../App.css";
 import { useState } from "react";
 
-
 const DistrictSummaryTable = ({ distPlanList }) => {
     const itemsPerPage = 6;
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedPlans, setSelectedPlans] = useState([]);
 
     const totalPages = Math.ceil(distPlanList.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -20,12 +20,20 @@ const DistrictSummaryTable = ({ distPlanList }) => {
         setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
 
+    const handleCheckboxChange = (index) => {
+        // Handle checkbox change
+        const updatedSelectedPlans = [...selectedPlans];
+        updatedSelectedPlans[index] = !selectedPlans[index];
+
+        setSelectedPlans(updatedSelectedPlans);
+    };
+
     return (
         <div>
             <table>
                 <thead>
                     <tr>
-                        <th>Label</th>
+                        <th>Select Plan</th>
                         {columnHeaders.map((header) => (
                             <th key={header}>{header}</th>
                         ))}
@@ -34,7 +42,17 @@ const DistrictSummaryTable = ({ distPlanList }) => {
                 <tbody>
                     {distPlanList.slice(startIndex, endIndex).map((distPlan, index) => (
                         <tr key={index}>
-                            <td>{`Dist ${startIndex + index + 1}`}</td>
+                            <td>
+                                {distPlan.availability === "Available" ? (
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedPlans[index] || false}
+                                        onChange={() => handleCheckboxChange(index)}
+                                    />
+                                ) : (
+                                    "X"
+                                )}
+                            </td>
                             {columnHeaders.map((header) => (
                                 <td key={header}>{distPlan[header]}</td>
                             ))}
@@ -47,7 +65,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
                 <button
                     onClick={handlePrevClick}
                     disabled={currentPage === 1}
-                    className={currentPage === 1 ? 'disabled-button' : ''}
+                    className={currentPage === 1 ? "disabled-button" : ""}
                 >
                     Prev
                 </button>
@@ -55,7 +73,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
                 <button
                     onClick={handleNextClick}
                     disabled={currentPage === totalPages}
-                    className={currentPage === totalPages ? 'disabled-button' : ''}
+                    className={currentPage === totalPages ? "disabled-button" : ""}
                 >
                     Next
                 </button>

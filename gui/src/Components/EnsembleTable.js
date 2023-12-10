@@ -4,7 +4,7 @@ import api from "../api/posts.js"
 const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensembleTableHeight, stateID, currentDistrPlan }) => {
 
     const navigate = useNavigate();
-    const rowsPerPage = 6;
+    const rowsPerPage = 3;
     const [currentPage, setCurrentPage] = useState(1);
 
     const startIdx = (currentPage - 1) * rowsPerPage;
@@ -24,22 +24,42 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             setCurrentPage(currentPage + 1);
         }
     };
-    const getEnsemble = async (stateID, ensembleIndex) => {
+    const getClusterSum = async (stateID, ensembleIndex) => {
         try {
             const response = await api.get(`/${stateID}/${ensembleIndex}/inital_summary`);
-            const ensemble = response.data;
-            return ensemble;
+            const ensembleSum = response.data;
+            return ensembleSum;
         } catch (err) {
             console.log(err)
             return null;
         }
     }
-    // Cluster Distances 
+    const getClusters = async (stateID, ensembleIndex) => {
+        try {
+            const response = await api.get(`/${stateID}/${ensembleIndex}`);
+            const clusters = response.data;
+            return clusters;
+
+        } catch (err) {
+            console.log(err)
+            return null;
+        }
+    }
+
     const getClustCoords = async (stateID, ensemIndex) => {
         try {
             const response = await api.get(`/${stateID}/${ensemIndex}/cluster_coordinates`);
-            const clusterDetailsList = response.data;
-            return clusterDetailsList;
+            const clusterSum = response.data;
+            return clusterSum;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const getAssocCoords = async (stateID, ensemIndex) => {
+        try {
+            const response = await api.get(`/${stateID}/${ensemIndex}/cluster_association_coordinates`);
+            const clusterAssoc = response.data;
+            return clusterAssoc;
         } catch (error) {
             console.log(error);
         }
@@ -74,19 +94,23 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
         document.body.style.cursor = 'wait';
         const clusterCoords = await getClustCoords(stateID, ensembleIndex);
         // pass list of cluster in said ensemble
-        const clusterSum = await getEnsemble(stateID, ensembleIndex);
+        const clusterSum = await getClusterSum(stateID, ensembleIndex);
+        const clusterAssocCoords = await getAssocCoords(stateID, ensembleIndex);
+        const clusters = await getClusters(stateID, ensembleIndex);
         navigate("/ClusterAnalysis",
             {
                 state: {
                     stateID: stateID,
                     headerText: headerText,
                     currentDistrPlan: currentDistrPlan,
+                    clusters: clusters,
                     clusterCoords: clusterCoords,
                     clusterScatterWidth: clusterScatterWidth,
                     clusterScatterHeight: clusterScatterHeight,
                     clusterSum: clusterSum,
                     ensembleName: ensembleName,
                     ensembleIndex: ensembleIndex,
+                    clusterAssocCoords: clusterAssocCoords,
                     //  matrix soon to have 3 key:value pairs for the 3 distances (now its just data)
                     //  .data=array[ixi]
 
@@ -102,8 +126,7 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
                         <th>Ensemble Name</th>
                         <th>Ensemble Size</th>
                         <th>Cluster Count</th>
-                        <th>Cluster Analysis</th>
-                        <th>Distance Measures</th>
+                        <th>More Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -114,12 +137,10 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
                             <td>{row.clustercount}</td>
                             <td>
                                 <button onClick={() => handleEnsemClick(row.name)}>
-                                    {`CA-${index + 1}`}
+                                    {`Cluster Analysis`}
                                 </button>
-                            </td>
-                            <td>
                                 <button onClick={() => handleDistanceMeasClick(row.name)}>
-                                    {`DM-${index + 1}`}
+                                    {`Distance Measures`}
                                 </button>
                             </td>
                         </tr>
@@ -128,11 +149,11 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             </table>
 
             <div style={{ padding: '10px' }}>
-                <button onClick={handlePrevClick} disabled={currentPage === 1}>
+                <button className="disabled-button" onClick={handlePrevClick} disabled={currentPage === 1}>
                     Prev
                 </button>
                 <span style={{ padding: '5px' }}>{`Page ${currentPage}`}</span>
-                <button onClick={handleNextClick} disabled={currentPage === Math.ceil(ensembleDetails.length / rowsPerPage)}>
+                <button className="disabled-button" onClick={handleNextClick} disabled={currentPage === Math.ceil(ensembleDetails.length / rowsPerPage)}>
                     Next
                 </button>
             </div>

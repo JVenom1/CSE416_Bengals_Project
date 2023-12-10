@@ -10,22 +10,20 @@ const DistrictScatter = ({
   _width,
   _height,
   _coords,
-  _setDistrictPlan1,
-  _setDistrictPlan2,
   _districtPlans,
-  _buttonIndex,
+  _setDistrictPlan,
+  _selectedPlans,
+  _scatterClickedIndex,
 }) => {
   // api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`)
-
+  const scatterClickedIndex = _scatterClickedIndex;
   const stateID = _stateID;
   const ensembleIndex = _ensembleIndex;
   const clusterIndex = _clusterIndex;
+  const setDistrictPlan = _setDistrictPlan;
   // const districtPlans = _districtPlans;
   const margin = { top: 40, right: 30, bottom: 250, left: 50 };
   const coords = _coords;
-  const setDistrictPlan1 = _setDistrictPlan1;
-  const setDistrictPlan2 = _setDistrictPlan2;
-  const buttonIndex = _buttonIndex;
   const width = _width - margin.left - margin.right;
   const height = _height - margin.top - margin.bottom;
   const mainTitle = "District Scatter";
@@ -119,20 +117,17 @@ const DistrictScatter = ({
         const response = await api.get(
           `/2/0/0/1`
         );
-        // const districtIndex = e.target.getAttribute("district-index");
+        const districtIndex = e.target.getAttribute("district-index");
+        scatterClickedIndex(districtIndex);
         // const response = await api.get(
         //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
         // );
         const plan = response.data;
-        if (buttonIndex === 1) {
-          setDistrictPlan1(plan);
-          alert("Top Map Selected");
-        } else if (buttonIndex === 2) {
-          setDistrictPlan2(plan);
-          alert("Bottom Map Selected");
-        } else {
-          alert("Please Select A Button");
-        }
+        const updatedSelectedPlans = [..._selectedPlans];
+        updatedSelectedPlans[districtIndex] = !_selectedPlans[districtIndex];
+        setDistrictPlan(updatedSelectedPlans);
+
+
       } catch (err) {
         console.log(err);
       }

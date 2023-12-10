@@ -39,7 +39,9 @@ const DistMatrixTable = () => {
         <div className="app-container">
             <Header headerText={headerText} />
             <div className="main-container">
-                <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
+                <div className="map-container">
+                    <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
+                </div>
                 <div className="controls-container">
                     <h1>Distance Matrix</h1>
                     <table border="1">
