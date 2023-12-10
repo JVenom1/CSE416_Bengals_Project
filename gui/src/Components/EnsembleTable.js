@@ -34,10 +34,11 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             return null;
         }
     }
-    const getClusters = async (stateID, ensembleIndex) => {
+    const getClusterDetails = async (stateID, ensembleIndex) => {
         try {
-            const response = await api.get(`/${stateID}/${ensembleIndex}`);
+            const response = await api.get(`/${stateID}/${ensembleIndex}/cluster_details`);
             const clusters = response.data;
+            // console.log(clusters)
             return clusters;
 
         } catch (err) {
@@ -96,7 +97,7 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
         // pass list of cluster in said ensemble
         const clusterSum = await getClusterSum(stateID, ensembleIndex);
         const clusterAssocCoords = await getAssocCoords(stateID, ensembleIndex);
-        const clusters = await getClusters(stateID, ensembleIndex);
+        const clusters = await getClusterDetails(stateID, ensembleIndex);
         navigate("/ClusterAnalysis",
             {
                 state: {
@@ -149,11 +150,11 @@ const EnsembleTable = ({ headerText, ensembleDetails, ensembleTableWidth, ensemb
             </table>
 
             <div style={{ padding: '10px' }}>
-                <button className="disabled-button" onClick={handlePrevClick} disabled={currentPage === 1}>
+                <button className="pagination-btn" onClick={handlePrevClick} disabled={currentPage === 1}>
                     Prev
                 </button>
                 <span style={{ padding: '5px' }}>{`Page ${currentPage}`}</span>
-                <button className="disabled-button" onClick={handleNextClick} disabled={currentPage === Math.ceil(ensembleDetails.length / rowsPerPage)}>
+                <button className="pagination-btn" onClick={handleNextClick} disabled={currentPage === Math.ceil(ensembleDetails.length / rowsPerPage)}>
                     Next
                 </button>
             </div>

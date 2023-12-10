@@ -16,11 +16,11 @@ const ClusterAnalysis = () => {
     const [selectedComponent, setSelectedComponent] = useState("details");//details
     const location = useLocation();
     const stateID = location.state.stateID;
-    const headerText = location.state.headerText + " > Cluster Analysis";
+    const headerText = location.state.headerText + " > Clusters";
     const currentDistrPlan = location.state.currentDistrPlan;
     const clusterCoords = location.state.clusterCoords;
     const clusterAssocCoords = location.state.clusterAssocCoords;
-    const clusterNameList = location.state.clusters;
+    const clusterDetailsList = location.state.clusters;
     const clusterSum = location.state.clusterSum;
     const ensembleName = location.state.ensembleName;
     const ensembleIndex = location.state.ensembleIndex;
@@ -40,7 +40,7 @@ const ClusterAnalysis = () => {
         if (selectedComponent === "details") {
             // console.log(clusterNameList)
 
-            return (<>Cluster Details -- isn't details per cluster aka district plans?</>
+            return (<ClusterDetailTable clusterDet={clusterDetailsList} />
                 // <ClusterDetailTable clusterDet={clusterNameList} />
             );
         } else if (selectedComponent === "scatter") {

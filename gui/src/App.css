@@ -39,7 +39,7 @@ body {
 } */
 
 .header-text {
-    font-size: x-large;
+    font-size: large;
 }
 
 .main-container {
@@ -236,9 +236,9 @@ select {
   }
   
   .pagination-btn {
-    padding: 5px 10px;
+    padding: 0px 1px;
     background-color: #007bff;
-    color: #fff;
+    color: #595858;
     border: none;
     border-radius: 3px;
     cursor: pointer;
@@ -266,7 +266,6 @@ select {
     display: inline;
     background: none;
     border: none;
-    text-decoration: underline;
     cursor: pointer;
     padding: 0; /* Adjust padding as needed */
     font: inherit;

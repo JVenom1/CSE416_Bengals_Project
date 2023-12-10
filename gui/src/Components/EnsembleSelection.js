@@ -16,7 +16,7 @@ const EnsembleSelection = () => {
   const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
   const clusterScatterHeight = window.innerHeight;
   const [selectedComponent, setSelectedComponent] = useState("ensemble");
-  const headerText = location.state.headerText + " > Ensemble Selection";
+  const headerText = location.state.headerText + " > Ensembles";
   useEffect(() => {
     changeMapSizeXbyY("85%", "40vw");
   }, []);

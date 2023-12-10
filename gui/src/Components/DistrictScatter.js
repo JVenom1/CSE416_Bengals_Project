@@ -2,7 +2,7 @@ import "../App.css";
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 import api from "../api/posts.js";
-
+import test from "../Data/DistrictPlans/WI.json";
 const DistrictScatter = ({
   _stateID,
   _ensembleIndex,
@@ -11,16 +11,19 @@ const DistrictScatter = ({
   _height,
   _coords,
   _districtPlans,
-  _setDistrictPlan,
-  _selectedPlans,
-  _scatterClickedIndex,
+  _setSelectedPlan,
+  _selectedPlan,
+  _oldPlan,
+
 }) => {
   // api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`)
-  const scatterClickedIndex = _scatterClickedIndex;
+  const oldPlan = _oldPlan
   const stateID = _stateID;
   const ensembleIndex = _ensembleIndex;
   const clusterIndex = _clusterIndex;
-  const setDistrictPlan = _setDistrictPlan;
+  const setSelectedPlan = _setSelectedPlan;
+  const selectedPlan = _selectedPlan;
+
   // const districtPlans = _districtPlans;
   const margin = { top: 40, right: 30, bottom: 250, left: 50 };
   const coords = _coords;
@@ -112,26 +115,30 @@ const DistrictScatter = ({
   });
 
   const handleScatterPlotClick = async (e) => {
-    if (e.target.getAttribute("available")) {
-      try {
-        const response = await api.get(
-          `/2/0/0/1`
-        );
-        const districtIndex = e.target.getAttribute("district-index");
-        scatterClickedIndex(districtIndex);
-        // const response = await api.get(
-        //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
-        // );
-        const plan = response.data;
-        const updatedSelectedPlans = [..._selectedPlans];
-        updatedSelectedPlans[districtIndex] = !_selectedPlans[districtIndex];
-        setDistrictPlan(updatedSelectedPlans);
 
+    if (oldPlan === null) {
+      console.log("clicked")
+      if (e.target.getAttribute("available")) {
+        try {
+          const response = await api.get(
+            `/2/0/0/1`
+          );
+          const districtIndex = e.target.getAttribute("district-index");
+          // scatterClickedIndex(districtIndex);
+          // const response = await api.get(
+          //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
+          // );
+          const plan = response.data;
 
-      } catch (err) {
-        console.log(err);
+          setSelectedPlan(test)
+        } catch (err) {
+          console.log(err);
+        }
       }
+    } else {
+      setSelectedPlan(null)
     }
+
   };
   return (
     <>

@@ -51,9 +51,9 @@ const mNum = {
     NC: 2,
   },
   stateNumsToPrefix: {
-    0: "WI",
-    1: "MD",
-    2: "NC",
+    0: "Wisconsin S/S",
+    1: "Maryland S/S",
+    2: "North Carolina F/C",
   }
 };
 

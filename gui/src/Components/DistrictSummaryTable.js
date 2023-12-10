@@ -25,6 +25,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
         const updatedSelectedPlans = [...selectedPlans];
         updatedSelectedPlans[index] = !selectedPlans[index];
 
+        // true false list where true display the plan
         setSelectedPlans(updatedSelectedPlans);
     };
 
@@ -33,16 +34,19 @@ const DistrictSummaryTable = ({ distPlanList }) => {
             <table>
                 <thead>
                     <tr>
-                        <th>Select Plan</th>
-                        {columnHeaders.map((header) => (
+                        <th>Availability</th>
+                        <th>Avg Oppertunity Dist Count</th>
+                        <th>Plan Name</th>
+                        <th>Splits</th>
+                        {/* {columnHeaders.map((header) => (
                             <th key={header}>{header}</th>
-                        ))}
+                        ))} */}
                     </tr>
                 </thead>
                 <tbody>
                     {distPlanList.slice(startIndex, endIndex).map((distPlan, index) => (
                         <tr key={index}>
-                            <td>
+                            {/* <td>
                                 {distPlan.availability === "Available" ? (
                                     <input
                                         type="checkbox"
@@ -52,7 +56,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
                                 ) : (
                                     "X"
                                 )}
-                            </td>
+                            </td> */}
                             {columnHeaders.map((header) => (
                                 <td key={header}>{distPlan[header]}</td>
                             ))}

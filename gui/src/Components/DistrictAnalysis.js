@@ -7,68 +7,50 @@ import CompareDistrMap from "./CompareDistrMap";
 import DistrictScatter from "./DistrictScatter";
 import DistrictSummaryTable from "./DistrictSummaryTable";
 import mNum from "../Helpers/mNum";
-import { select } from "d3";
 
 const DistrictAnalysis = () => {
   document.body.style.cursor = "default";
   const location = useLocation();
-  const headerText = location.state.headerText + " > District Analysis";
+  const headerText = location.state.headerText + " > Districts";
   const stateID = location.state.stateID;
   const districtPlan1 = location.state.currentDistrPlan;
   const clusterIndex = location.state.clusterIndex;
   const ensembleIndex = location.state.ensembleIndex;
   const districtCoords = location.state.districtCoords;
   const districtPlanList = location.state.districtPlanList;
-
-  const [scatterClickedIndex, setScatterClickedIndex] = useState(null)
-  const [selectedPlans, setSelectedPlans] = useState([]);
-
-  useEffect(() => {
-
-  }, [scatterClickedIndex])
-
-
-  useEffect(() => {
-    changeMapSizeXbyY("80%", "40vw");
-  }, [])
+  const [districtPlan2, setDistrictPlan2] = useState(null);
+  const [selectedPlan, setSelectedPlan] = useState(null)
   const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
     leafletContainer.style.height = height;
   };
 
+  useEffect(() => {
+    changeMapSizeXbyY("80%", "40vw");
+  }, [])
+
+  useEffect(() => {
+    setDistrictPlan2(selectedPlan);
+  }, [selectedPlan])
 
   const handleRestoreMaps = () => {
-    setSelectedPlans([]); // Reset selected plans when restoring maps
+    setDistrictPlan2(null); // Reset selected plans when restoring maps
+    window.location.reload();
   };
-  const handleCheckboxChange = (index) => {
-    // Handle checkbox change
-    const updatedSelectedPlans = [...selectedPlans];
-    updatedSelectedPlans[index] = !selectedPlans[index];
-    setSelectedPlans(updatedSelectedPlans);
-  };
-
-
-
   return (
     <>
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
           <div className="map-container">
-            {/* <button id="top-map" value={1} onClick={handleTopMap}>
-              Select Top Map
-            </button>
-            <button id="bottom-map" value={2} onClick={handleBottomMap}>
-              Select Bottom Map
-            </button> */}
-
             <h2>
-              {/* <button id="restore" value={3} onClick={handleRestoreMaps}>
-                Reset Map
-              </button> */}
-              {mNum.stateNumsToPrefix[stateID]} District Plan </h2>
-            <CompareDistrMap stateID={stateID} currentDistrPlan={districtPlan1} selectedPlans={selectedPlans} distPlanList={districtPlanList} />
+              {mNum.stateNumsToPrefix[stateID]} District Plan
+            </h2>
+            <button id="restore" value={3} onClick={handleRestoreMaps}>
+              Reset Map
+            </button><div style={{ margin: '5px' }}></div>
+            <CompareDistrMap stateID={stateID} currentDistrPlan={districtPlan1} selectedPlan={districtPlan2} />
           </div>
 
           <div className="right-pane">
@@ -81,9 +63,8 @@ const DistrictAnalysis = () => {
                 _height={window.innerHeight / 2 + 90}
                 _coords={districtCoords}
                 _districtPlans={districtPlanList}
-                _setDistrictPlan={setSelectedPlans}
-                _selectedPlans={selectedPlans}
-                _scatterClickedIndex={setScatterClickedIndex}
+                _setSelectedPlan={setSelectedPlan}
+                _oldPlan={districtPlan2}
               />
             </div>
 
