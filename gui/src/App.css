@@ -27,7 +27,7 @@ body {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.header-button {
+.reset-button {
   background-color: rgb(0, 0, 0);
   color: #ffffff;
   padding: 6px 12px;
@@ -37,9 +37,18 @@ body {
   cursor: pointer;
 }
 
-/* .header-button-list {
+.header-button {
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  padding: 6px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 
-} */
+}
+
+
 
 .header-text {
   font-size: large;
