@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import BengalsImage from "../Images/Bengals.jpg";
 
 const Header = ({ headerText }) => {
   const navigate = useNavigate();
@@ -16,13 +17,29 @@ const Header = ({ headerText }) => {
     window.history.forward();
   };
 
+  const resetButtonStyle = {
+    backgroundImage: `url(${BengalsImage})`,
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    border: "none",
+    borderRadius: "4px",
+    width: "20px", // Set a fixed width for the clickable area
+    height: "15px", // Set a fixed height for the clickable area
+    display: "inline-block",
+    marginBottom: "-8px",
+    cursor: "pointer",
+  };
+
   return (
     <>
       <div className="header">
         <div className="header-button-list">
-          <button onClick={goToHomePage} className="header-button">
-            Reset
-          </button>
+          <div
+            onClick={goToHomePage}
+            style={resetButtonStyle}
+            className="reset-button"
+          />
           <button onClick={undoPage} className="header-button">
             Undo Page
           </button>
