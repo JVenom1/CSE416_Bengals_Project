@@ -43,12 +43,14 @@ const DistrictAnalysis = () => {
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
+          {/* Change Map Split Here for Distr Analysis */}
           <div className="map-container">
-            <h2>{mNum.stateNumsToPrefix[stateID]} District Plan</h2>
-            <button id="restore" value={3} onClick={handleRestoreMaps}>
-              Reset Map
-            </button>
-            <div style={{ margin: "5px" }}></div>
+            <div style={{ margin: "5px" }}>
+              <h2>{mNum.stateNumsToPrefix[stateID]} District Plan</h2>
+              <button id="restore" value={3} onClick={handleRestoreMaps}>
+                Reset Map
+              </button>
+            </div>
             <CompareDistrMap
               stateID={stateID}
               currentDistrPlan={districtPlan1}
