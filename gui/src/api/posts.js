@@ -8,5 +8,5 @@ import axios from "axios";
 // IP 130.245.192.6
 // this is the test server
 export default axios.create({
-  baseURL: "https://chatty-baboons-fail.loca.lt/server/BengalsAPI",
+  baseURL: "https://dirty-radios-trade.loca.lt/server/BengalsAPI",
 });
