@@ -47,7 +47,7 @@ const StateSelection = () => {
     } else {
       stateID = mNum.stateNumbers.NC;
     }
-    document.body.style.cursor = 'wait';
+    document.body.style.cursor = "wait";
     const ensembleDetails = await getEnsemDetails(stateID);
     const currDistPlan = await getDistrPlan(stateID);
     navigate(`/EnsembleSelection`, {
@@ -69,7 +69,7 @@ const StateSelection = () => {
       console.log(err);
       return null;
     }
-  }
+  };
   const getDistrPlan = async (stateID) => {
     try {
       const response = await api.get(`/${stateID}/2020plan`);
@@ -81,13 +81,12 @@ const StateSelection = () => {
     }
   };
 
-
   return (
     <>
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
-          <div className="map-container">
+          <div className="home-map">
             <MapContainer
               center={mNum.mapCenter}
               zoom={5}
@@ -107,14 +106,16 @@ const StateSelection = () => {
           </div>
           <div className="welcome-container">
             <div className="welcome-text">
-              <h1 style={{ fontSize: '50px' }}>Welcome to Bengals</h1>
-              <h4 style={{ fontSize: '25px' }}>
+              <h1 style={{ fontSize: "50px" }}>Welcome to Bengals</h1>
+              <h4 style={{ fontSize: "25px" }}>
                 Have fun with our cluster analysis on sets of random district
                 plans.
               </h4>
             </div>
             <div className="dropdown-menu">
-              <h5 style={{ fontSize: '20px' }}>Please Select A State From Below Or On The Map</h5>
+              <h5 style={{ fontSize: "20px" }}>
+                Please Select A State From Below Or On The Map
+              </h5>
               <select value={selectedState} onChange={handleStateSelect}>
                 <option value="" disabled>
                   Select a State
@@ -132,5 +133,3 @@ const StateSelection = () => {
 };
 
 export default StateSelection;
-
-
