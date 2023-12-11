@@ -14,10 +14,9 @@ const DistrictScatter = ({
   _setSelectedPlan,
   _selectedPlan,
   _oldPlan,
-
 }) => {
   // api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`)
-  const oldPlan = _oldPlan
+  const oldPlan = _oldPlan;
   const stateID = _stateID;
   const ensembleIndex = _ensembleIndex;
   const clusterIndex = _clusterIndex;
@@ -115,14 +114,11 @@ const DistrictScatter = ({
   });
 
   const handleScatterPlotClick = async (e) => {
-
     if (oldPlan === null) {
-      console.log("clicked")
+      console.log("clicked");
       if (e.target.getAttribute("available")) {
         try {
-          const response = await api.get(
-            `/2/0/0/1`
-          );
+          const response = await api.get(`/2/0/0/1`);
           const districtIndex = e.target.getAttribute("district-index");
           // scatterClickedIndex(districtIndex);
           // const response = await api.get(
@@ -130,15 +126,14 @@ const DistrictScatter = ({
           // );
           const plan = response.data;
 
-          setSelectedPlan(test)
+          setSelectedPlan(test);
         } catch (err) {
           console.log(err);
         }
       }
     } else {
-      setSelectedPlan(null)
+      setSelectedPlan(null);
     }
-
   };
   return (
     <>

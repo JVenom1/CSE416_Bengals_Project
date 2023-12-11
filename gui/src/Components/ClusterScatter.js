@@ -6,7 +6,15 @@ import { useNavigate } from "react-router-dom";
 import * as d3 from "d3";
 import api from "../api/posts.js";
 
-const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterScatterWidth, _clusterScatterHeight, _ensembleIndex, _headerText }) => {
+const ClusterScatter = ({
+  _stateID,
+  _currentDistrPlan,
+  _clusterCoords,
+  _clusterScatterWidth,
+  _clusterScatterHeight,
+  _ensembleIndex,
+  _headerText,
+}) => {
   // Ensemble CLicked
   const navigate = useNavigate();
   const stateID = _stateID;
@@ -25,7 +33,7 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
   // Use useEffect to handle side effects when the component mounts
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-    svg.selectAll('*').remove();
+    svg.selectAll("*").remove();
 
     const xScale = d3
       .scaleLinear()
@@ -42,127 +50,129 @@ const ClusterScatter = ({ _stateID, _currentDistrPlan, _clusterCoords, _clusterS
 
     // Add X Axis
     svg
-      .append('g')
-      .attr('transform', `translate(0, ${height + margin.top})`)
+      .append("g")
+      .attr("transform", `translate(0, ${height + margin.top})`)
       .call(xAxis);
 
     // Add Y Axis
     svg
-      .append('g')
-      .attr('transform', `translate(${margin.left}, 0)`)
+      .append("g")
+      .attr("transform", `translate(${margin.left}, 0)`)
       .call(yAxis);
 
     // Add Title
     svg
-      .append('text')
-      .attr('x', width / 2 + margin.left)
-      .attr('y', margin.top / 2)
-      .attr('text-anchor', 'middle')
-      .style('font-size', '2.5em')
+      .append("text")
+      .attr("x", width / 2 + margin.left)
+      .attr("y", margin.top / 2)
+      .attr("text-anchor", "middle")
+      .style("font-size", "2.5em")
       .text(mainTitle);
 
     // Add X Axis Label
     svg
-      .append('text')
-      .attr('x', width / 2 + margin.left)
-      .attr('y', height + margin.top + margin.bottom - 200)
-      .attr('text-anchor', 'middle')
-      .style('dy', '1.5em')  // Adjust the vertical offset as needed
-      .style('font-size', '1.8em')
+      .append("text")
+      .attr("x", width / 2 + margin.left)
+      .attr("y", height + margin.top + margin.bottom - 200)
+      .attr("text-anchor", "middle")
+      .style("dy", "1.5em") // Adjust the vertical offset as needed
+      .style("font-size", "1.8em")
       .text(xAxTitle);
-
 
     // Add Y Axis Label
     svg
-      .append('text')
-      .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2 + margin.top - 70)
-      .attr('y', margin.left - 35)
-      .attr('text-anchor', 'middle')
-      .style('font-size', '1.8em')
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -height / 2 + margin.top - 70)
+      .attr("y", margin.left - 35)
+      .attr("text-anchor", "middle")
+      .style("font-size", "1.8em")
       .text(yAxTitle);
 
     // Add Circles
     svg
-      .selectAll('circle')
+      .selectAll("circle")
       .data(coords.x)
       .enter()
-      .append('circle')
-      .attr('cx', (d) => xScale(d))
-      .attr('cy', (d, i) => yScale(coords.y[i]))
-      .attr('r', (d, i) => coords.radius[i])
-      .attr('clustIndex', (d, i) => i)
+      .append("circle")
+      .attr("cx", (d) => xScale(d))
+      .attr("cy", (d, i) => yScale(coords.y[i]))
+      .attr("r", (d, i) => coords.radius[i])
+      .attr("clustIndex", (d, i) => i)
       .on("mouseover", function () {
         // Change cursor to pointer on hover
-        d3.select(this).style('cursor', 'pointer');
+        d3.select(this).style("cursor", "pointer");
       })
       .on("mouseout", function () {
         // Reset cursor on mouseout
-        d3.select(this).style('cursor', 'default');
+        d3.select(this).style("cursor", "default");
       })
       .on("click", (event) => handleScatterPlotClick(event))
-      .style('fill', 'green');
-
+      .style("fill", "green");
   });
 
   const getCoords = async (stateID, ensembleIndex, clusterIndex) => {
-
     try {
-      const response = await api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinates`);
+      const response = await api.get(
+        `/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinates`
+      );
       return response.data;
     } catch (error) {
       console.log(error);
     }
-
-  }
+  };
 
   const getAllDistrictPlans = async (stateID, ensembleIndex, clusterIndex) => {
     try {
-      const response = await api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}`);
+      const response = await api.get(
+        `/${stateID}/${ensembleIndex}/${clusterIndex}`
+      );
       return response.data;
-
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
-      console.log(error)
-    }
-  }
+  };
   const handleScatterPlotClick = async (event) => {
     // assuming x[i] where i is cluster index
     const clusterIndex = event.target.getAttribute("clustIndex");
     try {
-      document.body.style.cursor = 'wait';
-      const coords = await getCoords(stateID, ensembleIndex, clusterIndex)
-      const districtPlanList = await getAllDistrictPlans(stateID, ensembleIndex, clusterIndex);
-      navigate('/DistrictAnalysis',
-        {
-          state:
-          {
-            stateID: stateID,
-            currentDistrPlan: currentDistrPlan,
-            clusterIndex: clusterIndex,
-            ensembleIndex: ensembleIndex,
-            // .availibility .x .y
-            districtCoords: coords,
-            // [i].availability .averageoppertunitydistrictcount .name .split
-            districtPlanList: districtPlanList,
-            headerText: headerText,
-          }
-        });
+      document.body.style.cursor = "wait";
+      const coords = await getCoords(stateID, ensembleIndex, clusterIndex);
+      const districtPlanList = await getAllDistrictPlans(
+        stateID,
+        ensembleIndex,
+        clusterIndex
+      );
+      navigate("/DistrictAnalysis", {
+        state: {
+          stateID: stateID,
+          currentDistrPlan: currentDistrPlan,
+          clusterIndex: clusterIndex,
+          ensembleIndex: ensembleIndex,
+          // .availibility .x .y
+          districtCoords: coords,
+          // [i].availability .averageoppertunitydistrictcount .name .split
+          districtPlanList: districtPlanList,
+          headerText: headerText,
+        },
+      });
     } catch (error) {
       console.log(error);
     }
-
   };
   return (
     <>
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${_clusterScatterWidth + 30} ${_clusterScatterHeight + 30}`}
+        viewBox={`0 0 ${_clusterScatterWidth + 30} ${
+          _clusterScatterHeight + 30
+        }`}
         preserveAspectRatio="xMidYMid meet"
         width="100%"
         height="100%"
       ></svg>
-    </>);
+    </>
+  );
 };
 
 // Export the ClusterAnalysis component

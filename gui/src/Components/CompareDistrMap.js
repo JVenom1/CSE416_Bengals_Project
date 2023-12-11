@@ -12,15 +12,16 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
   };
   useEffect(() => {
     // Toggle the value of forceRerender to trigger a re-render
-    setForceRerender(prevState => !prevState);
+    setForceRerender((prevState) => !prevState);
     // changeMapSizeXbyY("80%", "40vw");
   }, [selectedPlan, currentDistrPlan]);
 
-  console.log(selectedPlan)
+  console.log(selectedPlan);
 
   useEffect(() => {
     changeMapSizeXbyY("80%", "40vw");
-  }, [forceRerender]); return (
+  }, [forceRerender]);
+  return (
     <>
       <MapContainer
         key={forceRerender}
@@ -37,7 +38,7 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
         />
         <GeoJSON data={currentDistrPlan} />
         {selectedPlan !== null ? (
-          <GeoJSON style={{ color: 'orange' }} data={selectedPlan} />
+          <GeoJSON style={{ color: "orange" }} data={selectedPlan} />
         ) : null}
       </MapContainer>
     </>

@@ -19,7 +19,7 @@ const DistrictAnalysis = () => {
   const districtCoords = location.state.districtCoords;
   const districtPlanList = location.state.districtPlanList;
   const [districtPlan2, setDistrictPlan2] = useState(null);
-  const [selectedPlan, setSelectedPlan] = useState(null)
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
@@ -28,11 +28,11 @@ const DistrictAnalysis = () => {
 
   useEffect(() => {
     changeMapSizeXbyY("80%", "40vw");
-  }, [])
+  }, []);
 
   useEffect(() => {
     setDistrictPlan2(selectedPlan);
-  }, [selectedPlan])
+  }, [selectedPlan]);
 
   const handleRestoreMaps = () => {
     setDistrictPlan2(null); // Reset selected plans when restoring maps
@@ -44,13 +44,16 @@ const DistrictAnalysis = () => {
         <Header headerText={headerText} />
         <div className="main-container">
           <div className="map-container">
-            <h2>
-              {mNum.stateNumsToPrefix[stateID]} District Plan
-            </h2>
+            <h2>{mNum.stateNumsToPrefix[stateID]} District Plan</h2>
             <button id="restore" value={3} onClick={handleRestoreMaps}>
               Reset Map
-            </button><div style={{ margin: '5px' }}></div>
-            <CompareDistrMap stateID={stateID} currentDistrPlan={districtPlan1} selectedPlan={districtPlan2} />
+            </button>
+            <div style={{ margin: "5px" }}></div>
+            <CompareDistrMap
+              stateID={stateID}
+              currentDistrPlan={districtPlan1}
+              selectedPlan={districtPlan2}
+            />
           </div>
 
           <div className="right-pane">

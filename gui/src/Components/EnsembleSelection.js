@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
-import EnsembleTable from "./EnsembleTable.js"
+import EnsembleTable from "./EnsembleTable.js";
 import "../App.css";
 import "leaflet/dist/leaflet.css";
 import DefaultDistrMap from "./DefaultDistrMap.js";
 import Header from "./Header.js";
 
 const EnsembleSelection = () => {
-  document.body.style.cursor = 'default';
+  document.body.style.cursor = "default";
   const location = useLocation();
   const stateID = location.state.stateID;
   const currentDistrPlan = location.state.currDistrPlan;
@@ -32,14 +32,19 @@ const EnsembleSelection = () => {
       // Return the Ensemble Selection component
       return (
         <div>
-          <EnsembleTable headerText={headerText} ensembleDetails={ensembleDetails} ensembleTableWidth={clusterScatterWidth} ensembleTableHeight={clusterScatterHeight} currentDistrPlan={currentDistrPlan} stateID={stateID} />
+          <EnsembleTable
+            headerText={headerText}
+            ensembleDetails={ensembleDetails}
+            ensembleTableWidth={clusterScatterWidth}
+            ensembleTableHeight={clusterScatterHeight}
+            currentDistrPlan={currentDistrPlan}
+            stateID={stateID}
+          />
         </div>
       );
     } else if (selectedComponent === "cluster") {
       // Return the Cluster Association component
-      return (
-        <>Old Ensemble vs Cluster</>
-      );
+      return <>Old Ensemble vs Cluster</>;
     }
   };
   return (
@@ -48,7 +53,10 @@ const EnsembleSelection = () => {
         <Header headerText={headerText} />
         <div className="main-container">
           <div className="map-container">
-            <DefaultDistrMap stateID={stateID} currentDistrPlan={currentDistrPlan} />
+            <DefaultDistrMap
+              stateID={stateID}
+              currentDistrPlan={currentDistrPlan}
+            />
           </div>
           <div className="controls-container">
             {/* <div className="button-container">
@@ -68,7 +76,14 @@ const EnsembleSelection = () => {
               </button>
             </div> */}
             <div>
-              <EnsembleTable headerText={headerText} ensembleDetails={ensembleDetails} ensembleTableWidth={clusterScatterWidth} ensembleTableHeight={clusterScatterHeight} currentDistrPlan={currentDistrPlan} stateID={stateID} />
+              <EnsembleTable
+                headerText={headerText}
+                ensembleDetails={ensembleDetails}
+                ensembleTableWidth={clusterScatterWidth}
+                ensembleTableHeight={clusterScatterHeight}
+                currentDistrPlan={currentDistrPlan}
+                stateID={stateID}
+              />
             </div>
             {/* <div className="component-container">{renderComponent()}</div> */}
           </div>
