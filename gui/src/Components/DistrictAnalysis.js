@@ -20,6 +20,7 @@ const DistrictAnalysis = () => {
   const districtPlanList = location.state.districtPlanList;
   const [districtPlan2, setDistrictPlan2] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
+
   const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
@@ -27,7 +28,7 @@ const DistrictAnalysis = () => {
   };
 
   useEffect(() => {
-    changeMapSizeXbyY("80%", "40vw");
+    changeMapSizeXbyY("70%", "40vw");
   }, []);
 
   useEffect(() => {
@@ -46,10 +47,12 @@ const DistrictAnalysis = () => {
           {/* Change Map Split Here for Distr Analysis */}
           <div className="map-container">
             <div style={{ margin: "5px" }}>
-              <h2>{mNum.stateNumsToPrefix[stateID]} District Plan</h2>
-              <button id="restore" value={3} onClick={handleRestoreMaps}>
-                Reset Map
-              </button>
+              <h2 className="map-title">
+                {mNum.stateNumsToPrefix[stateID]} District Plan{" "}
+                <button id="restore" value={3} onClick={handleRestoreMaps}>
+                  Reset Map
+                </button>
+              </h2>
             </div>
             <CompareDistrMap
               stateID={stateID}

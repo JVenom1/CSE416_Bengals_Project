@@ -55,14 +55,14 @@ const DistMatrixTable = () => {
                 <tr>
                   <th></th>
                   {[...Array(numCols)].map((_, colIndex) => (
-                    <th key={colIndex}>D{colIndex + 1}</th>
+                    <th key={colIndex}>P{colIndex + 1}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {selectedMatrix.map((row, rowIndex) => (
                   <tr key={rowIndex}>
-                    <th>D{rowIndex + 1}</th>
+                    <th>P{rowIndex + 1}</th>
                     {row.map((cell, colIndex) => (
                       <td key={colIndex}>{cell}</td>
                     ))}

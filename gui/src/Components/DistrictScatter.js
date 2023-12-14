@@ -99,7 +99,7 @@ const DistrictScatter = ({
       .attr("cx", (d) => xScale(d))
       .attr("cy", (d, i) => yScale(coords.y[i]))
       .attr("r", () => 5)
-      .attr("available", (d, i) => coords.available[i])
+      .attr("available", (d, i) => coords.availibility[i])
       .attr("district-index", (d, i) => i)
       .on("mouseover", function () {
         // Change cursor to pointer on hover
@@ -110,7 +110,7 @@ const DistrictScatter = ({
         d3.select(this).style("cursor", "default");
       })
       .on("click", (event) => handleScatterPlotClick(event))
-      .style("fill", (d, i) => (coords.available[i] ? "green" : "grey"));
+      .style("fill", (d, i) => (coords.availibility[i] ? "green" : "grey"));
   });
 
   const handleScatterPlotClick = async (e) => {

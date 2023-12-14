@@ -9,10 +9,12 @@ import ClusterScatter from "./ClusterScatter.js";
 import ClustSumTable from "./ClustSumTable.js";
 import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
 import ClusterDetailTable from "./ClusterDetailTable.js";
-
+import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import mNum from "../Helpers/mNum.js";
 const ClusterAnalysis = () => {
   document.body.style.cursor = "default";
   const [selectedComponent, setSelectedComponent] = useState("details"); //details
+  
   const location = useLocation();
   const stateID = location.state.stateID;
   const headerText = location.state.headerText + " > Clusters";
@@ -75,14 +77,29 @@ const ClusterAnalysis = () => {
         <Header headerText={headerText} />
         <div className="main-container">
           <div className="map-container">
-            <DefaultDistrMap
-              stateID={stateID}
-              currentDistrPlan={currentDistrPlan}
-            />
-            <ClustSumTable
-              ensembleName={ensembleName}
-              clusterSum={clusterSum}
-            />
+            <h2 className="map-title">
+              {mNum.stateNumsToPrefix[stateID]} District Plan
+            </h2>
+            <div className="table-map">
+              <MapContainer
+                center={mNum.stateCenter[stateID].latlng}
+                zoom={6}
+                minZoom={4}
+                maxBounds={mNum.stateZoomBounds.stateID}
+                maxZoom={7}
+                dragging={true}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {<GeoJSON data={currentDistrPlan} />}
+              </MapContainer>
+              <ClustSumTable
+                ensembleName={ensembleName}
+                clusterSum={clusterSum}
+              />
+            </div>
           </div>
 
           <div className="controls-container">

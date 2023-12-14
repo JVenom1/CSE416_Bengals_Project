@@ -60,6 +60,7 @@ body {
 
 .right-pane {
   width: 60%;
+  margin: 20px 20px 20px 80px;
 }
 
 .top-right {
@@ -122,6 +123,17 @@ body {
   border-radius: 10px;
 }
 
+.table-map {
+  background-color: rgb(248, 233, 211);
+  text-align: center;
+  width: 100%;
+  height: 77%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 .only-map {
   background-color: rgb(248, 233, 211);
   text-align: center;
@@ -147,7 +159,7 @@ body {
   text-align: center;
   overflow: hidden;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+  margin: 20px 20px 20px 80px;
   padding: 20px;
   border-radius: 5px;
 }
@@ -299,7 +311,7 @@ th {
 
 .pagination-btn {
   padding: 0px 1px;
-  background-color: #007bff;
+  background-color: none;
   color: #595858;
   border: none;
   border-radius: 3px;

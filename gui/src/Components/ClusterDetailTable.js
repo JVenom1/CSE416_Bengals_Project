@@ -32,10 +32,18 @@ const ClusterDetailTable = ({ clusterDet }) => {
       <table>
         <thead>
           <tr>
+            <th>Avg Asian</th>
+            <th>Avg Black</th>
+            <th>Avg Dem. Voters</th>
+            <th>Avg Native</th>
+            <th>Avg Other</th>
+            <th>Avg Pacific</th>
+            <th>Avg Rep. Voters</th>
             <th>Avg Split</th>
+            <th>Avg White</th>
             <th>Name</th>
-            <th>Opportunity Districts</th>
-            <th>Plan Amount</th>
+            <th>Plan Count</th>
+
             {/* {columnHeaders.map((header) => (
                             <th key={header}>{header}</th>
                         ))} */}

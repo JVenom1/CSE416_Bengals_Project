@@ -9,7 +9,7 @@ const DefaultDistrMap = ({ stateID, currentDistrPlan }) => {
       <h2 className="map-title">
         {mNum.stateNumsToPrefix[stateID]} District Plan
       </h2>
-      <div className="only-map">
+      <div className="table-map">
         <MapContainer
           center={mNum.stateCenter[stateID].latlng}
           zoom={6}

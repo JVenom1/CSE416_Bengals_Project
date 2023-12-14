@@ -23,24 +23,26 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
   }, [forceRerender]);
   return (
     <>
-      <MapContainer
-        key={forceRerender}
-        center={mNum.stateCenter[stateID].latlng}
-        zoom={5}
-        minZoom={4}
-        maxBounds={mNum.stateZoomBounds.stateID}
-        maxZoom={7}
-        dragging={true}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <GeoJSON data={currentDistrPlan} />
-        {selectedPlan !== null ? (
-          <GeoJSON style={{ color: "orange" }} data={selectedPlan} />
-        ) : null}
-      </MapContainer>
+      <div className="only-map">
+        <MapContainer
+          key={forceRerender}
+          center={mNum.stateCenter[stateID].latlng}
+          zoom={5}
+          minZoom={4}
+          maxBounds={mNum.stateZoomBounds.stateID}
+          maxZoom={7}
+          dragging={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <GeoJSON data={currentDistrPlan} />
+          {selectedPlan !== null ? (
+            <GeoJSON style={{ color: "orange" }} data={selectedPlan} />
+          ) : null}
+        </MapContainer>
+      </div>
     </>
   );
 };
