@@ -11,6 +11,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
   const endIndex = startIndex + itemsPerPage;
 
   const columnHeaders = Object.keys(distPlanList[0]);
+  console.log(distPlanList[0].availibility);
 
   const handlePrevClick = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -35,9 +36,9 @@ const DistrictSummaryTable = ({ distPlanList }) => {
         <thead>
           <tr>
             <th>Availability</th>
-            <th>Avg Oppertunity Dist Count</th>
             <th>Plan Name</th>
-            <th>Splits</th>
+            <th>Num Oppertunity Dist Count</th>
+            <th>Rep./Dem. Splits</th>
             {/* {columnHeaders.map((header) => (
                             <th key={header}>{header}</th>
                         ))} */}
@@ -58,7 +59,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
                                 )}
                             </td> */}
               {columnHeaders.map((header) => (
-                <td key={header}>{distPlan[header]}</td>
+                <td key={header}>{distPlan[header].toString()}</td>
               ))}
             </tr>
           ))}

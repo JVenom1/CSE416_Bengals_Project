@@ -11,7 +11,6 @@ import "leaflet/dist/leaflet.css";
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
-import test from "../Data/test.json";
 const StateSelection = () => {
   const [selectedState, setSelectedState] = useState("");
   const navigate = useNavigate();
@@ -98,7 +97,6 @@ const StateSelection = () => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {/* {handleStateOutline(test)} */}
               {handleStateOutline(WIOutline)}
               {handleStateOutline(MDOutline)}
               {handleStateOutline(NCOutline)}

@@ -27,7 +27,7 @@ const DistrictScatter = ({
   const margin = { top: 40, right: 30, bottom: 250, left: 50 };
   const coords = _coords;
   const width = _width - margin.left - margin.right;
-  const height = _height - margin.top - margin.bottom;
+  const height = _height - margin.top - margin.bottom - 100;
   const mainTitle = "District Scatter";
   const xAxTitle = "Measure 1";
   const yAxTitle = "Measure 2";
@@ -40,12 +40,12 @@ const DistrictScatter = ({
 
     const xScale = d3
       .scaleLinear()
-      .domain([0, d3.max(coords.x)])
+      .domain([d3.min(coords.x) - 0.05, d3.max(coords.x) + 0.05])
       .range([margin.left, width + margin.left]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(coords.y)])
+      .domain([d3.min(coords.y) - 0.05, d3.max(coords.y) + 0.05])
       .range([height + margin.top, margin.top]);
 
     const xAxis = d3.axisBottom(xScale);
@@ -140,7 +140,7 @@ const DistrictScatter = ({
       <svg
         ref={svgRef}
         width={width + margin.left + margin.right}
-        height={height + margin.top + margin.bottom}
+        height={height + margin.top + margin.bottom - 190}
       ></svg>
     </>
   );
