@@ -7,28 +7,19 @@ const Header = ({ headerText }) => {
 
   const goToHomePage = () => {
     navigate("/");
+    window.location.reload();
   };
 
   const undoPage = () => {
     window.history.back();
   };
 
-  const redoPage = () => {
-    window.history.forward();
-  };
+  // const redoPage = () => {
+  //   window.history.forward();
+  // };
 
   const resetButtonStyle = {
     backgroundImage: `url(${BengalsImage})`,
-    backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    border: "none",
-    borderRadius: "4px",
-    width: "20px", // Set a fixed width for the clickable area
-    height: "15px", // Set a fixed height for the clickable area
-    display: "inline-block",
-    marginBottom: "-8px",
-    cursor: "pointer",
   };
 
   return (

@@ -4,8 +4,6 @@ import api from "../api/posts.js";
 const EnsembleTable = ({
   headerText,
   ensembleDetails,
-  ensembleTableWidth,
-  ensembleTableHeight,
   stateID,
   currentDistrPlan,
 }) => {
@@ -48,7 +46,6 @@ const EnsembleTable = ({
         `/${stateID}/${ensembleIndex}/cluster_details`
       );
       const clusters = response.data;
-      // console.log(clusters)
       return clusters;
     } catch (err) {
       console.log(err);
@@ -133,7 +130,7 @@ const EnsembleTable = ({
       },
     });
   };
-
+  const totalPages = Math.ceil(ensembleDetails.length / rowsPerPage);
   return (
     <div className="table-container">
       <table style={{ padding: "10px" }}>
@@ -170,7 +167,7 @@ const EnsembleTable = ({
         </tbody>
       </table>
 
-      <div style={{ padding: "10px" }}>
+      <div className="pagination-container">
         <button
           className="pagination-btn"
           onClick={handlePrevClick}
@@ -178,13 +175,11 @@ const EnsembleTable = ({
         >
           Prev
         </button>
-        <span style={{ padding: "5px" }}>{`Page ${currentPage}`}</span>
+        <span className="pages">{`Page ${currentPage} of ${totalPages}`}</span>
         <button
           className="pagination-btn"
           onClick={handleNextClick}
-          disabled={
-            currentPage === Math.ceil(ensembleDetails.length / rowsPerPage)
-          }
+          disabled={currentPage === totalPages}
         >
           Next
         </button>

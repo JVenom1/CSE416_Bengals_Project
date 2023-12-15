@@ -1,54 +1,85 @@
-// description comments are used for the combination with server part (can be deleted later by anyone)
+// Imports
 import { useState, React } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
+import { GeoJSON } from "react-leaflet";
+// Files
 import Header from "./Header.js";
 import api from "../api/posts.js";
-import mNum from "../Helpers/mNum.js";
-import "../App.css";
+import Defaults from "../Helpers/Defaults.js";
+import Map from "./Map.js";
+// CSS
+import "../CSS/App.css";
 import "leaflet/dist/leaflet.css";
 // Data
 import MDOutline from "../Data/StateOutlines/MDOutline.json";
 import NCOutline from "../Data/StateOutlines/NCOutline.json";
 import WIOutline from "../Data/StateOutlines/WIOutline.json";
+
 const StateSelection = () => {
-  const [selectedState, setSelectedState] = useState("");
+  const [selectedState, setSelectedState] = useState(""); // For Dropdown
   const navigate = useNavigate();
   const headerText = "States";
+
   // Handlers
-  const handleStateOutline = (geoData) => {
-    return (
-      <GeoJSON
-        data={geoData}
-        eventHandlers={{
-          click: handleStateSelect,
-        }}
-      />
-    );
+  const handleStateOutline = (geoDataArr) => {
+    const displayGeo = [];
+    geoDataArr.forEach((geoData) => {
+      displayGeo.push(
+        <GeoJSON
+          data={geoData}
+          eventHandlers={{
+            click: handleStateSelect,
+          }}
+        />
+      );
+    });
+    return displayGeo;
   };
 
   const handleStateSelect = async (e) => {
+    const getClustAssoc = async (stateID) => {
+      try {
+        return (await api.get(`/${stateID}/ensemble_details`)).data;
+      } catch (error) {
+        // axios official console.log()'s
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+        return null;
+      }
+    };
+    const getCurrDistrPlan = async (stateID) => {
+      try {
+        return (await api.get(`/${stateID}/2020plan`)).data;
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+        return null;
+      }
+    };
+
     let stateID = null;
+    // String of either WI/MD/NC
     if (e.sourceTarget) {
-      // State Select - String of either WI/MD/NC
+      // State Select
       stateID = e.sourceTarget.feature.properties.State;
       setSelectedState(stateID);
     } else {
-      // dropdown
+      // Dropdown
       stateID = e.target.value;
       setSelectedState(stateID);
     }
-    // current districtplan is the default one
-    if (stateID === "WI") {
-      stateID = mNum.stateNumbers.WI;
-    } else if (stateID === "MD") {
-      stateID = mNum.stateNumbers.MD;
-    } else {
-      stateID = mNum.stateNumbers.NC;
-    }
+    // change it to the correct number
+    stateID = Defaults.stateData.number[stateID];
+
     document.body.style.cursor = "wait";
-    const ensembleDetails = await getEnsemDetails(stateID);
-    const currDistPlan = await getDistrPlan(stateID);
+    const ensembleDetails = await getClustAssoc(stateID);
+    const currDistPlan = await getCurrDistrPlan(stateID);
     navigate(`/EnsembleSelection`, {
       state: {
         stateID: stateID,
@@ -58,62 +89,35 @@ const StateSelection = () => {
       },
     });
   };
-
-  const getEnsemDetails = async (stateID) => {
-    try {
-      const response = await api.get(`/${stateID}/ensemble_details`);
-      const clustAssoc = response.data;
-      return clustAssoc;
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-  };
-  const getDistrPlan = async (stateID) => {
-    try {
-      const response = await api.get(`/${stateID}/2020plan`);
-      const currentDistPlan = response.data;
-      return currentDistPlan; // retrieve the default plans from the server here
-    } catch (error) {
-      console.log("Error fetching data:", error);
-      return null;
-    }
-  };
-
+  const geoData = handleStateOutline([WIOutline, MDOutline, NCOutline]);
+  const center = Defaults.mapData.center;
+  const maxBound = Defaults.mapData.maxBound;
+  const zoom = 6;
   return (
     <>
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
           <div className="home-map">
-            <MapContainer
-              center={mNum.mapCenter}
-              zoom={5}
-              minZoom={4}
-              maxBounds={mNum.mapBounds}
-              maxZoom={10}
-            >
-              <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {handleStateOutline(WIOutline)}
-              {handleStateOutline(MDOutline)}
-              {handleStateOutline(NCOutline)}
-            </MapContainer>
+            <Map
+              geoData={geoData}
+              center={center}
+              maxBound={maxBound}
+              zoom={zoom}
+            />
           </div>
           <div className="welcome-container">
             <div className="welcome-text">
               <h1 style={{ fontSize: "50px" }}>Welcome to Bengals</h1>
-              <h4 style={{ fontSize: "25px" }}>
-                Have fun with our cluster analysis on sets of random district
-                plans.
-              </h4>
+              <h2 style={{ fontSize: "25px" }}>
+                Have Fun With Our Cluster Analysis On Sets Of Random District
+                Plans.
+              </h2>
             </div>
             <div className="dropdown-menu">
-              <h5 style={{ fontSize: "20px" }}>
+              <h4 style={{ fontSize: "20px" }}>
                 Please Select A State From Below Or On The Map
-              </h5>
+              </h4>
               <select value={selectedState} onChange={handleStateSelect}>
                 <option value="" disabled>
                   Select a State

@@ -1,6 +1,6 @@
 // Import necessary libraries
 import { useEffect, useRef } from "react";
-import "../App.css";
+import "../CSS/App.css";
 import "leaflet/dist/leaflet.css";
 import { useNavigate } from "react-router-dom";
 import * as d3 from "d3";
@@ -52,13 +52,18 @@ const ClusterScatter = ({
     svg
       .append("g")
       .attr("transform", `translate(0, ${height + margin.top})`)
-      .call(xAxis);
+
+      .call(xAxis)
+      .selectAll("text") // Select only the tick text elements
+      .style("font-size", "1.5em"); // Adjust the font size as needed
 
     // Add Y Axis
     svg
       .append("g")
       .attr("transform", `translate(${margin.left}, 0)`)
-      .call(yAxis);
+      .call(yAxis)
+      .selectAll("text") // Select only the tick text elements
+      .style("font-size", "1.5em"); // Adjust the font size as needed
 
     // Add Title
     svg

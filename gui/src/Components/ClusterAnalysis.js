@@ -1,20 +1,20 @@
 // Import necessary libraries
 import { useState, useEffect } from "react";
-import "../App.css";
+import "../CSS/App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation } from "react-router-dom";
 import Header from "./Header.js";
-import DefaultDistrMap from "./DefaultDistrMap.js";
 import ClusterScatter from "./ClusterScatter.js";
 import ClustSumTable from "./ClustSumTable.js";
 import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
 import ClusterDetailTable from "./ClusterDetailTable.js";
-import { MapContainer, TileLayer, GeoJSON } from "react-leaflet";
-import mNum from "../Helpers/mNum.js";
+import { GeoJSON } from "react-leaflet";
+import Map from "./Map.js";
+import Defaults from "../Helpers/Defaults.js";
 const ClusterAnalysis = () => {
   document.body.style.cursor = "default";
   const [selectedComponent, setSelectedComponent] = useState("details"); //details
-  
+
   const location = useLocation();
   const stateID = location.state.stateID;
   const headerText = location.state.headerText + " > Clusters";
@@ -26,28 +26,28 @@ const ClusterAnalysis = () => {
   const ensembleName = location.state.ensembleName;
   const ensembleIndex = location.state.ensembleIndex;
 
-  const clusterScatterWidth = window.innerWidth * 0.5; // 50% of the screen width
+  const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;
 
-  const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
-    const leafletContainer = document.querySelector(".leaflet-container");
-    leafletContainer.style.width = width;
-    leafletContainer.style.height = height;
-  };
   useEffect(() => {
-    changeMapSizeXbyY("66%", "40vw");
+    Defaults.changeMapSizeXbyY("100%", "36vw");
   });
   const renderComponent = () => {
     if (selectedComponent === "details") {
       // console.log(clusterNameList)
 
       return (
-        <ClusterDetailTable clusterDet={clusterDetailsList} />
+        <ClusterDetailTable
+          clusterDet={clusterDetailsList}
+          stateID={stateID}
+          ensembleIndex={ensembleIndex}
+          currentDistrPlan={currentDistrPlan}
+          headerText={headerText}
+        />
         // <ClusterDetailTable clusterDet={clusterNameList} />
       );
     } else if (selectedComponent === "scatter") {
       // Return the Cluster Scatter component
-
       return (
         <ClusterScatter
           _stateID={stateID}
@@ -71,65 +71,58 @@ const ClusterAnalysis = () => {
       );
     }
   };
+  const geoData = <GeoJSON data={currentDistrPlan} />;
+  const center = Defaults.stateData.center[stateID].latlng;
+  const maxBound = Defaults.stateData.maxBound.stateID;
+  const zoom = 7;
   return (
     <>
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
-          <div className="map-container">
+          <div className="left-container">
             <h2 className="map-title">
-              {mNum.stateNumsToPrefix[stateID]} District Plan
+              {Defaults.stateData.name[stateID]} District Plan
             </h2>
             <div className="table-map">
-              <MapContainer
-                center={mNum.stateCenter[stateID].latlng}
-                zoom={6}
-                minZoom={4}
-                maxBounds={mNum.stateZoomBounds.stateID}
-                maxZoom={7}
-                dragging={true}
-              >
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                {<GeoJSON data={currentDistrPlan} />}
-              </MapContainer>
-              <ClustSumTable
-                ensembleName={ensembleName}
-                clusterSum={clusterSum}
+              <Map
+                geoData={geoData}
+                center={center}
+                maxBound={maxBound}
+                zoom={zoom}
               />
             </div>
+            <ClustSumTable
+              ensembleName={ensembleName}
+              clusterSum={clusterSum}
+            />
           </div>
 
-          <div className="controls-container">
+          <div className="right-pane">
             <div className="button-container">
               <button
-                className={`control-button ${
-                  selectedComponent === "details" && "active"
-                }`}
+                className={`control-button`}
                 onClick={() => setSelectedComponent("details")}
+                disabled={selectedComponent === "details" && "active"}
               >
                 Cluster Details
               </button>
               <button
-                className={`control-button ${
-                  selectedComponent === "scatter" && "active"
-                }`}
+                className={`control-button`}
                 onClick={() => setSelectedComponent("scatter")}
+                disabled={selectedComponent === "scatter" && "active"}
               >
                 Cluster Scatter
               </button>
               <button
-                className={`control-button ${
-                  selectedComponent === "assoc" && "active"
-                }`}
+                className={`control-button`}
+                disabled={selectedComponent === "assoc" && "active"}
                 onClick={() => setSelectedComponent("assoc")}
               >
                 Cluster Association
               </button>
             </div>
-            <div className="component-container">{renderComponent()}</div>
+            <div className="cluster-data">{renderComponent()}</div>
           </div>
         </div>
       </div>

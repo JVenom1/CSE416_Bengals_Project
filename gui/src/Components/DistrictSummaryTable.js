@@ -1,4 +1,4 @@
-import "../App.css";
+import "../CSS/App.css";
 import { useState } from "react";
 
 const DistrictSummaryTable = ({ distPlanList }) => {
@@ -31,12 +31,12 @@ const DistrictSummaryTable = ({ distPlanList }) => {
   };
 
   return (
-    <div>
+    <div className="table-container">
       <table>
         <thead>
           <tr>
             <th>Availability</th>
-            <th>Plan Name</th>
+            <th>Plan #</th>
             <th>Num Oppertunity Dist Count</th>
             <th>Rep./Dem. Splits</th>
             {/* {columnHeaders.map((header) => (
@@ -47,40 +47,31 @@ const DistrictSummaryTable = ({ distPlanList }) => {
         <tbody>
           {distPlanList.slice(startIndex, endIndex).map((distPlan, index) => (
             <tr key={index}>
-              {/* <td>
-                                {distPlan.availability === "Available" ? (
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedPlans[index] || false}
-                                        onChange={() => handleCheckboxChange(index)}
-                                    />
-                                ) : (
-                                    "X"
-                                )}
-                            </td> */}
               {columnHeaders.map((header) => (
-                <td key={header}>{distPlan[header].toString()}</td>
+                <td key={header}>
+                  {header === "name"
+                    ? distPlan[header].trim().substring(4)
+                    : distPlan[header].toString()}
+                </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
 
-      <div>
+      <div className="pagination-container">
         <button
+          className="pagination-btn"
           onClick={handlePrevClick}
           disabled={currentPage === 1}
-          className={currentPage === 1 ? "disabled-button" : "default-button"}
         >
           Prev
         </button>
-        <span>{`Page ${currentPage} of ${totalPages}`}</span>
+        <span className="pages">{`Page ${currentPage} of ${totalPages}`}</span>
         <button
+          className="pagination-btn"
           onClick={handleNextClick}
           disabled={currentPage === totalPages}
-          className={
-            currentPage === totalPages ? "disabled-button" : "default-button"
-          }
         >
           Next
         </button>

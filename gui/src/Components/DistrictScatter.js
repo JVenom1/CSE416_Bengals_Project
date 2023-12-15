@@ -1,4 +1,4 @@
-import "../App.css";
+import "../CSS/App.css";
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 import api from "../api/posts.js";
@@ -27,7 +27,7 @@ const DistrictScatter = ({
   const margin = { top: 40, right: 30, bottom: 250, left: 50 };
   const coords = _coords;
   const width = _width - margin.left - margin.right;
-  const height = _height - margin.top - margin.bottom - 100;
+  const height = _height - margin.top - margin.bottom - 75;
   const mainTitle = "District Scatter";
   const xAxTitle = "Measure 1";
   const yAxTitle = "Measure 2";
@@ -86,7 +86,7 @@ const DistrictScatter = ({
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2 + margin.top - 70)
-      .attr("y", margin.left - 30)
+      .attr("y", margin.left - 35)
       .attr("text-anchor", "middle")
       .text(yAxTitle);
 
@@ -103,7 +103,11 @@ const DistrictScatter = ({
       .attr("district-index", (d, i) => i)
       .on("mouseover", function () {
         // Change cursor to pointer on hover
-        d3.select(this).style("cursor", "pointer");
+        if (d3.select(this).attr("available") === "true") {
+          d3.select(this).style("cursor", "pointer");
+        } else {
+          d3.select(this).style("cursor", "not-allowed");
+        }
       })
       .on("mouseout", function () {
         // Reset cursor on mouseout
@@ -114,25 +118,31 @@ const DistrictScatter = ({
   });
 
   const handleScatterPlotClick = async (e) => {
-    if (oldPlan === null) {
-      console.log("clicked");
-      if (e.target.getAttribute("available")) {
-        try {
-          const response = await api.get(`/2/0/0/1`);
-          const districtIndex = e.target.getAttribute("district-index");
-          // scatterClickedIndex(districtIndex);
-          // const response = await api.get(
-          //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
-          // );
-          const plan = response.data;
+    console.log(e.target.getAttribute("available"));
+    if (e.target.getAttribute("available") === "true") {
+      if (oldPlan === null) {
+        console.log("clicked");
+        if (e.target.getAttribute("available")) {
+          try {
+            // const response = await api.get(`/2/0/0/1`);
+            const districtIndex = e.target.getAttribute("district-index");
+            // scatterClickedIndex(districtIndex);
+            // const response = await api.get(
+            //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
+            // );
+            // const plan = response.data;
+            // setSelectedPlan(plan);
 
-          setSelectedPlan(test);
-        } catch (err) {
-          console.log(err);
+            setSelectedPlan(test);
+          } catch (err) {
+            console.log(err);
+          }
         }
+      } else {
+        setSelectedPlan(null);
       }
     } else {
-      setSelectedPlan(null);
+      // alert("No Data Click A Green Dot");
     }
   };
   return (

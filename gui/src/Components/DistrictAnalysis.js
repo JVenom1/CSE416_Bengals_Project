@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import "../App.css";
+import "../CSS/App.css";
 import "leaflet/dist/leaflet.css";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import CompareDistrMap from "./CompareDistrMap";
 import DistrictScatter from "./DistrictScatter";
 import DistrictSummaryTable from "./DistrictSummaryTable";
-import mNum from "../Helpers/mNum";
+import Defaults from "../Helpers/Defaults.js";
 
 const DistrictAnalysis = () => {
   document.body.style.cursor = "default";
@@ -28,7 +28,7 @@ const DistrictAnalysis = () => {
   };
 
   useEffect(() => {
-    changeMapSizeXbyY("70%", "40vw");
+    changeMapSizeXbyY("100%", "36vw");
   }, []);
 
   useEffect(() => {
@@ -45,20 +45,19 @@ const DistrictAnalysis = () => {
         <Header headerText={headerText} />
         <div className="main-container">
           {/* Change Map Split Here for Distr Analysis */}
-          <div className="map-container">
-            <div style={{ margin: "5px" }}>
-              <h2 className="map-title">
-                {mNum.stateNumsToPrefix[stateID]} District Plan{" "}
-                <button id="restore" value={3} onClick={handleRestoreMaps}>
-                  Reset Map
-                </button>
-              </h2>
-            </div>
+          <div className="left-container">
+            <h2 className="map-title">
+              {Defaults.stateData.name[stateID]} District Plan{" "}
+              <button id="restore" value={3} onClick={handleRestoreMaps}>
+                Reset Map
+              </button>
+            </h2>
             <CompareDistrMap
               stateID={stateID}
               currentDistrPlan={districtPlan1}
               selectedPlan={districtPlan2}
             />
+            <div>Place District Init Table Here</div>
           </div>
 
           <div className="right-pane">
@@ -68,7 +67,7 @@ const DistrictAnalysis = () => {
                 _ensembleIndex={ensembleIndex}
                 _clusterIndex={clusterIndex}
                 _width={window.innerWidth / 2}
-                _height={window.innerHeight / 2 + 90}
+                _height={window.innerHeight / 2 + 150}
                 _coords={districtCoords}
                 _districtPlans={districtPlanList}
                 _setSelectedPlan={setSelectedPlan}

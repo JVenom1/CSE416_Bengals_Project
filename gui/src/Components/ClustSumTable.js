@@ -4,7 +4,7 @@ const ClustSumTable = ({ ensembleName, clusterSum }) => {
   // averagedistancehd | averagedistanceot | numberofplans
   // console.log(keys)
   return (
-    <div className="table-container">
+    <div className="solo-table-container">
       <table>
         <thead>
           <tr>
@@ -18,8 +18,8 @@ const ClustSumTable = ({ ensembleName, clusterSum }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{ensembleName}</td>
+          <tr className="solo-tr">
+            <td>{ensembleName.trim().substring(9)}</td>
             {keys.map((key) => (
               <td key={key}>{clusterSum[key]}</td>
             ))}

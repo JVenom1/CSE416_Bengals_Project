@@ -1,0 +1,436 @@
+/* Main */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.loading {
+  cursor: wait !important;
+}
+
+.app-container {
+  background-color: rgb(251, 213, 156);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.header {
+  height: 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(215, 124, 5);
+  padding: 0 20px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+}
+
+.reset-button {
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  padding: 6px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 20px;
+  height: 14px;
+  display: inline-block;
+  margin-bottom: -8px;
+}
+
+#restore {
+
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  padding: 6px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+
+.header-button {
+  background-color: rgb(0, 0, 0);
+  color: #ffffff;
+  padding: 6px 12px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.header-text {
+  font-size: large;
+}
+
+.main-container {
+  height: 95%;
+  width: 100%;
+  display: flex;
+}
+
+.leaflet-container {
+  height: 100%;
+  /* -4 because of padding */
+  width: 46vw;
+  flex: 1;
+}
+
+/* State Selection */
+.home-map {
+  background-color: rgb(248, 233, 211);
+  text-align: center;
+  width: 50%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  /* top right bottom left */
+  margin: 20px 10px 20px 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+
+.welcome-container {
+  background-color: rgb(248, 233, 211);
+  width: 50%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 20px 20px 10px;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.welcome-text {
+  text-align: center;
+}
+
+.dropdown-menu {
+  margin-top: 20px;
+  text-align: center;
+  /* Add styles for your dropdown menu */
+}
+
+select {
+  text-align: center;
+  background-color: #d9cea8;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+select:hover {
+  cursor: pointer;
+}
+
+/* old map-container */
+.left-container {
+  /* background-color: rgb(248, 233, 211); */
+  text-align: center;
+  width: 40%;
+  height: 100%;
+}
+
+.map-title {
+  font-size: 25px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: rgb(248, 233, 211);
+  height: 3%;
+  /* width: 100%; */
+  margin: 20px 10px 20px 20px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.ensemble-map {
+  background-color: rgb(248, 233, 211);
+  /* width: 100%; */
+  height: 85%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 10px 20px 20px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+
+/* Old controls-container */
+
+.ensemble-data {
+  background-color: rgb(248, 233, 211);
+  width: 60%;
+  height: 93%;
+  text-align: center;
+  overflow: hidden;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 20px 20px 10px;
+  padding: 10px;
+  border-radius: 10px;
+  /* display: flex; */
+  /* flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+
+.table-map {
+  background-color: rgb(248, 233, 211);
+  /* width: 100%; */
+  height: 70%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 10px 20px 20px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.table-container {
+  background-color: rgb(230, 171, 83);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 10px 20px 20px;
+  padding: 10px;
+}
+
+.table-container table tbody tr:nth-child(even) {
+  /* background-color: rgb(251, 213, 156); */
+  background-color: rgb(238, 186, 119);
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #000000;
+  border-collapse: collapse;
+  /* Lighter color for even rows */
+}
+
+.table-container table tbody tr:nth-child(odd) {
+  background-color: rgb(251, 213, 156);
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #000000;
+  border-collapse: collapse;
+  /* Darker color for odd rows */
+}
+
+.solo-table-container {
+  background-color: rgb(248, 233, 211);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 10px 20px 20px;
+  padding: 10px;
+}
+
+.distance-table {}
+
+.only-map {
+  background-color: rgb(248, 233, 211);
+  text-align: center;
+  /* width: 100%; */
+  height: 60%;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+
+.right-pane {
+  width: 60%;
+  margin: 20px 20px 20px 10px;
+}
+
+.cluster-data {
+  background-color: rgb(248, 233, 211);
+  padding: 20px;
+  border-radius: 10px;
+  height: 89%;
+  text-align: center;
+}
+
+.button-container {
+  /* background-color: rgb(248, 233, 211); */
+  border-radius: 10px;
+  display: flex;
+  cursor: pointer;
+  /* width: 100%; */
+}
+
+.control-button {
+  cursor: pointer;
+  flex-grow: 1;
+  border-radius: 10px;
+  border: #000000;
+  background-color: rgb(236, 190, 120);
+}
+
+.control-button:disabled {
+  cursor: default;
+  flex-grow: 1;
+  border-radius: 10px;
+  padding: 10px;
+  border: 20px;
+  border-color: #000000;
+  background-color: rgb(155, 124, 78);
+  color: #000000;
+  font-size: 16px;
+}
+
+.top-right {
+  background-color: rgb(248, 233, 211);
+  height: 40%;
+  text-align: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.bottom-right {
+  background-color: rgb(248, 233, 211);
+  height: 45%;
+  text-align: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* .header .header-button[disabled] {
+  cursor: not-allowed;
+} */
+
+.clustScatContainer {
+  background-color: rgb(248, 233, 211);
+  width: 60%;
+  height: 80%;
+  overflow: hidden;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.inner-component-container {
+  text-align: center;
+}
+
+.default-button {
+  background-color: rgb(237, 218, 194);
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+.default-button:hover {
+  cursor: pointer;
+  background-color: rgb(164, 150, 134);
+}
+
+.default-button:disabled {
+  cursor: not-allowed;
+  background-color: #ccc;
+}
+
+table {
+  border-radius: 10px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.solo-tr {
+  background-color: rgb(251, 213, 156);
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #000000;
+  border-collapse: collapse;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #000000;
+
+}
+
+th {
+  background-color: rgb(215, 124, 5);
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+.pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pagination-container {
+  padding: 10px;
+}
+
+.pages {
+  padding: 5px;
+  font-size: small;
+}
+
+.pagination-btn {
+  padding: 1px 1px;
+  /* background: none; */
+  color: #000000;
+  background: #ff6f00;
+  font-size: small;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.pagination-btn:disabled {
+  background: none;
+  cursor: not-allowed;
+  color: #777676;
+}
+
+.ensemble-button {
+  cursor: pointer;
+  padding: 8px 12px;
+  /* Adjust padding as needed */
+  border: 1px solid #666;
+  border-radius: 5px;
+  /* display: inline-block; */
+  text-align: center;
+  text-decoration: none;
+  /* Remove underline for anchor tags */
+  color: #333;
+  font-weight: bold;
+  user-select: none;
+  /* Disable text selection */
+}
+
+.ensemble-button:hover {
+  background-color: rgb(155, 124, 78);
+  border-radius: 5px;
+
+}
+
+.disabled-button {
+  display: inline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  /* Adjust padding as needed */
+  font: inherit;
+}

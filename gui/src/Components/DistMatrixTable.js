@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "./Header";
-import DefaultDistrMap from "./DefaultDistrMap";
+import Map from "./Map";
+import { GeoJSON } from "react-leaflet";
+import Defaults from "../Helpers/Defaults.js";
 
 const DistMatrixTable = () => {
   document.body.style.cursor = "default";
@@ -12,18 +14,13 @@ const DistMatrixTable = () => {
   const headerText = location.state.headerText + " > DistanceMatrix";
   const convertedObject2DArr = {};
   useEffect(() => {
-    changeMapSizeXbyY("85%", "40vw");
+    Defaults.changeMapSizeXbyY("100%", "50vw");
   }, []);
   for (const key in matrixList) {
     if (matrixList.hasOwnProperty(key)) {
       convertedObject2DArr[key] = matrixList[key].map((obj) => obj.item);
     }
   }
-  const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
-    const leafletContainer = document.querySelector(".leaflet-container");
-    leafletContainer.style.width = width;
-    leafletContainer.style.height = height;
-  };
   // matrixList = { "key1": [[0, 1, 2], [0, 1, 2], [0, 1, 2]], "key2": [[9999, 1, 2], [0, 1, 2], [0, 1, 2]] }
 
   const [selectedKey, setSelectedKey] = useState(
@@ -37,18 +34,24 @@ const DistMatrixTable = () => {
   const selectedMatrix = convertedObject2DArr[selectedKey];
   const numCols = selectedMatrix[0].length;
 
+  const geoData = <GeoJSON data={currentDistrPlan} />;
+  const center = Defaults.stateData.center[stateID].latlng;
+  const maxBound = Defaults.stateData.maxBound[stateID];
+  const zoom = 7;
   return (
     <>
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
-          <div className="map-container">
-            <DefaultDistrMap
-              stateID={stateID}
-              currentDistrPlan={currentDistrPlan}
+          <div className="home-map">
+            <Map
+              geoData={geoData}
+              center={center}
+              maxBound={maxBound}
+              zoom={zoom}
             />
           </div>
-          <div className="controls-container">
+          <div className="welcome-container">
             <h1>Distance Matrix</h1>
             <table border="1">
               <thead>
