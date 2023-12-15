@@ -288,11 +288,12 @@ select:hover {
 
 .top-right {
   background-color: rgb(248, 233, 211);
-  height: 40%;
+  height: 45%;
   text-align: center;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 20px;
-  padding: 20px;
+  /* top right bottom left */
+  margin: 0px 0px 20px 0px;
+  padding: 10px;
   border-radius: 10px;
 }
 
@@ -301,7 +302,7 @@ select:hover {
   height: 45%;
   text-align: center;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 20px;
+  margin: 20px 0px 0px 0px;
   padding: 10px;
   border-radius: 10px;
 }

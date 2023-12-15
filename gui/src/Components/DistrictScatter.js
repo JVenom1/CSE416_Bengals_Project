@@ -24,9 +24,9 @@ const DistrictScatter = ({
   const selectedPlan = _selectedPlan;
 
   // const districtPlans = _districtPlans;
-  const margin = { top: 40, right: 30, bottom: 250, left: 50 };
+  const margin = { top: 40, right: 30, bottom: 250, left: 80 };
   const coords = _coords;
-  const width = _width - margin.left - margin.right;
+  const width = _width - margin.left - margin.right + 50;
   const height = _height - margin.top - margin.bottom - 75;
   const mainTitle = "District Scatter";
   const xAxTitle = "Measure 1";
@@ -86,7 +86,7 @@ const DistrictScatter = ({
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2 + margin.top - 70)
-      .attr("y", margin.left - 35)
+      .attr("y", margin.left - 45)
       .attr("text-anchor", "middle")
       .text(yAxTitle);
 
@@ -118,7 +118,7 @@ const DistrictScatter = ({
   });
 
   const handleScatterPlotClick = async (e) => {
-    console.log(e.target.getAttribute("available"));
+    // console.log(e.target.getAttribute("available"));
     if (e.target.getAttribute("available") === "true") {
       if (oldPlan === null) {
         console.log("clicked");

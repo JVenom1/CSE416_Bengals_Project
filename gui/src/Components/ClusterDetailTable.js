@@ -90,6 +90,7 @@ const ClusterDetailTable = ({
         ensembleIndex,
         index
       );
+      const distrInitalSummary = "get district init Summary";
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
@@ -101,6 +102,7 @@ const ClusterDetailTable = ({
           // [i].availability .averageoppertunitydistrictcount .name .split
           districtPlanList: districtPlanList,
           headerText: headerText,
+          distrInitalSummary: distrInitalSummary,
         },
       });
     } catch (error) {

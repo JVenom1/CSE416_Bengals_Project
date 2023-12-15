@@ -18,6 +18,7 @@ const DistrictAnalysis = () => {
   const ensembleIndex = location.state.ensembleIndex;
   const districtCoords = location.state.districtCoords;
   const districtPlanList = location.state.districtPlanList;
+  const distrInitalSummary = location.state.distrInitalSummary;
   const [districtPlan2, setDistrictPlan2] = useState(null);
   const [selectedPlan, setSelectedPlan] = useState(null);
 
@@ -57,7 +58,7 @@ const DistrictAnalysis = () => {
               currentDistrPlan={districtPlan1}
               selectedPlan={districtPlan2}
             />
-            <div>Place District Init Table Here</div>
+            <div className="solo-table-container">{distrInitalSummary}</div>
           </div>
 
           <div className="right-pane">

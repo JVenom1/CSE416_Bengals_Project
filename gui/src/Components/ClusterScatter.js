@@ -148,6 +148,7 @@ const ClusterScatter = ({
         ensembleIndex,
         clusterIndex
       );
+      const distrInitalSummary = "get district init Summary";
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
@@ -159,6 +160,7 @@ const ClusterScatter = ({
           // [i].availability .averageoppertunitydistrictcount .name .split
           districtPlanList: districtPlanList,
           headerText: headerText,
+          distrInitalSummary: distrInitalSummary,
         },
       });
     } catch (error) {
