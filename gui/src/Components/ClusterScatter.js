@@ -37,12 +37,12 @@ const ClusterScatter = ({
 
     const xScale = d3
       .scaleLinear()
-      .domain([0, d3.max(coords.x) * 1.2])
+      .domain([d3.min(coords.x) * 1.2, d3.max(coords.x) * 1.2])
       .range([margin.left, width + margin.left]);
 
     const yScale = d3
       .scaleLinear()
-      .domain([0, d3.max(coords.y) * 1.2])
+      .domain([d3.min(coords.y) * 1.2, d3.max(coords.y) * 1.2])
       .range([height + margin.top, margin.top]);
 
     const xAxis = d3.axisBottom(xScale);
@@ -89,7 +89,7 @@ const ClusterScatter = ({
       .append("text")
       .attr("transform", "rotate(-90)")
       .attr("x", -height / 2 + margin.top - 70)
-      .attr("y", margin.left - 35)
+      .attr("y", margin.left - 50)
       .attr("text-anchor", "middle")
       .style("font-size", "1.8em")
       .text(yAxTitle);
