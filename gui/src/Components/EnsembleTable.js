@@ -136,7 +136,7 @@ const EnsembleTable = ({
       <table style={{ padding: "10px" }}>
         <thead>
           <tr>
-            <th>Ensemble Name</th>
+            <th>Ensemble #</th>
             <th>Ensemble Size</th>
             <th>Cluster Count</th>
             <th>More Details</th>
@@ -145,7 +145,7 @@ const EnsembleTable = ({
         <tbody>
           {displayedEnsembleDetails.map((row, index) => (
             <tr key={index}>
-              <td>{row.name}</td>
+              {<td>{row.name.trim().substring(9)}</td>}
               <td>{row.ensemblesize}</td>
               <td>{row.clustercount}</td>
               <td>
