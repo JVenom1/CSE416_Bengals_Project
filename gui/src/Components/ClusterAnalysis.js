@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import Header from "./Header.js";
 import ClusterScatter from "./ClusterScatter.js";
 import ClustSumTable from "./ClustSumTable.js";
-import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
+// import ClusterAssociationScatter from "./ClusterAssociationScatter.js";
 import ClusterDetailTable from "./ClusterDetailTable.js";
 import { GeoJSON } from "react-leaflet";
 import Map from "./Map.js";
@@ -20,7 +20,7 @@ const ClusterAnalysis = () => {
   const headerText = location.state.headerText + " > Clusters";
   const currentDistrPlan = location.state.currentDistrPlan;
   const clusterCoords = location.state.clusterCoords;
-  const clusterAssocCoords = location.state.clusterAssocCoords;
+  // const clusterAssocCoords = location.state.clusterAssocCoords;
   const clusterDetailsList = location.state.clusters;
   const clusterSum = location.state.clusterSum;
   const ensembleName = location.state.ensembleName;
@@ -59,17 +59,18 @@ const ClusterAnalysis = () => {
           _headerText={headerText}
         />
       );
-    } else if (selectedComponent === "assoc") {
-      return (
-        <div>
-          <ClusterAssociationScatter
-            _coords={clusterAssocCoords}
-            clusterScatterWidth={clusterScatterWidth}
-            clusterScatterHeight={clusterScatterHeight}
-          />
-        </div>
-      );
     }
+    // else if (selectedComponent === "assoc") {
+    //   return (
+    //     <div>
+    //       <ClusterAssociationScatter
+    //         _coords={clusterAssocCoords}
+    //         clusterScatterWidth={clusterScatterWidth}
+    //         clusterScatterHeight={clusterScatterHeight}
+    //       />
+    //     </div>
+    //   );
+    // }
   };
   const geoData = <GeoJSON data={currentDistrPlan} />;
   const center = Defaults.stateData.center[stateID].latlng;
@@ -114,13 +115,13 @@ const ClusterAnalysis = () => {
               >
                 Cluster Scatter
               </button>
-              <button
+              {/* <button
                 className={`control-button`}
                 disabled={selectedComponent === "assoc" && "active"}
                 onClick={() => setSelectedComponent("assoc")}
               >
                 Cluster Association
-              </button>
+              </button> */}
             </div>
             <div className="cluster-data">{renderComponent()}</div>
           </div>
