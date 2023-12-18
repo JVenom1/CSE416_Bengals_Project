@@ -10,6 +10,7 @@ const EnsembleTable = ({
   const navigate = useNavigate();
   const rowsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDistance, setSelectedDistance] = useState("");
 
   const startIdx = (currentPage - 1) * rowsPerPage;
   const endIdx = startIdx + rowsPerPage;
@@ -77,31 +78,36 @@ const EnsembleTable = ({
   };
   const getAllDistanceMeasures = async (stateID, ensembleIndex) => {
     try {
-      const response = await api.get(
-        `/${stateID}/${ensembleIndex}/distance_measures`
+      const hd = await api.get(`/${stateID}/${ensembleIndex}/cluster_details`)
+        .data;
+      const ot = await api.get(
+        `/${stateID}/${ensembleIndex}/cluster_details_op`
       );
-      return response.data;
+      console.log(hd);
+      return { hd: hd, ot: ot };
     } catch (error) {
       console.log(error);
     }
   };
-  const handleDistanceMeasClick = async (ensembleName) => {
-    const ensembleIndex =
-      parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
-    document.body.style.cursor = "wait";
-    const allDistanceMeasuresMatrix = await getAllDistanceMeasures(
-      stateID,
-      ensembleIndex
-    );
-    navigate("/DistMatrixTable", {
-      state: {
-        stateID: stateID,
-        headerText: headerText,
-        currentDistrPlan: currentDistrPlan,
-        matrixList: allDistanceMeasuresMatrix,
-      },
-    });
-  };
+  // const handleDistanceMeasClick = async (ensembleName, distType) => {
+  //   const ensembleIndex =
+  //     parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
+  //   document.body.style.cursor = "wait";
+
+  //   let allDistanceMeasuresMatrix = await getAllDistanceMeasures(
+  //     stateID,
+  //     ensembleIndex
+  //   );
+  //   navigate("/DistMatrixTable", {
+  //     state: {
+  //       stateID: stateID,
+  //       headerText: headerText,
+  //       currentDistrPlan: currentDistrPlan,
+  //       matrixList: allDistanceMeasuresMatrix,
+  //       distType: distType,
+  //     },
+  //   });
+  // };
   const handleEnsemClick = async (ensembleName) => {
     const ensembleIndex =
       parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
@@ -110,8 +116,10 @@ const EnsembleTable = ({
     const clusterCoords = await getClustCoords(stateID, ensembleIndex);
     // pass list of cluster in said ensemble
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
-    const clusterAssocCoords = await getAssocCoords(stateID, ensembleIndex);
+    // const clusterAssocCoords = await getAssocCoords(stateID, ensembleIndex);
     const clusters = await getClusterDetails(stateID, ensembleIndex);
+    const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
+    console.log(distMeas);
     navigate("/ClusterAnalysis", {
       state: {
         stateID: stateID,
@@ -124,7 +132,8 @@ const EnsembleTable = ({
         clusterSum: clusterSum,
         ensembleName: ensembleName,
         ensembleIndex: ensembleIndex,
-        clusterAssocCoords: clusterAssocCoords,
+        distMeas: distMeas,
+        // clusterAssocCoords: clusterAssocCoords,
         //  matrix soon to have 3 key:value pairs for the 3 distances (now its just data)
         //  .data=array[ixi]
       },
@@ -155,12 +164,31 @@ const EnsembleTable = ({
                 >
                   {`Cluster Analysis`}
                 </button>
+                {/* <button
+                  className="default-button"
+                  onClick={() => handleDistanceMeasClick(row.name, "OT")}
+                >
+                  {`Optimal Transport`}
+                </button>
                 <button
                   className="default-button"
-                  onClick={() => handleDistanceMeasClick(row.name)}
+                  onClick={() => handleDistanceMeasClick(row.name, "HD")}
                 >
-                  {`Distance Measures`}
-                </button>
+                  {`Hamming Distance`}
+                </button> */}
+                {/* <div>
+                  <select
+                    className="default-dropdown"
+                    value={selectedDistance}
+                    onChange={(e) => handleDistanceMeasClick(e.target.value)}
+                  >
+                    <option disabled value="">
+                      Select Distance Measure
+                    </option>
+                    <option value="OT">Optimal Transport</option>
+                    <option value="HD">Hamming Distance</option>
+                  </select>
+                </div> */}
               </td>
             </tr>
           ))}

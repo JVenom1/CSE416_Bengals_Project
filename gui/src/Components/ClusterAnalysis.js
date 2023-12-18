@@ -11,6 +11,7 @@ import ClusterDetailTable from "./ClusterDetailTable.js";
 import { GeoJSON } from "react-leaflet";
 import Map from "./Map.js";
 import Defaults from "../Helpers/Defaults.js";
+import DistMatrixTable from "./DistMatrixTable.js";
 const ClusterAnalysis = () => {
   document.body.style.cursor = "default";
   const [selectedComponent, setSelectedComponent] = useState("details"); //details
@@ -25,6 +26,8 @@ const ClusterAnalysis = () => {
   const clusterSum = location.state.clusterSum;
   const ensembleName = location.state.ensembleName;
   const ensembleIndex = location.state.ensembleIndex;
+  const distMeas = location.state.distMeas;
+  console.log(distMeas);
 
   const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;
@@ -59,18 +62,9 @@ const ClusterAnalysis = () => {
           _headerText={headerText}
         />
       );
+    } else if (selectedComponent === "distMeas") {
+      return <DistMatrixTable matrixList={distMeas} />;
     }
-    // else if (selectedComponent === "assoc") {
-    //   return (
-    //     <div>
-    //       <ClusterAssociationScatter
-    //         _coords={clusterAssocCoords}
-    //         clusterScatterWidth={clusterScatterWidth}
-    //         clusterScatterHeight={clusterScatterHeight}
-    //       />
-    //     </div>
-    //   );
-    // }
   };
   const geoData = <GeoJSON data={currentDistrPlan} />;
   const center = Defaults.stateData.center[stateID].latlng;
@@ -115,13 +109,13 @@ const ClusterAnalysis = () => {
               >
                 Cluster Scatter
               </button>
-              {/* <button
+              <button
                 className={`control-button`}
-                disabled={selectedComponent === "assoc" && "active"}
-                onClick={() => setSelectedComponent("assoc")}
+                disabled={selectedComponent === "distMeas" && "active"}
+                onClick={() => setSelectedComponent("distMeas")}
               >
-                Cluster Association
-              </button> */}
+                Distance Measures
+              </button>
             </div>
             <div className="cluster-data">{renderComponent()}</div>
           </div>
