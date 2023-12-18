@@ -41,7 +41,7 @@ const EnsembleTable = ({
       return null;
     }
   };
-  const getClusterDetails = async (stateID, ensembleIndex) => {
+  const getClusterDetailsHd = async (stateID, ensembleIndex) => {
     try {
       const response = await api.get(
         `/${stateID}/${ensembleIndex}/cluster_details`
@@ -54,7 +54,7 @@ const EnsembleTable = ({
     }
   };
 
-  const getClustCoords = async (stateID, ensemIndex) => {
+  const getClustCoordsHd = async (stateID, ensemIndex) => {
     try {
       const response = await api.get(
         `/${stateID}/${ensemIndex}/cluster_coordinates`
@@ -65,13 +65,26 @@ const EnsembleTable = ({
       console.log(error);
     }
   };
-  const getAssocCoords = async (stateID, ensemIndex) => {
+  const getClusterDetailsOp = async (stateID, ensembleIndex) => {
     try {
       const response = await api.get(
-        `/${stateID}/${ensemIndex}/cluster_association_coordinates`
+        `/${stateID}/${ensembleIndex}/cluster_detailsop`
       );
-      const clusterAssoc = response.data;
-      return clusterAssoc;
+      const clusters = response.data;
+      return clusters;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
+  const getClustCoordsOp = async (stateID, ensemIndex) => {
+    try {
+      const response = await api.get(
+        `/${stateID}/${ensemIndex}/cluster_coordinatesop`
+      );
+      const clusterSum = response.data;
+      return clusterSum;
     } catch (error) {
       console.log(error);
     }
@@ -108,16 +121,16 @@ const EnsembleTable = ({
   //     },
   //   });
   // };
-  const handleEnsemClick = async (ensembleName) => {
+  const handleClustAnalysisClick = async (ensembleName) => {
     const ensembleIndex =
       parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
-    // then the details like Hispanic population vs black population
     document.body.style.cursor = "wait";
-    const clusterCoords = await getClustCoords(stateID, ensembleIndex);
-    // pass list of cluster in said ensemble
+    const clusterCoordsHd = await getClustCoordsHd(stateID, ensembleIndex);
+    const clustersDetsHd = await getClusterDetailsHd(stateID, ensembleIndex);
+    const clusterCoordsOp = await getClustCoordsOp(stateID, ensembleIndex);
+    const clustersDetsOp = await getClusterDetailsOp(stateID, ensembleIndex);
+
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
-    // const clusterAssocCoords = await getAssocCoords(stateID, ensembleIndex);
-    const clusters = await getClusterDetails(stateID, ensembleIndex);
     const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
     console.log(distMeas);
     navigate("/ClusterAnalysis", {
@@ -125,17 +138,16 @@ const EnsembleTable = ({
         stateID: stateID,
         headerText: headerText,
         currentDistrPlan: currentDistrPlan,
-        clusters: clusters,
-        clusterCoords: clusterCoords,
+        clustersDetsHd: clustersDetsHd,
+        clusterCoordsHd: clusterCoordsHd,
+        clustersDetsOp: clustersDetsOp,
+        clusterCoordsOp: clusterCoordsOp,
         clusterScatterWidth: clusterScatterWidth,
         clusterScatterHeight: clusterScatterHeight,
         clusterSum: clusterSum,
         ensembleName: ensembleName,
         ensembleIndex: ensembleIndex,
         distMeas: distMeas,
-        // clusterAssocCoords: clusterAssocCoords,
-        //  matrix soon to have 3 key:value pairs for the 3 distances (now its just data)
-        //  .data=array[ixi]
       },
     });
   };
@@ -160,7 +172,7 @@ const EnsembleTable = ({
               <td>
                 <button
                   className="default-button"
-                  onClick={() => handleEnsemClick(row.name)}
+                  onClick={() => handleClustAnalysisClick(row.name)}
                 >
                   {`Cluster Analysis`}
                 </button>
@@ -203,11 +215,15 @@ const EnsembleTable = ({
         >
           Prev
         </button>
-        <span className="pages">{`Page ${currentPage} of ${totalPages}`}</span>
+        {totalPages !== 0 ? (
+          <span className="pages">{`Page ${currentPage} of ${totalPages}`}</span>
+        ) : (
+          <span className="pages">{`Page ${0} of ${totalPages}`}</span>
+        )}
         <button
           className="pagination-btn"
           onClick={handleNextClick}
-          disabled={currentPage === totalPages}
+          disabled={currentPage === totalPages || totalPages === 0}
         >
           Next
         </button>

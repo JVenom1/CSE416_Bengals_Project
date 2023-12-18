@@ -50,9 +50,23 @@ const StateSelection = () => {
         return null;
       }
     };
-    const getClusterAssoc = async (stateID) => {
+    const getClusterAssocHd = async (stateID) => {
       try {
         return (await api.get(`/${stateID}/cluster_association_coordinates`))
+          .data;
+      } catch (error) {
+        // axios official console.log()'s
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+        return null;
+      }
+    };
+    const getClusterAssocOp = async (stateID) => {
+      try {
+        return (await api.get(`/${stateID}/cluster_association_coordinatesop`))
           .data;
       } catch (error) {
         // axios official console.log()'s
@@ -94,14 +108,16 @@ const StateSelection = () => {
     document.body.style.cursor = "wait";
     const ensembleDetails = await getEnsembleDetails(stateID);
     const currDistPlan = await getCurrDistrPlan(stateID);
-    const clusterAssoc = await getClusterAssoc(stateID);
+    const clusterAssocHd = await getClusterAssocHd(stateID);
+    const clusterAssocOp = await getClusterAssocOp(stateID);
     navigate(`/EnsembleSelection`, {
       state: {
         stateID: stateID,
         headerText: headerText,
         currDistrPlan: currDistPlan,
         ensembleDetails: ensembleDetails,
-        clusterAssoc: clusterAssoc,
+        clusterAssocHd: clusterAssocHd,
+        clusterAssocOp: clusterAssocOp,
       },
     });
   };

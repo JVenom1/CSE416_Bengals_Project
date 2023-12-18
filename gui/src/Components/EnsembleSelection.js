@@ -16,15 +16,25 @@ const EnsembleSelection = () => {
   const stateID = location.state.stateID;
   const currentDistrPlan = location.state.currDistrPlan;
   const ensembleDetails = location.state.ensembleDetails;
-  const clusterAssocCoords = location.state.clusterAssoc;
+  const clusterAssocCoordsHd = location.state.clusterAssocHd;
+  // console.log(clusterAssocCoordsHd);
+  const clusterAssocCoordsOp = location.state.clusterAssocOp;
+  // clusterAssocCoordsOp.y[5] = 50;
+  // console.log(clusterAssocCoordsOp);
+
   const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;
-  console.log(currentDistrPlan);
+  // console.log(currentDistrPlan);
   const headerText = location.state.headerText + " > Ensembles";
-
+  const [selectedOption, setSelectedOption] = useState("Hamming Distance");
   useEffect(() => {
     Defaults.changeMapSizeXbyY("100%", "36vw");
   }, []);
+
+  useEffect(() => {
+    renderComponent();
+  }, [selectedOption, selectedComponent]);
+
   const renderComponent = () => {
     if (selectedComponent === "table") {
       return (
@@ -36,15 +46,31 @@ const EnsembleSelection = () => {
         />
       );
     } else if (selectedComponent === "assoc") {
-      return (
-        <div>
-          <ClusterAssociationScatter
-            _coords={clusterAssocCoords}
-            clusterScatterWidth={clusterScatterWidth}
-            clusterScatterHeight={clusterScatterHeight}
-          />
-        </div>
-      );
+      if (selectedOption === "Hamming Distance") {
+        return (
+          <div>
+            <ClusterAssociationScatter
+              _coords={clusterAssocCoordsHd}
+              setSelectedOption={setSelectedOption}
+              selectedOption={selectedOption}
+              clusterScatterWidth={clusterScatterWidth}
+              clusterScatterHeight={clusterScatterHeight}
+            />
+          </div>
+        );
+      } else if (selectedOption === "Optimal Transport") {
+        return (
+          <div>
+            <ClusterAssociationScatter
+              _coords={clusterAssocCoordsOp}
+              setSelectedOption={setSelectedOption}
+              selectedOption={selectedOption}
+              clusterScatterWidth={clusterScatterWidth}
+              clusterScatterHeight={clusterScatterHeight}
+            />
+          </div>
+        );
+      }
     }
   };
 

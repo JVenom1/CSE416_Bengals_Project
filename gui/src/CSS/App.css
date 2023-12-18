@@ -296,7 +296,7 @@ select:hover {
 
 .bottom-right {
   background-color: rgb(248, 233, 211);
-  height: 45%;
+  height: 48%;
   text-align: center;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   margin: 20px 0px 0px 0px;
@@ -328,6 +328,19 @@ select:hover {
 }
 
 .default-button:hover {
+  cursor: pointer;
+  background-color: rgb(164, 150, 134);
+}
+
+.cluster-button {
+  background-color: rgb(237, 218, 194);
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+.cluster-button:hover {
   cursor: pointer;
   background-color: rgb(164, 150, 134);
 }

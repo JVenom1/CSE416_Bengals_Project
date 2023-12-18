@@ -11,7 +11,7 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
     // changeMapSizeXbyY("80%", "40vw");
   }, [selectedPlan, currentDistrPlan]);
 
-  console.log(selectedPlan);
+  // console.log(selectedPlan);
   let zoom = 6;
   const handleDiffScreenSizes = (zoom) => {
     const diagonalSize = Math.sqrt(

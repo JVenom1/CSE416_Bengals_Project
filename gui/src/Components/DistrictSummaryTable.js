@@ -11,7 +11,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
   const endIndex = startIndex + itemsPerPage;
 
   const columnHeaders = Object.keys(distPlanList[0]);
-  console.log(distPlanList[0].availibility);
+  // console.log(distPlanList[0].availibility);
 
   const handlePrevClick = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));

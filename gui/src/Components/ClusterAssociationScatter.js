@@ -1,8 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
 const ClusterAssociationScatter = ({
   _coords,
+  setSelectedOption,
+  selectedOption,
   clusterScatterWidth,
   clusterScatterHeight,
 }) => {
@@ -14,6 +16,12 @@ const ClusterAssociationScatter = ({
   const yAxTitle = "Cluster Count";
   const svgRef = useRef();
   const coords = _coords;
+  const [selectedOptionInternal, setSelectedOptionInternal] =
+    useState("Hamming Distance");
+
+  useEffect(() => {
+    setSelectedOption(selectedOptionInternal);
+  }, [selectedOptionInternal, setSelectedOption]);
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
@@ -52,6 +60,23 @@ const ClusterAssociationScatter = ({
       .attr("text-anchor", "middle")
       .style("font-size", "2.5em")
       .text(mainTitle);
+
+    // const dropdown = svg
+    //   .append("foreignObject")
+    //   .attr("x", width / 2 + margin.left + 200) // Adjust the position as needed
+    //   .attr("y", margin.top / 2 - 30) // Adjust the position as needed
+    //   .attr("width", 200)
+    //   .attr("height", 40)
+    //   .append("xhtml:select")
+    //   .on("change", (e) => handleChange(e));
+
+    // dropdown
+    //   .selectAll("option")
+    //   .data(["Hamming Distance", "Optimal Transport"])
+    //   .enter()
+    //   .append("xhtml:option")
+    //   .attr("value", (d) => d)
+    //   .text((d) => (d === selectedOption ? `${d}` : d));
 
     // Add X Axis Label
     svg
@@ -98,16 +123,34 @@ const ClusterAssociationScatter = ({
       .attr("fill", "none")
       .attr("stroke", "blue")
       .attr("stroke-width", 2);
-  }, [_coords, clusterScatterWidth, clusterScatterHeight, width, height]);
+  }, [
+    _coords,
+    clusterScatterWidth,
+    clusterScatterHeight,
+    width,
+    height,
+    selectedOptionInternal,
+  ]);
 
+  const handleChange = (e) => {
+    // console.log("Selected value:", e.target.value);
+    setSelectedOptionInternal(e.target.value);
+    setSelectedOption(e.target.value);
+  };
   return (
-    <svg
-      ref={svgRef}
-      viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight}`}
-      preserveAspectRatio="xMidYMid meet"
-      width="100%"
-      height="100%"
-    ></svg>
+    <>
+      <select value={selectedOptionInternal} onChange={handleChange}>
+        <option value="Hamming Distance">Hamming Distance</option>
+        <option value="Optimal Transport">Optimal Transport</option>
+      </select>
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight}`}
+        preserveAspectRatio="xMidYMid meet"
+        width="100%"
+        height="100%"
+      ></svg>
+    </>
   );
 };
 

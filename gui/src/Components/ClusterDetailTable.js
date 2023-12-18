@@ -23,26 +23,26 @@ const ClusterDetailTable = ({
   const columnHeaders = [
     "name",
     "plancount",
-    "averagedemocraticvoters",
-    "averagerepublicanvoters",
-    "averageasian",
-    "averageblack",
-    "averagenative",
-    "averageother",
-    "averagepacific",
+    // "averagedemocraticvoters",
+    // "averagerepublicanvoters",
+    // "averageasian",
+    // "averageblack",
+    // "averagenative",
+    // "averageother",
+    // "averagepacific",
     "averagesplit",
-    "averagewhite",
+    // "averagewhite",
   ];
   const columnHeaderMapping = {
-    averageasian: "Avg Asian",
-    averageblack: "Avg Black",
-    averagedemocraticvoters: "Avg Dem. Voters",
-    averagenative: "Avg Native",
-    averageother: "Avg Other",
-    averagepacific: "Avg Pacific",
-    averagerepublicanvoters: "Avg Rep. Voters",
+    // averageasian: "Avg Asian",
+    // averageblack: "Avg Black",
+    // averagedemocraticvoters: "Avg Dem. Voters",
+    // averagenative: "Avg Native",
+    // averageother: "Avg Other",
+    // averagepacific: "Avg Pacific",
+    // averagerepublicanvoters: "Avg Rep. Voters",
     averagesplit: "Avg Split",
-    averagewhite: "Avg White",
+    // averagewhite: "Avg White",
     name: "Cluster",
     plancount: "Plan Count",
   };
@@ -56,7 +56,7 @@ const ClusterDetailTable = ({
   };
   const handleClustClick = async (index) => {
     console.log(index);
-    const getCoords = async (stateID, ensembleIndex, clusterIndex) => {
+    const getCoordsHd = async (stateID, ensembleIndex, clusterIndex) => {
       try {
         const response = await api.get(
           `/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinates`
@@ -67,7 +67,7 @@ const ClusterDetailTable = ({
       }
     };
 
-    const getAllDistrictPlans = async (
+    const getAllDistrictPlansHd = async (
       stateID,
       ensembleIndex,
       clusterIndex
@@ -81,16 +81,55 @@ const ClusterDetailTable = ({
         console.log(error);
       }
     };
+    const getCoordsOp = async (stateID, ensembleIndex, clusterIndex) => {
+      try {
+        const response = await api.get(
+          `/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinatesop`
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const getAllDistrictPlansOp = async (
+      stateID,
+      ensembleIndex,
+      clusterIndex
+    ) => {
+      try {
+        const response = await api.get(
+          `/${stateID}/${ensembleIndex}/${clusterIndex}/op`
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const getDistrSum = async (stateID) => {
+      try {
+        const response = await api.get(`/${stateID}/state_details`);
+        return response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    };
     // assuming x[i] where i is cluster index
     try {
       document.body.style.cursor = "wait";
-      const coords = await getCoords(stateID, ensembleIndex, index);
-      const districtPlanList = await getAllDistrictPlans(
+      const coordsHd = await getCoordsHd(stateID, ensembleIndex, index);
+      const districtPlanListHd = await getAllDistrictPlansHd(
         stateID,
         ensembleIndex,
         index
       );
-      const distrInitalSummary = "get district init Summary";
+      const coordsOp = await getCoordsOp(stateID, ensembleIndex, index);
+      const districtPlanListOp = await getAllDistrictPlansOp(
+        stateID,
+        ensembleIndex,
+        index
+      );
+      const distrInitalSummary = await getDistrSum(stateID);
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
@@ -98,9 +137,11 @@ const ClusterDetailTable = ({
           clusterIndex: index,
           ensembleIndex: ensembleIndex,
           // .availibility .x .y
-          districtCoords: coords,
+          districtCoordsHd: coordsHd,
+          districtCoordsOp: coordsOp,
           // [i].availability .averageoppertunitydistrictcount .name .split
-          districtPlanList: districtPlanList,
+          districtPlanListHd: districtPlanListHd,
+          districtPlanListOp: districtPlanListOp,
           headerText: headerText,
           distrInitalSummary: distrInitalSummary,
         },
@@ -125,7 +166,6 @@ const ClusterDetailTable = ({
               <tr key={index}>
                 {columnHeaders.map((header) => (
                   <td
-                    className={header === "name" ? "default-button" : null}
                     key={header}
                     onClick={() => {
                       if (header === "name") {
@@ -135,9 +175,15 @@ const ClusterDetailTable = ({
                       }
                     }}
                   >
-                    {header === "name"
-                      ? distPlan[header].trim().substring(7)
-                      : distPlan[header]}
+                    {header === "name" ? (
+                      <button
+                        className={header === "name" ? "cluster-button" : null}
+                      >
+                        {distPlan[header].trim().substring(7)}
+                      </button>
+                    ) : (
+                      distPlan[header]
+                    )}
                   </td>
                 ))}
               </tr>

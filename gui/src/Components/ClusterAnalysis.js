@@ -20,17 +20,38 @@ const ClusterAnalysis = () => {
   const stateID = location.state.stateID;
   const headerText = location.state.headerText + " > Clusters";
   const currentDistrPlan = location.state.currentDistrPlan;
-  const clusterCoords = location.state.clusterCoords;
-  // const clusterAssocCoords = location.state.clusterAssocCoords;
-  const clusterDetailsList = location.state.clusters;
+  const clusterCoordsHd = location.state.clusterCoordsHd;
+  const clusterDetailsListHd = location.state.clustersDetsHd;
+  const clusterCoordsOp = location.state.clusterCoordsOp;
+  const clusterDetailsListOp = location.state.clustersDetsOp;
+
   const clusterSum = location.state.clusterSum;
   const ensembleName = location.state.ensembleName;
   const ensembleIndex = location.state.ensembleIndex;
   const distMeas = location.state.distMeas;
-  console.log(distMeas);
+  // console.log(distMeas);
 
   const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;
+
+  const [selectedOptionInternal, setSelectedOptionInternal] =
+    useState("Hamming Distance");
+  const [selectedDets, setSelectedDets] = useState(clusterDetailsListHd);
+  const [selectedCoords, setSelectedCoords] = useState(clusterCoordsHd);
+
+  const handleChange = (e) => {
+    // console.log("Selected value:", e.target.value);
+    if (e.target.value === "Hamming Distance") {
+      console.log("hd");
+      setSelectedDets(clusterDetailsListHd);
+      setSelectedCoords(clusterCoordsHd);
+    } else {
+      console.log("op");
+      setSelectedDets(clusterDetailsListOp);
+      setSelectedCoords(clusterCoordsOp);
+    }
+    setSelectedOptionInternal(e.target.value);
+  };
 
   useEffect(() => {
     Defaults.changeMapSizeXbyY("100%", "36vw");
@@ -40,30 +61,43 @@ const ClusterAnalysis = () => {
       // console.log(clusterNameList)
 
       return (
-        <ClusterDetailTable
-          clusterDet={clusterDetailsList}
-          stateID={stateID}
-          ensembleIndex={ensembleIndex}
-          currentDistrPlan={currentDistrPlan}
-          headerText={headerText}
-        />
+        <>
+          <select value={selectedOptionInternal} onChange={handleChange}>
+            <option value="Hamming Distance">Hamming Distance</option>
+            <option value="Optimal Transport">Optimal Transport</option>
+          </select>
+
+          <ClusterDetailTable
+            clusterDet={selectedDets}
+            stateID={stateID}
+            ensembleIndex={ensembleIndex}
+            currentDistrPlan={currentDistrPlan}
+            headerText={headerText}
+          />
+        </>
         // <ClusterDetailTable clusterDet={clusterNameList} />
       );
     } else if (selectedComponent === "scatter") {
       // Return the Cluster Scatter component
       return (
-        <ClusterScatter
-          _stateID={stateID}
-          _currentDistrPlan={currentDistrPlan}
-          _clusterCoords={clusterCoords}
-          _clusterScatterWidth={clusterScatterWidth}
-          _clusterScatterHeight={clusterScatterHeight}
-          _ensembleIndex={ensembleIndex}
-          _headerText={headerText}
-        />
+        <>
+          <select value={selectedOptionInternal} onChange={handleChange}>
+            <option value="Hamming Distance">Hamming Distance</option>
+            <option value="Optimal Transport">Optimal Transport</option>
+          </select>
+          <ClusterScatter
+            _stateID={stateID}
+            _currentDistrPlan={currentDistrPlan}
+            _clusterCoords={selectedCoords}
+            _clusterScatterWidth={clusterScatterWidth}
+            _clusterScatterHeight={clusterScatterHeight}
+            _ensembleIndex={ensembleIndex}
+            _headerText={headerText}
+          />
+        </>
       );
     } else if (selectedComponent === "distMeas") {
-      return <DistMatrixTable matrixList={distMeas} />;
+      // return <DistMatrixTable matrixList={distMeas} />;
     }
   };
   const geoData = <GeoJSON data={currentDistrPlan} />;

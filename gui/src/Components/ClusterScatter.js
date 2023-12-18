@@ -22,7 +22,7 @@ const ClusterScatter = ({
   const currentDistrPlan = _currentDistrPlan;
   const coords = _clusterCoords;
   const ensembleIndex = _ensembleIndex;
-  const margin = { top: 60, right: 30, bottom: 250, left: -70 };
+  const margin = { top: 100, right: 30, bottom: 290, left: -70 };
   const width = _clusterScatterWidth - margin.left - margin.right + 100;
   const height = _clusterScatterHeight - margin.top - margin.bottom + 200;
   const mainTitle = "Cluster Scatter";
@@ -78,7 +78,7 @@ const ClusterScatter = ({
     svg
       .append("text")
       .attr("x", width / 2 + margin.left)
-      .attr("y", height + margin.top + margin.bottom - 200)
+      .attr("y", height + margin.top + margin.bottom - 230)
       .attr("text-anchor", "middle")
       .style("dy", "1.5em") // Adjust the vertical offset as needed
       .style("font-size", "1.8em")
@@ -88,7 +88,7 @@ const ClusterScatter = ({
     svg
       .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("x", -height / 2 + margin.top - 70)
+      .attr("x", -height / 2 + margin.top - 150)
       .attr("y", margin.left - 50)
       .attr("text-anchor", "middle")
       .style("font-size", "1.8em")
@@ -115,8 +115,15 @@ const ClusterScatter = ({
       .on("click", (event) => handleScatterPlotClick(event))
       .style("fill", "green");
   });
-
-  const getCoords = async (stateID, ensembleIndex, clusterIndex) => {
+  const getDistrSum = async (stateID) => {
+    try {
+      const response = await api.get(`/${stateID}/state_details`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCoordsHd = async (stateID, ensembleIndex, clusterIndex) => {
     try {
       const response = await api.get(
         `/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinates`
@@ -127,10 +134,39 @@ const ClusterScatter = ({
     }
   };
 
-  const getAllDistrictPlans = async (stateID, ensembleIndex, clusterIndex) => {
+  const getAllDistrictPlansHd = async (
+    stateID,
+    ensembleIndex,
+    clusterIndex
+  ) => {
     try {
       const response = await api.get(
         `/${stateID}/${ensembleIndex}/${clusterIndex}`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCoordsOp = async (stateID, ensembleIndex, clusterIndex) => {
+    try {
+      const response = await api.get(
+        `/${stateID}/${ensembleIndex}/${clusterIndex}/plan_coordinatesop`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAllDistrictPlansOp = async (
+    stateID,
+    ensembleIndex,
+    clusterIndex
+  ) => {
+    try {
+      const response = await api.get(
+        `/${stateID}/${ensembleIndex}/${clusterIndex}/op`
       );
       return response.data;
     } catch (error) {
@@ -142,13 +178,19 @@ const ClusterScatter = ({
     const clusterIndex = event.target.getAttribute("clustIndex");
     try {
       document.body.style.cursor = "wait";
-      const coords = await getCoords(stateID, ensembleIndex, clusterIndex);
-      const districtPlanList = await getAllDistrictPlans(
+      const coordsHd = await getCoordsHd(stateID, ensembleIndex, clusterIndex);
+      const districtPlanListHd = await getAllDistrictPlansHd(
         stateID,
         ensembleIndex,
         clusterIndex
       );
-      const distrInitalSummary = "get district init Summary";
+      const coordsOp = await getCoordsOp(stateID, ensembleIndex, clusterIndex);
+      const districtPlanListOp = await getAllDistrictPlansOp(
+        stateID,
+        ensembleIndex,
+        clusterIndex
+      );
+      const distrInitalSummary = await getDistrSum(stateID);
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
@@ -156,9 +198,12 @@ const ClusterScatter = ({
           clusterIndex: clusterIndex,
           ensembleIndex: ensembleIndex,
           // .availibility .x .y
-          districtCoords: coords,
+          districtCoordsHd: coordsHd,
+          districtCoordsOp: coordsOp,
           // [i].availability .averageoppertunitydistrictcount .name .split
-          districtPlanList: districtPlanList,
+          districtPlanListHd: districtPlanListHd,
+          districtPlanListOp: districtPlanListOp,
+
           headerText: headerText,
           distrInitalSummary: distrInitalSummary,
         },

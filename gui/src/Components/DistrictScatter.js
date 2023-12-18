@@ -23,7 +23,7 @@ const DistrictScatter = ({
   const setSelectedPlan = _setSelectedPlan;
   const selectedPlan = _selectedPlan;
 
-  // const districtPlans = _districtPlans;
+  const districtPlans = _districtPlans;
   const margin = { top: 40, right: 30, bottom: 250, left: 80 };
   const coords = _coords;
   const width = _width - margin.left - margin.right + 50;
@@ -100,7 +100,7 @@ const DistrictScatter = ({
       .attr("cy", (d, i) => yScale(coords.y[i]))
       .attr("r", () => 5)
       .attr("available", (d, i) => coords.availibility[i])
-      .attr("district-index", (d, i) => i)
+      .attr("district-name", (d, i) => districtPlans[i].name)
       .on("mouseover", function () {
         // Change cursor to pointer on hover
         if (d3.select(this).attr("available") === "true") {
@@ -125,12 +125,14 @@ const DistrictScatter = ({
         if (e.target.getAttribute("available")) {
           try {
             // const response = await api.get(`/2/0/0/1`);
-            const districtIndex = e.target.getAttribute("district-index");
-            // scatterClickedIndex(districtIndex);
+            const districtIndex = e.target.getAttribute("district-name");
+            console.log(districtIndex);
             // const response = await api.get(
-            //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
+            //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${"41"}`
             // );
+            // console.log(response);
             // const plan = response.data;
+            // console.log(plan);
             // setSelectedPlan(plan);
 
             setSelectedPlan(test);
