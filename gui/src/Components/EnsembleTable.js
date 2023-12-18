@@ -133,23 +133,23 @@ const EnsembleTable = ({
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
     const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
     console.log(distMeas);
-    // navigate("/ClusterAnalysis", {
-    //   state: {
-    //     stateID: stateID,
-    //     headerText: headerText,
-    //     currentDistrPlan: currentDistrPlan,
-    //     clustersDetsHd: clustersDetsHd,
-    //     clusterCoordsHd: clusterCoordsHd,
-    //     clustersDetsOp: clustersDetsOp,
-    //     clusterCoordsOp: clusterCoordsOp,
-    //     clusterScatterWidth: clusterScatterWidth,
-    //     clusterScatterHeight: clusterScatterHeight,
-    //     clusterSum: clusterSum,
-    //     ensembleName: ensembleName,
-    //     ensembleIndex: ensembleIndex,
-    //     distMeas: distMeas,
-    //   },
-    // });
+    navigate("/ClusterAnalysis", {
+      state: {
+        stateID: stateID,
+        headerText: headerText,
+        currentDistrPlan: currentDistrPlan,
+        clustersDetsHd: clustersDetsHd,
+        clusterCoordsHd: clusterCoordsHd,
+        clustersDetsOp: clustersDetsOp,
+        clusterCoordsOp: clusterCoordsOp,
+        clusterScatterWidth: clusterScatterWidth,
+        clusterScatterHeight: clusterScatterHeight,
+        clusterSum: clusterSum,
+        ensembleName: ensembleName,
+        ensembleIndex: ensembleIndex,
+        distMeas: distMeas,
+      },
+    });
   };
   const totalPages = Math.ceil(ensembleDetails.length / rowsPerPage);
   return (
