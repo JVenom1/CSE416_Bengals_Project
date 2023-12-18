@@ -29,7 +29,7 @@ const ClusterAnalysis = () => {
   const ensembleName = location.state.ensembleName;
   const ensembleIndex = location.state.ensembleIndex;
   const distMeas = location.state.distMeas;
-  // console.log(distMeas);
+  console.log(distMeas);
 
   const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;

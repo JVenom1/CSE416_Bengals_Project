@@ -93,11 +93,11 @@ const EnsembleTable = ({
     try {
       const hd = await api.get(`/${stateID}/${ensembleIndex}/cluster_details`)
         .data;
-      const ot = await api.get(
+      const op = await api.get(
         `/${stateID}/${ensembleIndex}/cluster_details_op`
       );
-      console.log(hd);
-      return { hd: hd, ot: ot };
+      console.log(op);
+      return { hd: hd, ot: op };
     } catch (error) {
       console.log(error);
     }
@@ -124,7 +124,7 @@ const EnsembleTable = ({
   const handleClustAnalysisClick = async (ensembleName) => {
     const ensembleIndex =
       parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
-    document.body.style.cursor = "wait";
+    // document.body.style.cursor = "wait";
     const clusterCoordsHd = await getClustCoordsHd(stateID, ensembleIndex);
     const clustersDetsHd = await getClusterDetailsHd(stateID, ensembleIndex);
     const clusterCoordsOp = await getClustCoordsOp(stateID, ensembleIndex);
@@ -133,23 +133,23 @@ const EnsembleTable = ({
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
     const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
     console.log(distMeas);
-    navigate("/ClusterAnalysis", {
-      state: {
-        stateID: stateID,
-        headerText: headerText,
-        currentDistrPlan: currentDistrPlan,
-        clustersDetsHd: clustersDetsHd,
-        clusterCoordsHd: clusterCoordsHd,
-        clustersDetsOp: clustersDetsOp,
-        clusterCoordsOp: clusterCoordsOp,
-        clusterScatterWidth: clusterScatterWidth,
-        clusterScatterHeight: clusterScatterHeight,
-        clusterSum: clusterSum,
-        ensembleName: ensembleName,
-        ensembleIndex: ensembleIndex,
-        distMeas: distMeas,
-      },
-    });
+    // navigate("/ClusterAnalysis", {
+    //   state: {
+    //     stateID: stateID,
+    //     headerText: headerText,
+    //     currentDistrPlan: currentDistrPlan,
+    //     clustersDetsHd: clustersDetsHd,
+    //     clusterCoordsHd: clusterCoordsHd,
+    //     clustersDetsOp: clustersDetsOp,
+    //     clusterCoordsOp: clusterCoordsOp,
+    //     clusterScatterWidth: clusterScatterWidth,
+    //     clusterScatterHeight: clusterScatterHeight,
+    //     clusterSum: clusterSum,
+    //     ensembleName: ensembleName,
+    //     ensembleIndex: ensembleIndex,
+    //     distMeas: distMeas,
+    //   },
+    // });
   };
   const totalPages = Math.ceil(ensembleDetails.length / rowsPerPage);
   return (
