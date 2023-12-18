@@ -182,5 +182,4 @@ const ClusterScatter = ({
   );
 };
 
-// Export the ClusterAnalysis component
 export default ClusterScatter;
