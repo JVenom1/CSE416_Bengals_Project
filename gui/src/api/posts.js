@@ -7,7 +7,7 @@ import axios from "axios";
 
 // IP 130.245.192.6
 // this is the test server
-const tempServer = `https://long-regions-kick.loca.lt/server/`;
+const tempServer = `https://early-clubs-drive.loca.lt/server/`;
 export default axios.create({
   baseURL: `${tempServer}BengalsAPI`,
 });
