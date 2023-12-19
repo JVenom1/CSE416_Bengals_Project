@@ -89,9 +89,20 @@ const EnsembleTable = ({
       console.log(error);
     }
   };
-  const getAvgPlan = async (stateID, ensemIndex) => {
+  const getAvgPlanHD = async (stateID, ensemIndex) => {
     try {
       const response = await api.get(`/${stateID}/${ensemIndex}/average_plans`);
+      const avgPlans = response.data;
+      return avgPlans;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getAvgPlanOP = async (stateID, ensemIndex) => {
+    try {
+      const response = await api.get(
+        `/${stateID}/${ensemIndex}/average_plansop`
+      );
       const avgPlans = response.data;
       return avgPlans;
     } catch (error) {
@@ -145,8 +156,9 @@ const EnsembleTable = ({
 
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
     const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
-    const avgPlans = await getAvgPlan(stateID, ensembleIndex);
-    // console.log(distMeas);
+    const avgPlansHD = await getAvgPlanHD(stateID, ensembleIndex);
+    const avgPlansOP = await getAvgPlanOP(stateID, ensembleIndex);
+    console.log(avgPlansHD);
     navigate("/ClusterAnalysis", {
       state: {
         stateID: stateID,
@@ -162,10 +174,12 @@ const EnsembleTable = ({
         ensembleName: ensembleName,
         ensembleIndex: ensembleIndex,
         distMeas: distMeas,
-        avgPlans: avgPlans,
+        avgPlansHD: avgPlansHD,
+        avgPlansOP: avgPlansOP,
       },
     });
   };
+  console.log(ensembleDetails);
   const totalPages = Math.ceil(ensembleDetails.length / rowsPerPage);
   return (
     <div className="table-container">
@@ -175,6 +189,7 @@ const EnsembleTable = ({
             <th>Ensemble #</th>
             <th>Ensemble Size</th>
             <th>Cluster Count</th>
+            <th>Avg Split</th>
             <th>More Details</th>
           </tr>
         </thead>
@@ -184,6 +199,7 @@ const EnsembleTable = ({
               {<td>{row.name.trim().substring(9)}</td>}
               <td>{row.ensemblesize}</td>
               <td>{row.clustercount}</td>
+              <td>{row.averagesplit}</td>
               <td>
                 <button
                   className="default-button"

@@ -24,13 +24,13 @@ const ClusterAnalysis = () => {
   const clusterDetailsListHd = location.state.clustersDetsHd;
   const clusterCoordsOp = location.state.clusterCoordsOp;
   const clusterDetailsListOp = location.state.clustersDetsOp;
-  const avgPlans = location.state.avgPlans;
+  const avgPlansHD = location.state.avgPlansHD;
+  const avgPlansOP = location.state.avgPlansOP;
 
   const clusterSum = location.state.clusterSum;
   const ensembleName = location.state.ensembleName;
   const ensembleIndex = location.state.ensembleIndex;
   const distMeas = location.state.distMeas;
-  // console.log(distMeas);
 
   const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;
@@ -41,13 +41,10 @@ const ClusterAnalysis = () => {
   const [selectedCoords, setSelectedCoords] = useState(clusterCoordsHd);
 
   const handleChange = (e) => {
-    // console.log("Selected value:", e.target.value);
     if (e.target.value === "Hamming Distance") {
-      console.log("hd");
       setSelectedDets(clusterDetailsListHd);
       setSelectedCoords(clusterCoordsHd);
     } else {
-      console.log("op");
       setSelectedDets(clusterDetailsListOp);
       setSelectedCoords(clusterCoordsOp);
     }
@@ -59,8 +56,6 @@ const ClusterAnalysis = () => {
   });
   const renderComponent = () => {
     if (selectedComponent === "details") {
-      // console.log(clusterNameList)
-
       return (
         <>
           <select value={selectedOptionInternal} onChange={handleChange}>
@@ -69,7 +64,8 @@ const ClusterAnalysis = () => {
           </select>
 
           <ClusterDetailTable
-            avgPlans={avgPlans}
+            avgPlansHD={avgPlansHD}
+            avgPlansOP={avgPlansOP}
             clusterDet={selectedDets}
             stateID={stateID}
             ensembleIndex={ensembleIndex}
@@ -88,7 +84,9 @@ const ClusterAnalysis = () => {
             <option value="Optimal Transport">Optimal Transport</option>
           </select>
           <ClusterScatter
-            avgPlans={avgPlans}
+            _selectedDets={selectedDets}
+            avgPlansHD={avgPlansHD}
+            avgPlansOP={avgPlansOP}
             _stateID={stateID}
             _currentDistrPlan={currentDistrPlan}
             _clusterCoords={selectedCoords}
@@ -100,7 +98,6 @@ const ClusterAnalysis = () => {
         </>
       );
     } else if (selectedComponent === "distMeas") {
-      console.log(distMeas);
       return (
         <>
           <div

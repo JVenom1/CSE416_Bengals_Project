@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/App.css";
 import api from "../api/posts.js";
 const ClusterDetailTable = ({
-  avgPlans,
+  avgPlansHD,
+  avgPlansOP,
   clusterDet,
   stateID,
   ensembleIndex,
@@ -20,30 +21,18 @@ const ClusterDetailTable = ({
   const endIndex = startIndex + itemsPerPage;
 
   // get all headers
-  // const columnHeaders = Object.keys(clusterDet[0]);
+  // const r = Object.keys(clusterDet[0]);
   const columnHeaders = [
     "name",
     "plancount",
-    // "averagedemocraticvoters",
-    // "averagerepublicanvoters",
-    // "averageasian",
-    // "averageblack",
-    // "averagenative",
-    // "averageother",
-    // "averagepacific",
     "averagesplit",
-    // "averagewhite",
+    "averagedistance",
+    "averageopportunity",
   ];
   const columnHeaderMapping = {
-    // averageasian: "Avg Asian",
-    // averageblack: "Avg Black",
-    // averagedemocraticvoters: "Avg Dem. Voters",
-    // averagenative: "Avg Native",
-    // averageother: "Avg Other",
-    // averagepacific: "Avg Pacific",
-    // averagerepublicanvoters: "Avg Rep. Voters",
+    averagedistance: "Avg Distance",
+    averageopportunity: "Avg Opportunity Distr.",
     averagesplit: "Avg Split",
-    // averagewhite: "Avg White",
     name: "Cluster",
     plancount: "Plan Count",
   };
@@ -56,7 +45,6 @@ const ClusterDetailTable = ({
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
   const handleClustClick = async (clusterIndex) => {
-    console.log(clusterIndex);
     const getCoordsHd = async (stateID, ensembleIndex, clusterIndex) => {
       try {
         const response = await api.get(
@@ -117,7 +105,6 @@ const ClusterDetailTable = ({
     };
     const getAvgPlan = async (stateID, ensembleIndex, planNumber) => {
       try {
-        console.log(planNumber);
         const response = await api.get(
           `/${stateID}/${ensembleIndex}/${planNumber}/district_plan`
         );
@@ -127,6 +114,7 @@ const ClusterDetailTable = ({
         return null;
       }
     };
+
     // assuming x[i] where i is cluster index
     try {
       document.body.style.cursor = "wait";
@@ -143,16 +131,22 @@ const ClusterDetailTable = ({
         clusterIndex
       );
       const distrInitalSummary = await getDistrSum(stateID);
-      // const avgPlan = await getAvgPlan(
-      //   stateID,
-      //   ensembleIndex,
-      //   avgPlans[clusterIndex]
-      // );
+      const avgPlanHD = await getAvgPlan(
+        stateID,
+        ensembleIndex,
+        avgPlansHD.plans[clusterIndex]
+      );
+      const avgPlanOP = await getAvgPlan(
+        stateID,
+        ensembleIndex,
+        avgPlansOP.plans[clusterIndex]
+      );
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
-          // currentDistrPlan: avgPlan,
-          currentDistrPlan: currentDistrPlan,
+          avgDitrPlanHD: avgPlanHD,
+          avgDitrPlanOP: avgPlanOP,
+          // currentDistrPlan: currentDistrPlan,
           clusterIndex: clusterIndex,
           ensembleIndex: ensembleIndex,
           // .availibility .x .y

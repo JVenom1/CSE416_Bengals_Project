@@ -10,11 +10,12 @@ const ClusterAssociationScatter = ({
 }) => {
   const margin = { top: 70, right: 30, bottom: 250, left: 80 };
   const width = clusterScatterWidth - margin.left - margin.right;
-  const height = clusterScatterHeight - margin.top - margin.bottom - 420;
+  const height = clusterScatterHeight - margin.top - margin.bottom - 390;
   const mainTitle = "Ensemble vs Cluster";
   const xAxTitle = "Ensemble Size";
   const yAxTitle = "Cluster Count";
   const svgRef = useRef();
+  // shave off first index for x, y
   const coords = _coords;
   const [selectedOptionInternal, setSelectedOptionInternal] =
     useState("Hamming Distance");
@@ -115,7 +116,6 @@ const ClusterAssociationScatter = ({
     selectedOptionInternal,
   ]);
   const handleChange = (e) => {
-    // console.log("Selected value:", e.target.value);
     setSelectedOptionInternal(e.target.value);
     setSelectedOption(e.target.value);
   };
@@ -127,7 +127,7 @@ const ClusterAssociationScatter = ({
       </select>
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight - 600}`}
+        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight - 570}`}
         preserveAspectRatio="xMidYMid meet"
         width="100%"
         height="100%"

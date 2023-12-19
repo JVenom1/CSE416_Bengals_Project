@@ -7,7 +7,9 @@ import * as d3 from "d3";
 import api from "../api/posts.js";
 
 const ClusterScatter = ({
-  avgPlans,
+  _selectedDets,
+  avgPlansHD,
+  avgPlansOP,
   _stateID,
   _currentDistrPlan,
   _clusterCoords,
@@ -18,25 +20,24 @@ const ClusterScatter = ({
 }) => {
   // Ensemble CLicked
   const navigate = useNavigate();
+  const selectedDets = _selectedDets;
   const stateID = _stateID;
   const headerText = _headerText;
   const currentDistrPlan = _currentDistrPlan;
   const coords = _clusterCoords;
-  const clusterSize = coords.length;
   const ensembleIndex = _ensembleIndex;
   const margin = { top: 100, right: 30, bottom: 290, left: -70 };
   const width = _clusterScatterWidth - margin.left - margin.right + 100;
   const height = _clusterScatterHeight - margin.top - margin.bottom + 200;
   const mainTitle = "Cluster MDS Scatterplot";
-  const xAxTitle = "African American Pop";
-  const yAxTitle = "African American Pop > 50";
+  const xAxTitle = "Dimension 1";
+  const yAxTitle = "Dimension 2";
   const svgRef = useRef();
 
   // Use useEffect to handle side effects when the component mounts
   useEffect(() => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove();
-
     const xScale = d3
       .scaleLinear()
       .domain([d3.min(coords.x) * 1.2, d3.max(coords.x) * 1.2])
@@ -50,45 +51,6 @@ const ClusterScatter = ({
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
 
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
-
-    const legend = svg
-      .append("g")
-      .attr("transform", `translate(${width + margin.left}, ${margin.top})`);
-
-    legend
-      .append("circle")
-      .attr("cx", 10)
-      .attr("cy", 10)
-      .attr("r", 6)
-      .style("fill", "green");
-
-    legend
-      .append("circle")
-      .attr("cx", 10)
-      .attr("cy", 30)
-      .attr("r", 6)
-      .style("fill", "grey");
-
-    legend
-      .append("text")
-      .attr("x", 25)
-      .attr("y", 10)
-      .text("Clickable")
-      .style("font-size", "1.2em")
-      .attr("alignment-baseline", "middle");
-
-    legend
-      .append("text")
-      .attr("x", 25)
-      .attr("y", 30)
-      .text("Not Clickable")
-      .style("font-size", "1.2em")
-      .attr("alignment-baseline", "middle");
     // Add X Axis
     svg
       .append("g")
@@ -134,7 +96,45 @@ const ClusterScatter = ({
       .attr("text-anchor", "middle")
       .style("font-size", "1.8em")
       .text(yAxTitle);
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
 
+    // const legend = svg
+    //   .append("g")
+    //   .attr("transform", `translate(${width + margin.left}, ${margin.top})`);
+
+    // legend
+    //   .append("circle")
+    //   .attr("cx", 10)
+    //   .attr("cy", 10)
+    //   .attr("r", 6)
+    //   .style("fill", "green");
+
+    // legend
+    //   .append("circle")
+    //   .attr("cx", 10)
+    //   .attr("cy", 30)
+    //   .attr("r", 6)
+    //   .style("fill", "grey");
+
+    // legend
+    //   .append("text")
+    //   .attr("x", 25)
+    //   .attr("y", 10)
+    //   .text("Clickable")
+    //   .style("font-size", "1.2em")
+    //   .attr("alignment-baseline", "middle");
+
+    // legend
+    //   .append("text")
+    //   .attr("x", 25)
+    //   .attr("y", 30)
+    //   .text("Not Clickable")
+    //   .style("font-size", "1.2em")
+    //   .attr("alignment-baseline", "middle");
     // Add Circles
     svg
       .selectAll("circle")
@@ -150,10 +150,16 @@ const ClusterScatter = ({
       .on("mouseover", function (event, d, i) {
         const x = parseFloat(event.target.getAttribute("x")).toFixed(3);
         const y = parseFloat(event.target.getAttribute("y")).toFixed(3);
-        const name = `Cluster ${event.target.getAttribute("clustIndex")}`;
+
+        const clusterSize =
+          selectedDets[parseInt(event.target.getAttribute("clustIndex"))]
+            .plancount;
+        const name = `Cluster ${
+          parseInt(event.target.getAttribute("clustIndex")) + 1
+        }`;
         tooltip.transition().duration(200).style("opacity", 0.9);
         tooltip
-          .html(`${name}: (${x}, ${y})`)
+          .html(`${name} (Size:${clusterSize}): Coords(${x}, ${y}) `)
           .style("left", event.pageX + "px")
           .style("top", event.pageY - 28 + "px");
         // Change cursor to pointer on hover
@@ -228,6 +234,28 @@ const ClusterScatter = ({
       console.log(error);
     }
   };
+  const getAvgPlanHD = async (stateID, ensembleIndex, planNumber) => {
+    try {
+      const response = await api.get(
+        `/${stateID}/${ensembleIndex}/${planNumber}/district_plan`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
+  const getAvgPlanOP = async (stateID, ensembleIndex, planNumber) => {
+    try {
+      const response = await api.get(
+        `/${stateID}/${ensembleIndex}/${planNumber}/district_plan`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  };
   const handleScatterPlotClick = async (event) => {
     // assuming x[i] where i is cluster index
     const clusterIndex = event.target.getAttribute("clustIndex");
@@ -246,16 +274,23 @@ const ClusterScatter = ({
         clusterIndex
       );
       const distrInitalSummary = await getDistrSum(stateID);
-      // const avgPlan = await getAvgPlan(
-      //   stateID,
-      //   ensembleIndex,
-      //   avgPlans[clusterIndex]
-      // );
+      const avgPlanHD = await getAvgPlanHD(
+        stateID,
+        ensembleIndex,
+        avgPlansHD.plans[clusterIndex]
+      );
+      const avgPlanOP = await getAvgPlanOP(
+        stateID,
+        ensembleIndex,
+        avgPlansOP.plans[clusterIndex]
+      );
+
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
-          currentDistrPlan: currentDistrPlan, // comment
-          // currentDistrPlan: avgPlan, // uncomment
+          // currentDistrPlan: currentDistrPlan, // comment
+          avgDitrPlanHD: avgPlanHD,
+          avgDitrPlanOP: avgPlanOP,
           clusterIndex: clusterIndex,
           ensembleIndex: ensembleIndex,
           // .availibility .x .y

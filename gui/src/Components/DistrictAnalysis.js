@@ -14,7 +14,9 @@ const DistrictAnalysis = () => {
   const location = useLocation();
   const headerText = location.state.headerText + " > Districts";
   const stateID = location.state.stateID;
-  const districtPlan1 = location.state.currentDistrPlan;
+  const avgDitrPlanHD = location.state.avgDitrPlanHD;
+  const avgDitrPlanOP = location.state.avgDitrPlanOP;
+  const [currentAvgPlan, setCurrentAvgPlan] = useState(avgDitrPlanHD);
   const clusterIndex = location.state.clusterIndex;
   const ensembleIndex = location.state.ensembleIndex;
   const districtCoordsHd = location.state.districtCoordsHd;
@@ -29,20 +31,18 @@ const DistrictAnalysis = () => {
   const [selectedDistrictPlanList, setSelectedDistrictPlanList] =
     useState(districtPlanListHd);
   const [selectedCoords, setSelectedCoords] = useState(districtCoordsHd);
-  // console.log(districtPlanList);
   const changeMapSizeXbyY = (height = "100%", width = "40vw") => {
     const leafletContainer = document.querySelector(".leaflet-container");
     leafletContainer.style.width = width;
     leafletContainer.style.height = height;
   };
   const handleChange = (e) => {
-    // console.log("Selected value:", e.target.value);
     if (e.target.value === "Hamming Distance") {
-      console.log("hd");
+      setCurrentAvgPlan(avgDitrPlanHD);
       setSelectedDistrictPlanList(districtPlanListHd);
       setSelectedCoords(districtCoordsHd);
     } else {
-      console.log("op");
+      setCurrentAvgPlan(avgDitrPlanOP);
       setSelectedDistrictPlanList(districtPlanListOp);
       setSelectedCoords(districtCoordsOp);
     }
@@ -54,7 +54,6 @@ const DistrictAnalysis = () => {
 
   useEffect(() => {
     setDistrictPlan2(selectedPlan);
-    console.log(districtPlan2);
   }, [selectedPlan]);
 
   const handleRestoreMaps = () => {
@@ -66,7 +65,6 @@ const DistrictAnalysis = () => {
       <div className="app-container">
         <Header headerText={headerText} />
         <div className="main-container">
-          {/* Change Map Split Here for Distr Analysis */}
           <div className="left-container">
             <h2 className="map-title">
               {Defaults.stateData.name[stateID]} District Plan{" "}
@@ -76,12 +74,10 @@ const DistrictAnalysis = () => {
             </h2>
             <CompareDistrMap
               stateID={stateID}
-              currentDistrPlan={districtPlan1}
+              currentDistrPlan={currentAvgPlan}
               selectedPlan={districtPlan2}
             />
-            {/* <div className="solo-table-container"> */}
             <DistrInitSummary distrDet={distrInitalSummary} />
-            {/* </div> */}
           </div>
 
           <div className="right-pane">

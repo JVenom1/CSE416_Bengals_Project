@@ -56,42 +56,42 @@ const DistrictScatter = ({
       .append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
-    const legend = svg
-      .append("g")
-      .attr(
-        "transform",
-        `translate(${width + margin.left - 120}, ${margin.top - 20})`
-      );
+    // const legend = svg
+    //   .append("g")
+    //   .attr(
+    //     "transform",
+    //     `translate(${width + margin.left - 120}, ${margin.top - 20})`
+    //   );
 
-    legend
-      .append("circle")
-      .attr("cx", 10)
-      .attr("cy", 10)
-      .attr("r", 6)
-      .style("fill", "green");
+    // legend
+    //   .append("circle")
+    //   .attr("cx", 10)
+    //   .attr("cy", 10)
+    //   .attr("r", 6)
+    //   .style("fill", "green");
 
-    legend
-      .append("circle")
-      .attr("cx", 10)
-      .attr("cy", 30)
-      .attr("r", 6)
-      .style("fill", "grey");
+    // legend
+    //   .append("circle")
+    //   .attr("cx", 10)
+    //   .attr("cy", 30)
+    //   .attr("r", 6)
+    //   .style("fill", "grey");
 
-    legend
-      .append("text")
-      .attr("x", 25)
-      .attr("y", 10)
-      .text("Clickable")
-      .style("font-size", "1.2em")
-      .attr("alignment-baseline", "middle");
+    // legend
+    //   .append("text")
+    //   .attr("x", 25)
+    //   .attr("y", 10)
+    //   .text("Clickable")
+    //   .style("font-size", "1.2em")
+    //   .attr("alignment-baseline", "middle");
 
-    legend
-      .append("text")
-      .attr("x", 25)
-      .attr("y", 30)
-      .text("Not Clickable")
-      .style("font-size", "1.2em")
-      .attr("alignment-baseline", "middle");
+    // legend
+    //   .append("text")
+    //   .attr("x", 25)
+    //   .attr("y", 30)
+    //   .text("Not Clickable")
+    //   .style("font-size", "1.2em")
+    //   .attr("alignment-baseline", "middle");
     // Add X Axis
     svg
       .append("g")
@@ -177,7 +177,8 @@ const DistrictScatter = ({
   const handleScatterPlotClick = async (e) => {
     // console.log(e.target.getAttribute("available"));
     if (e.target.getAttribute("available") === "true") {
-      // test this out
+      console.log(oldPlan === null);
+      console.log(e.target.getAttribute("district-name") !== districtIndex);
       if (
         oldPlan === null ||
         e.target.getAttribute("district-name") !== districtIndex
@@ -187,16 +188,14 @@ const DistrictScatter = ({
             // const response = await api.get(`/2/0/0/1`);
             setDistrictIndex(e.target.getAttribute("district-name"));
 
-            console.log(districtIndex);
-            // const response = await api.get(
-            //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${"41"}`
-            // );
-            // console.log(response);
-            // const plan = response.data;
+            const response = await api.get(
+              `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
+            );
+            const plan = response.data;
             // console.log(plan);
-            // setSelectedPlan(plan);
+            setSelectedPlan(plan);
 
-            setSelectedPlan(test);
+            // setSelectedPlan(test);
           } catch (err) {
             console.log(err);
           }

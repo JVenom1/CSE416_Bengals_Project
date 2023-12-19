@@ -29,7 +29,6 @@ const DistrictSummaryTable = ({ distPlanList }) => {
     // true false list where true display the plan
     setSelectedPlans(updatedSelectedPlans);
   };
-  console.log(distPlanList);
   return (
     <div className="table-container">
       <table>
