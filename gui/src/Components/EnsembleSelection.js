@@ -106,7 +106,7 @@ const EnsembleSelection = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {tableDataOp.map((row, index) => (
+                  {tableDataOp.slice(1).map((row, index) => (
                     <tr key={index}>
                       <td>{row.ensembleSize}</td>
                       <td>{row.clusterCount}</td>
