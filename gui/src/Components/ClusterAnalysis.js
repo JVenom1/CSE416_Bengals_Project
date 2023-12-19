@@ -24,6 +24,7 @@ const ClusterAnalysis = () => {
   const clusterDetailsListHd = location.state.clustersDetsHd;
   const clusterCoordsOp = location.state.clusterCoordsOp;
   const clusterDetailsListOp = location.state.clustersDetsOp;
+  const avgPlans = location.state.avgPlans;
 
   const clusterSum = location.state.clusterSum;
   const ensembleName = location.state.ensembleName;
@@ -68,6 +69,7 @@ const ClusterAnalysis = () => {
           </select>
 
           <ClusterDetailTable
+            avgPlans={avgPlans}
             clusterDet={selectedDets}
             stateID={stateID}
             ensembleIndex={ensembleIndex}
@@ -86,6 +88,7 @@ const ClusterAnalysis = () => {
             <option value="Optimal Transport">Optimal Transport</option>
           </select>
           <ClusterScatter
+            avgPlans={avgPlans}
             _stateID={stateID}
             _currentDistrPlan={currentDistrPlan}
             _clusterCoords={selectedCoords}

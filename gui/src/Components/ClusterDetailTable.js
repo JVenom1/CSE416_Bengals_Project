@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../CSS/App.css";
 import api from "../api/posts.js";
 const ClusterDetailTable = ({
+  avgPlans,
   clusterDet,
   stateID,
   ensembleIndex,
@@ -54,8 +55,8 @@ const ClusterDetailTable = ({
   const handleNextClick = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
-  const handleClustClick = async (index) => {
-    console.log(index);
+  const handleClustClick = async (clusterIndex) => {
+    console.log(clusterIndex);
     const getCoordsHd = async (stateID, ensembleIndex, clusterIndex) => {
       try {
         const response = await api.get(
@@ -114,27 +115,46 @@ const ClusterDetailTable = ({
         console.log(error);
       }
     };
+    const getAvgPlan = async (stateID, ensembleIndex, planNumber) => {
+      try {
+        console.log(planNumber);
+        const response = await api.get(
+          `/${stateID}/${ensembleIndex}/${planNumber}/district_plan`
+        );
+        return response.data;
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    };
     // assuming x[i] where i is cluster index
     try {
       document.body.style.cursor = "wait";
-      const coordsHd = await getCoordsHd(stateID, ensembleIndex, index);
+      const coordsHd = await getCoordsHd(stateID, ensembleIndex, clusterIndex);
       const districtPlanListHd = await getAllDistrictPlansHd(
         stateID,
         ensembleIndex,
-        index
+        clusterIndex
       );
-      const coordsOp = await getCoordsOp(stateID, ensembleIndex, index);
+      const coordsOp = await getCoordsOp(stateID, ensembleIndex, clusterIndex);
       const districtPlanListOp = await getAllDistrictPlansOp(
         stateID,
         ensembleIndex,
-        index
+        clusterIndex
       );
       const distrInitalSummary = await getDistrSum(stateID);
+      // const avgPlan = await getAvgPlan(
+      //   stateID,
+      //   ensembleIndex,
+      //   avgPlans[clusterIndex]
+      // );
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
+
+          // currentDistrPlan: avgPlan,
           currentDistrPlan: currentDistrPlan,
-          clusterIndex: index,
+          clusterIndex: clusterIndex,
           ensembleIndex: ensembleIndex,
           // .availibility .x .y
           districtCoordsHd: coordsHd,

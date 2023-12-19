@@ -7,6 +7,7 @@ import * as d3 from "d3";
 import api from "../api/posts.js";
 
 const ClusterScatter = ({
+  avgPlans,
   _stateID,
   _currentDistrPlan,
   _clusterCoords,
@@ -245,10 +246,16 @@ const ClusterScatter = ({
         clusterIndex
       );
       const distrInitalSummary = await getDistrSum(stateID);
+      // const avgPlan = await getAvgPlan(
+      //   stateID,
+      //   ensembleIndex,
+      //   avgPlans[clusterIndex]
+      // );
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
-          currentDistrPlan: currentDistrPlan,
+          currentDistrPlan: currentDistrPlan, // comment
+          // currentDistrPlan: avgPlan, // uncomment
           clusterIndex: clusterIndex,
           ensembleIndex: ensembleIndex,
           // .availibility .x .y

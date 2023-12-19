@@ -89,6 +89,15 @@ const EnsembleTable = ({
       console.log(error);
     }
   };
+  const getAvgPlan = async (stateID, ensemIndex) => {
+    try {
+      const response = await api.get(`/${stateID}/${ensemIndex}/average_plans`);
+      const avgPlans = response.data;
+      return avgPlans;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getAllDistanceMeasures = async (stateID, ensembleIndex) => {
     try {
       const hd = await api.get(
@@ -105,6 +114,7 @@ const EnsembleTable = ({
       console.log(error);
     }
   };
+
   // const handleDistanceMeasClick = async (ensembleName, distType) => {
   //   const ensembleIndex =
   //     parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
@@ -135,6 +145,7 @@ const EnsembleTable = ({
 
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
     const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
+    const avgPlans = await getAvgPlan(stateID, ensembleIndex);
     // console.log(distMeas);
     navigate("/ClusterAnalysis", {
       state: {
@@ -151,6 +162,7 @@ const EnsembleTable = ({
         ensembleName: ensembleName,
         ensembleIndex: ensembleIndex,
         distMeas: distMeas,
+        avgPlans: avgPlans,
       },
     });
   };
