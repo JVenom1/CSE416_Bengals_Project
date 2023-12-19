@@ -177,8 +177,6 @@ const DistrictScatter = ({
   const handleScatterPlotClick = async (e) => {
     // console.log(e.target.getAttribute("available"));
     if (e.target.getAttribute("available") === "true") {
-      console.log(oldPlan === null);
-      console.log(e.target.getAttribute("district-name") !== districtIndex);
       if (
         oldPlan === null ||
         e.target.getAttribute("district-name") !== districtIndex
@@ -187,11 +185,13 @@ const DistrictScatter = ({
           try {
             // const response = await api.get(`/2/0/0/1`);
             setDistrictIndex(e.target.getAttribute("district-name"));
-
-            const response = await api.get(
-              `/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`
-            );
+            // console.log(districtIndex.trim().substring(5));
+            // const response = await api.get(
+            //   `/${stateID}/${ensembleIndex}/${districtIndex}/district_plan`
+            // );
+            const response = await api.get(`/2/0/10/district_plan`);
             const plan = response.data;
+            console.log(plan);
             // console.log(plan);
             setSelectedPlan(plan);
 

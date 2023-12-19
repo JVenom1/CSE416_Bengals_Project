@@ -38,7 +38,7 @@ const BoxPlot = ({ boxPlotData, title, _width, _height }) => {
 
   return (
     <div>
-      <svg width={width} height={height}>
+      <svg width={width} height={height - 9}>
         <g transform={`translate(${margin.left},${margin.top})`}>
           {/* X Axis */}
           <g transform={`translate(0, ${chartHeight})`} ref={useRef()}>

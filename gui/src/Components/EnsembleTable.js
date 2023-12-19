@@ -123,30 +123,10 @@ const EnsembleTable = ({
       console.log(error);
     }
   };
-
-  // const handleDistanceMeasClick = async (ensembleName, distType) => {
-  //   const ensembleIndex =
-  //     parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
-  //   document.body.style.cursor = "wait";
-
-  //   let allDistanceMeasuresMatrix = await getAllDistanceMeasures(
-  //     stateID,
-  //     ensembleIndex
-  //   );
-  //   navigate("/DistMatrixTable", {
-  //     state: {
-  //       stateID: stateID,
-  //       headerText: headerText,
-  //       currentDistrPlan: currentDistrPlan,
-  //       matrixList: allDistanceMeasuresMatrix,
-  //       distType: distType,
-  //     },
-  //   });
-  // };
   const handleClustAnalysisClick = async (ensembleName) => {
     const ensembleIndex =
       parseInt(ensembleName.charAt(ensembleName.length - 1), 10) - 1;
-    // document.body.style.cursor = "wait";
+    document.body.style.cursor = "wait";
     const clusterCoordsHd = await getClustCoordsHd(stateID, ensembleIndex);
     const clustersDetsHd = await getClusterDetailsHd(stateID, ensembleIndex);
     const clusterCoordsOp = await getClustCoordsOp(stateID, ensembleIndex);

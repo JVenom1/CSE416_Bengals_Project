@@ -10,15 +10,7 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
     setForceRerender((prevState) => !prevState);
     // changeMapSizeXbyY("80%", "40vw");
   }, [selectedPlan, currentDistrPlan]);
-  const getWinnerColor = (plan) => {
-    if (plan) {
-      return "red";
-    } else {
-      return "blue";
-    }
-  };
-  const winnerColor = getWinnerColor(selectedPlan);
-  // console.log(selectedPlan);
+
   let zoom = 7;
   const handleDiffScreenSizes = (zoom) => {
     const diagonalSize = Math.sqrt(
@@ -49,10 +41,36 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <GeoJSON data={currentDistrPlan} />
-          {selectedPlan !== null ? (
-            <GeoJSON style={{ color: winnerColor }} data={selectedPlan} />
-          ) : null}
+          {/* this is when no point was clicked */}
+          {selectedPlan === null ? (
+            <GeoJSON
+              style={(feature) => {
+                const winner = feature.properties.Winner;
+                return {
+                  fillColor: winner === "Republican" ? "red" : "blue",
+                  color: "black",
+                  weight: 1,
+                  opacity: 1,
+                  fillOpacity: 0.3,
+                };
+              }}
+              data={currentDistrPlan}
+            />
+          ) : (
+            <GeoJSON
+              style={(feature) => {
+                const winner = feature.properties.Winner;
+                return {
+                  fillColor: winner === "Republican" ? "red" : "blue",
+                  color: "black",
+                  weight: 1,
+                  opacity: 1,
+                  fillOpacity: 0.3,
+                };
+              }}
+              data={selectedPlan}
+            />
+          )}
         </MapContainer>
       </div>
     </>

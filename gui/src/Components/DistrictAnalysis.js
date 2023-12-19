@@ -101,10 +101,10 @@ const DistrictAnalysis = () => {
             </div>
 
             <div className="bottom-right">
-              <select value={selectedOptionInternal} onChange={handleChange}>
+              {/* <select value={selectedOptionInternal} onChange={handleChange}>
                 <option value="Hamming Distance">Hamming Distance</option>
                 <option value="Optimal Transport">Optimal Transport</option>
-              </select>
+              </select> */}
               <DistrictSummaryTable distPlanList={selectedDistrictPlanList} />
             </div>
           </div>

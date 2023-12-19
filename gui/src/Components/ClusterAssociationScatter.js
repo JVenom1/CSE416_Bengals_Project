@@ -10,7 +10,7 @@ const ClusterAssociationScatter = ({
 }) => {
   const margin = { top: 70, right: 30, bottom: 250, left: 80 };
   const width = clusterScatterWidth - margin.left - margin.right;
-  const height = clusterScatterHeight - margin.top - margin.bottom - 390;
+  const height = clusterScatterHeight - margin.top - margin.bottom - 350;
   const mainTitle = "Ensemble vs Cluster";
   const xAxTitle = "Ensemble Size";
   const yAxTitle = "Cluster Count";
@@ -127,7 +127,7 @@ const ClusterAssociationScatter = ({
       </select>
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight - 570}`}
+        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight - 550}`}
         preserveAspectRatio="xMidYMid meet"
         width="100%"
         height="100%"
