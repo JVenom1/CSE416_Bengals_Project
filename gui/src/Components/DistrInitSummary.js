@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import "../CSS/App.css";
 const DistrInitSummary = ({ distrDet }) => {
   const keys = Object.keys(distrDet);
@@ -13,16 +12,16 @@ const DistrInitSummary = ({ distrDet }) => {
     "percentpacific",
     "percentother",
   ];
-  const columnHeaderMapping = {
-    percentasian: "% Asian",
-    percentblack: "% Black",
-    percentdemvoters: "% Dem. Voters",
-    percentindian: "% Indian",
-    percentother: "% Other",
-    percentpacific: "% Pacific",
-    percentrepvoters: "% Rep. Voters",
-    percentwhite: "% White",
-  };
+  // const columnHeaderMapping = {
+  //   percentasian: "% Asian",
+  //   percentblack: "% Black",
+  //   percentdemvoters: "% Dem. Voters",
+  //   percentindian: "% Indian",
+  //   percentother: "% Other",
+  //   percentpacific: "% Pacific",
+  //   percentrepvoters: "% Rep. Voters",
+  //   percentwhite: "% White",
+  // };
   // console.log(distrDet);
   return (
     <div className="solo-table-container">

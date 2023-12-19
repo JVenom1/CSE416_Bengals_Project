@@ -2,7 +2,7 @@ import "../CSS/App.css";
 import * as d3 from "d3";
 import { useState, useEffect, useRef } from "react";
 import api from "../api/posts.js";
-import test from "../Data/DistrictPlans/WI.json";
+// import test from "../Data/DistrictPlans/WI.json";
 const DistrictScatter = ({
   _stateID,
   _ensembleIndex,
@@ -22,7 +22,7 @@ const DistrictScatter = ({
   const ensembleIndex = _ensembleIndex;
   const clusterIndex = _clusterIndex;
   const setSelectedPlan = _setSelectedPlan;
-  const selectedPlan = _selectedPlan;
+  // const selectedPlan = _selectedPlan;
 
   const districtPlans = _districtPlans;
   const margin = { top: 40, right: 30, bottom: 250, left: 80 };

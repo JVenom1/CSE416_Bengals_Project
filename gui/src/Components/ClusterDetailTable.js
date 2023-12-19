@@ -14,7 +14,7 @@ const ClusterDetailTable = ({
   const navigate = useNavigate();
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPlans, setSelectedPlans] = useState([]);
+  // const [selectedPlans, setSelectedPlans] = useState([]);
 
   const totalPages = Math.ceil(clusterDet.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;

@@ -10,8 +10,6 @@ const EnsembleTable = ({
   const navigate = useNavigate();
   const rowsPerPage = 3;
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedDistance, setSelectedDistance] = useState("");
-
   const startIdx = (currentPage - 1) * rowsPerPage;
   const endIdx = startIdx + rowsPerPage;
   const displayedEnsembleDetails = ensembleDetails.slice(startIdx, endIdx);

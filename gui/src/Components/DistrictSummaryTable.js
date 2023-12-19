@@ -4,7 +4,6 @@ import { useState } from "react";
 const DistrictSummaryTable = ({ distPlanList }) => {
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPlans, setSelectedPlans] = useState([]);
 
   const totalPages = Math.ceil(distPlanList.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -21,14 +20,6 @@ const DistrictSummaryTable = ({ distPlanList }) => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
-  const handleCheckboxChange = (index) => {
-    // Handle checkbox change
-    const updatedSelectedPlans = [...selectedPlans];
-    updatedSelectedPlans[index] = !selectedPlans[index];
-
-    // true false list where true display the plan
-    setSelectedPlans(updatedSelectedPlans);
-  };
   return (
     <div className="table-container">
       <table>

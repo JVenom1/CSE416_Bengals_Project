@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import * as d3 from "d3";
 import "../CSS/App.css";
 const BoxPlot = ({ boxPlotData, title, _width, _height }) => {
-  const [width, setWidth] = useState(_width);
-  const [height, setHeight] = useState(_height - 250);
+  const width = _width;
+  const height = _height - 250;
   const [tooltip, setTooltip] = useState(null);
 
   const margin = { top: 20, right: 20, bottom: 40, left: 40 };
