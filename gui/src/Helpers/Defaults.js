@@ -62,6 +62,11 @@ const stateData = {
     1: "Maryland Senate State",
     2: "North Carolina Federal Congress",
   },
+  shortName: {
+    0: "Wisconsin",
+    1: "Maryland",
+    2: "North Carolina",
+  },
 };
 // workaround for leaflet 0px width default
 const changeMapSizeXbyY = (height = "100%", width = "40vw") => {

@@ -17,6 +17,7 @@ const DistrictAnalysis = () => {
   const avgDitrPlanHD = location.state.avgDitrPlanHD;
   const avgDitrPlanOP = location.state.avgDitrPlanOP;
   const [currentAvgPlan, setCurrentAvgPlan] = useState(avgDitrPlanHD);
+  const [currPlanNum, setCurrPlanNum] = useState(avgDitrPlanHD.plan_index);
   const clusterIndex = location.state.clusterIndex;
   const ensembleIndex = location.state.ensembleIndex;
   const districtCoordsHd = location.state.districtCoordsHd;
@@ -36,12 +37,15 @@ const DistrictAnalysis = () => {
     leafletContainer.style.width = width;
     leafletContainer.style.height = height;
   };
+  console.log(avgDitrPlanHD.plan_index);
   const handleChange = (e) => {
     if (e.target.value === "Hamming Distance") {
+      setCurrPlanNum(avgDitrPlanHD.plan_index);
       setCurrentAvgPlan(avgDitrPlanHD);
       setSelectedDistrictPlanList(districtPlanListHd);
       setSelectedCoords(districtCoordsHd);
     } else {
+      setCurrPlanNum(avgDitrPlanOP.plan_index);
       setCurrentAvgPlan(avgDitrPlanOP);
       setSelectedDistrictPlanList(districtPlanListOp);
       setSelectedCoords(districtCoordsOp);
@@ -67,7 +71,8 @@ const DistrictAnalysis = () => {
         <div className="main-container">
           <div className="left-container">
             <h2 className="map-title">
-              {Defaults.stateData.name[stateID]} District Plan{" "}
+              {Defaults.stateData.shortName[stateID]} Avg District Plan:
+              {currPlanNum + " "}
               <button id="restore" value={3} onClick={handleRestoreMaps}>
                 Reset Map
               </button>
