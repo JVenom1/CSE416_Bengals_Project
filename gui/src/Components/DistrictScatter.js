@@ -161,6 +161,7 @@ const DistrictScatter = ({
         } else {
           d3.select(this).style("cursor", "not-allowed");
         }
+        // tooltip.transition().duration(200).style("opacity", 0);
       })
       .on("mouseout", function () {
         // Reset cursor on mouseout
@@ -186,9 +187,13 @@ const DistrictScatter = ({
             // const response = await api.get(`/2/0/0/1`);
             setDistrictIndex(e.target.getAttribute("district-name"));
             console.log(districtIndex.substring(5));
+            document.body.style.cursor = "wait";
             const response = await api.get(
-              `/${stateID}/${ensembleIndex}/${districtIndex.substring(5)}/district_plan`
+              `/${stateID}/${ensembleIndex}/${districtIndex.substring(
+                5
+              )}/district_plan`
             );
+            document.body.style.cursor = "default";
             const plan = response.data;
             console.log(plan);
             // console.log(plan);
