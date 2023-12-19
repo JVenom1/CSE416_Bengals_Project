@@ -151,7 +151,6 @@ const ClusterDetailTable = ({
       navigate("/DistrictAnalysis", {
         state: {
           stateID: stateID,
-
           // currentDistrPlan: avgPlan,
           currentDistrPlan: currentDistrPlan,
           clusterIndex: clusterIndex,
