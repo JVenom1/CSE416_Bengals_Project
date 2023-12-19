@@ -21,11 +21,12 @@ const ClusterScatter = ({
   const headerText = _headerText;
   const currentDistrPlan = _currentDistrPlan;
   const coords = _clusterCoords;
+  const clusterSize = coords.length;
   const ensembleIndex = _ensembleIndex;
   const margin = { top: 100, right: 30, bottom: 290, left: -70 };
   const width = _clusterScatterWidth - margin.left - margin.right + 100;
   const height = _clusterScatterHeight - margin.top - margin.bottom + 200;
-  const mainTitle = "Cluster Scatter";
+  const mainTitle = "Cluster MDS Scatterplot";
   const xAxTitle = "African American Pop";
   const yAxTitle = "African American Pop > 50";
   const svgRef = useRef();
@@ -48,6 +49,45 @@ const ClusterScatter = ({
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
 
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+    const legend = svg
+      .append("g")
+      .attr("transform", `translate(${width + margin.left}, ${margin.top})`);
+
+    legend
+      .append("circle")
+      .attr("cx", 10)
+      .attr("cy", 10)
+      .attr("r", 6)
+      .style("fill", "green");
+
+    legend
+      .append("circle")
+      .attr("cx", 10)
+      .attr("cy", 30)
+      .attr("r", 6)
+      .style("fill", "grey");
+
+    legend
+      .append("text")
+      .attr("x", 25)
+      .attr("y", 10)
+      .text("Clickable")
+      .style("font-size", "1.2em")
+      .attr("alignment-baseline", "middle");
+
+    legend
+      .append("text")
+      .attr("x", 25)
+      .attr("y", 30)
+      .text("Not Clickable")
+      .style("font-size", "1.2em")
+      .attr("alignment-baseline", "middle");
     // Add X Axis
     svg
       .append("g")
@@ -102,17 +142,31 @@ const ClusterScatter = ({
       .append("circle")
       .attr("cx", (d) => xScale(d))
       .attr("cy", (d, i) => yScale(coords.y[i]))
+      .attr("x", (d) => d)
+      .attr("y", (d, i) => coords.y[i])
       .attr("r", (d, i) => coords.radius[i])
       .attr("clustIndex", (d, i) => i)
-      .on("mouseover", function () {
+      .on("mouseover", function (event, d, i) {
+        const x = parseFloat(event.target.getAttribute("x")).toFixed(3);
+        const y = parseFloat(event.target.getAttribute("y")).toFixed(3);
+        const name = `Cluster ${event.target.getAttribute("clustIndex")}`;
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip
+          .html(`${name}: (${x}, ${y})`)
+          .style("left", event.pageX + "px")
+          .style("top", event.pageY - 28 + "px");
         // Change cursor to pointer on hover
         d3.select(this).style("cursor", "pointer");
       })
       .on("mouseout", function () {
         // Reset cursor on mouseout
+        tooltip.transition().duration(200).style("opacity", 0);
         d3.select(this).style("cursor", "default");
       })
-      .on("click", (event) => handleScatterPlotClick(event))
+      .on("click", (event) => {
+        tooltip.transition().duration(200).style("opacity", 0);
+        handleScatterPlotClick(event);
+      })
       .style("fill", "green");
   });
   const getDistrSum = async (stateID) => {

@@ -1,6 +1,6 @@
 import "../CSS/App.css";
 import * as d3 from "d3";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "../api/posts.js";
 import test from "../Data/DistrictPlans/WI.json";
 const DistrictScatter = ({
@@ -16,6 +16,7 @@ const DistrictScatter = ({
   _oldPlan,
 }) => {
   // api.get(`/${stateID}/${ensembleIndex}/${clusterIndex}/${districtIndex}`)
+  const [districtIndex, setDistrictIndex] = useState(null);
   const oldPlan = _oldPlan;
   const stateID = _stateID;
   const ensembleIndex = _ensembleIndex;
@@ -28,9 +29,9 @@ const DistrictScatter = ({
   const coords = _coords;
   const width = _width - margin.left - margin.right + 50;
   const height = _height - margin.top - margin.bottom - 75;
-  const mainTitle = "District Scatter";
-  const xAxTitle = "Measure 1";
-  const yAxTitle = "Measure 2";
+  const mainTitle = "District Plan MDS Scatterplot";
+  const xAxTitle = "Dimension 1";
+  const yAxTitle = "Dimension 2";
   const svgRef = useRef();
   // Use useEffect to handle side effects when the component mounts
 
@@ -50,7 +51,47 @@ const DistrictScatter = ({
 
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale);
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+    const legend = svg
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${width + margin.left - 120}, ${margin.top - 20})`
+      );
 
+    legend
+      .append("circle")
+      .attr("cx", 10)
+      .attr("cy", 10)
+      .attr("r", 6)
+      .style("fill", "green");
+
+    legend
+      .append("circle")
+      .attr("cx", 10)
+      .attr("cy", 30)
+      .attr("r", 6)
+      .style("fill", "grey");
+
+    legend
+      .append("text")
+      .attr("x", 25)
+      .attr("y", 10)
+      .text("Clickable")
+      .style("font-size", "1.2em")
+      .attr("alignment-baseline", "middle");
+
+    legend
+      .append("text")
+      .attr("x", 25)
+      .attr("y", 30)
+      .text("Not Clickable")
+      .style("font-size", "1.2em")
+      .attr("alignment-baseline", "middle");
     // Add X Axis
     svg
       .append("g")
@@ -98,10 +139,22 @@ const DistrictScatter = ({
       .append("circle")
       .attr("cx", (d) => xScale(d))
       .attr("cy", (d, i) => yScale(coords.y[i]))
+      .attr("x", (d) => d)
+      .attr("y", (d, i) => coords.y[i])
       .attr("r", () => 5)
       .attr("available", (d, i) => coords.availibility[i])
       .attr("district-name", (d, i) => districtPlans[i].name)
-      .on("mouseover", function () {
+      .on("mouseover", function (event, d, i) {
+        // Show tooltip on hover
+
+        const x = parseFloat(event.target.getAttribute("x")).toFixed(3);
+        const y = parseFloat(event.target.getAttribute("y")).toFixed(3);
+        const name = event.target.getAttribute("district-name");
+        tooltip.transition().duration(200).style("opacity", 0.9);
+        tooltip
+          .html(`${name}: (${x}, ${y})`)
+          .style("left", event.pageX + "px")
+          .style("top", event.pageY - 28 + "px");
         // Change cursor to pointer on hover
         if (d3.select(this).attr("available") === "true") {
           d3.select(this).style("cursor", "pointer");
@@ -111,21 +164,29 @@ const DistrictScatter = ({
       })
       .on("mouseout", function () {
         // Reset cursor on mouseout
+        tooltip.transition().duration(200).style("opacity", 0);
         d3.select(this).style("cursor", "default");
       })
-      .on("click", (event) => handleScatterPlotClick(event))
+      .on("click", (event) => {
+        tooltip.transition().duration(200).style("opacity", 0);
+        handleScatterPlotClick(event);
+      })
       .style("fill", (d, i) => (coords.availibility[i] ? "green" : "grey"));
   });
 
   const handleScatterPlotClick = async (e) => {
     // console.log(e.target.getAttribute("available"));
     if (e.target.getAttribute("available") === "true") {
-      if (oldPlan === null) {
-        console.log("clicked");
+      // test this out
+      if (
+        oldPlan === null ||
+        e.target.getAttribute("district-name") !== districtIndex
+      ) {
         if (e.target.getAttribute("available")) {
           try {
             // const response = await api.get(`/2/0/0/1`);
-            const districtIndex = e.target.getAttribute("district-name");
+            setDistrictIndex(e.target.getAttribute("district-name"));
+
             console.log(districtIndex);
             // const response = await api.get(
             //   `/${stateID}/${ensembleIndex}/${clusterIndex}/${"41"}`

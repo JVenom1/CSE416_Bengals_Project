@@ -91,13 +91,16 @@ const EnsembleTable = ({
   };
   const getAllDistanceMeasures = async (stateID, ensembleIndex) => {
     try {
-      const hd = await api.get(`/${stateID}/${ensembleIndex}/cluster_details`)
-        .data;
-      const op = await api.get(
-        `/${stateID}/${ensembleIndex}/cluster_details_op`
+      const hd = await api.get(
+        `/${stateID}/${ensembleIndex}/distance_measures`
       );
-      console.log(op);
-      return { hd: hd, ot: op };
+      const op = await api.get(
+        `/${stateID}/${ensembleIndex}/distance_measuresop`
+      );
+      // console.log(hd);
+      // console.log(op);
+
+      return { hd: hd.data, op: op.data };
     } catch (error) {
       console.log(error);
     }
@@ -132,7 +135,7 @@ const EnsembleTable = ({
 
     const clusterSum = await getClusterSum(stateID, ensembleIndex);
     const distMeas = await getAllDistanceMeasures(stateID, ensembleIndex);
-    console.log(distMeas);
+    // console.log(distMeas);
     navigate("/ClusterAnalysis", {
       state: {
         stateID: stateID,

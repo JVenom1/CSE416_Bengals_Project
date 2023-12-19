@@ -11,7 +11,7 @@ import ClusterDetailTable from "./ClusterDetailTable.js";
 import { GeoJSON } from "react-leaflet";
 import Map from "./Map.js";
 import Defaults from "../Helpers/Defaults.js";
-import DistMatrixTable from "./DistMatrixTable.js";
+import BoxPlot from "./BoxPlot.js";
 const ClusterAnalysis = () => {
   document.body.style.cursor = "default";
   const [selectedComponent, setSelectedComponent] = useState("details"); //details
@@ -29,7 +29,7 @@ const ClusterAnalysis = () => {
   const ensembleName = location.state.ensembleName;
   const ensembleIndex = location.state.ensembleIndex;
   const distMeas = location.state.distMeas;
-  console.log(distMeas);
+  // console.log(distMeas);
 
   const clusterScatterWidth = window.innerWidth * 0.5;
   const clusterScatterHeight = window.innerHeight;
@@ -97,7 +97,33 @@ const ClusterAnalysis = () => {
         </>
       );
     } else if (selectedComponent === "distMeas") {
-      // return <DistMatrixTable matrixList={distMeas} />;
+      console.log(distMeas);
+      return (
+        <>
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "space-around",
+            }}
+          >
+            <BoxPlot
+              boxPlotData={distMeas.hd}
+              title={"Hamming Distance"}
+              _width={clusterScatterWidth * 0.5}
+              _height={clusterScatterHeight * 0.8}
+              style={{ flex: "1", marginRight: "5px" }} // Adjust margins
+            />
+            <BoxPlot
+              boxPlotData={distMeas.op}
+              title={"Optimal Transport"}
+              _width={clusterScatterWidth * 0.5}
+              _height={clusterScatterHeight * 0.8}
+              style={{ flex: "1", marginLeft: "5px" }} // Adjust margins
+            />
+          </div>
+        </>
+      );
     }
   };
   const geoData = <GeoJSON data={currentDistrPlan} />;

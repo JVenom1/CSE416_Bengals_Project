@@ -10,7 +10,7 @@ const ClusterAssociationScatter = ({
 }) => {
   const margin = { top: 70, right: 30, bottom: 250, left: 80 };
   const width = clusterScatterWidth - margin.left - margin.right;
-  const height = clusterScatterHeight - margin.top - margin.bottom - 150;
+  const height = clusterScatterHeight - margin.top - margin.bottom - 420;
   const mainTitle = "Ensemble vs Cluster";
   const xAxTitle = "Ensemble Size";
   const yAxTitle = "Cluster Count";
@@ -60,23 +60,6 @@ const ClusterAssociationScatter = ({
       .attr("text-anchor", "middle")
       .style("font-size", "2.5em")
       .text(mainTitle);
-
-    // const dropdown = svg
-    //   .append("foreignObject")
-    //   .attr("x", width / 2 + margin.left + 200) // Adjust the position as needed
-    //   .attr("y", margin.top / 2 - 30) // Adjust the position as needed
-    //   .attr("width", 200)
-    //   .attr("height", 40)
-    //   .append("xhtml:select")
-    //   .on("change", (e) => handleChange(e));
-
-    // dropdown
-    //   .selectAll("option")
-    //   .data(["Hamming Distance", "Optimal Transport"])
-    //   .enter()
-    //   .append("xhtml:option")
-    //   .attr("value", (d) => d)
-    //   .text((d) => (d === selectedOption ? `${d}` : d));
 
     // Add X Axis Label
     svg
@@ -131,7 +114,6 @@ const ClusterAssociationScatter = ({
     height,
     selectedOptionInternal,
   ]);
-
   const handleChange = (e) => {
     // console.log("Selected value:", e.target.value);
     setSelectedOptionInternal(e.target.value);
@@ -145,7 +127,7 @@ const ClusterAssociationScatter = ({
       </select>
       <svg
         ref={svgRef}
-        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight}`}
+        viewBox={`0 0 ${clusterScatterWidth} ${clusterScatterHeight - 600}`}
         preserveAspectRatio="xMidYMid meet"
         width="100%"
         height="100%"

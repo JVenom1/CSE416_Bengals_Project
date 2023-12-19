@@ -47,6 +47,12 @@ const EnsembleSelection = () => {
       );
     } else if (selectedComponent === "assoc") {
       if (selectedOption === "Hamming Distance") {
+        const tableDataHd = clusterAssocCoordsHd.x.map((xValue, index) => ({
+          ensembleSize: xValue,
+          clusterCount: clusterAssocCoordsHd.y[index],
+        }));
+
+        console.log(tableDataHd);
         return (
           <div>
             <ClusterAssociationScatter
@@ -56,9 +62,32 @@ const EnsembleSelection = () => {
               clusterScatterWidth={clusterScatterWidth}
               clusterScatterHeight={clusterScatterHeight}
             />
+            {/* Table */}
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ensemble Size</th>
+                    <th>Cluster Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableDataHd.map((row, index) => (
+                    <tr key={index}>
+                      <td>{row.ensembleSize}</td>
+                      <td>{row.clusterCount}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
       } else if (selectedOption === "Optimal Transport") {
+        const tableDataOp = clusterAssocCoordsOp.x.map((xValue, index) => ({
+          ensembleSize: xValue,
+          clusterCount: clusterAssocCoordsOp.y[index],
+        }));
         return (
           <div>
             <ClusterAssociationScatter
@@ -68,6 +97,24 @@ const EnsembleSelection = () => {
               clusterScatterWidth={clusterScatterWidth}
               clusterScatterHeight={clusterScatterHeight}
             />
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ensemble Size</th>
+                    <th>Cluster Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tableDataOp.map((row, index) => (
+                    <tr key={index}>
+                      <td>{row.ensembleSize}</td>
+                      <td>{row.clusterCount}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         );
       }

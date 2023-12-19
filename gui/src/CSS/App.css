@@ -1,10 +1,23 @@
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .loading {
   cursor: wait !important;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: left;
+  padding: 8px;
+  font-size: 1em;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .app-container {
@@ -251,7 +264,7 @@ select:hover {
   background-color: rgb(248, 233, 211);
   padding: 20px;
   border-radius: 10px;
-  height: 89%;
+  height: 90%;
   text-align: center;
 }
 

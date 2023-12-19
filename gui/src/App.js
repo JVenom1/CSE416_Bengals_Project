@@ -6,7 +6,7 @@ import StateSelection from "./Components/StateSelection.js";
 import EnsembleSelection from "./Components/EnsembleSelection.js";
 import DistrictAnalysis from "./Components/DistrictAnalysis.js";
 import ClusterAnalysis from "./Components/ClusterAnalysis.js";
-import DistMatrixTable from "./Components/DistMatrixTable.js";
+// import BoxPlot from "./Components/DistMatrixTable.js";
 const App = () => {
   return (
     <BrowserRouter>
@@ -18,7 +18,7 @@ const App = () => {
           element={<EnsembleSelection />}
         />
         <Route path="/ClusterAnalysis" exact element={<ClusterAnalysis />} />
-        <Route path="/DistMatrixTable" exact element={<DistMatrixTable />} />
+        {/* <Route path="/DistMatrixTable" exact element={<DistMatrixTable />} /> */}
         <Route path="/DistrictAnalysis" exact element={<DistrictAnalysis />} />
       </Routes>
     </BrowserRouter>

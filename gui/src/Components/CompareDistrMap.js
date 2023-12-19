@@ -10,9 +10,16 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
     setForceRerender((prevState) => !prevState);
     // changeMapSizeXbyY("80%", "40vw");
   }, [selectedPlan, currentDistrPlan]);
-
+  const getWinnerColor = (plan) => {
+    if (plan) {
+      return "red";
+    } else {
+      return "blue";
+    }
+  };
+  const winnerColor = getWinnerColor(selectedPlan);
   // console.log(selectedPlan);
-  let zoom = 6;
+  let zoom = 7;
   const handleDiffScreenSizes = (zoom) => {
     const diagonalSize = Math.sqrt(
       window.innerWidth ** 2 + window.innerHeight ** 2
@@ -44,7 +51,7 @@ const CompareDistrMap = ({ stateID, currentDistrPlan, selectedPlan }) => {
           />
           <GeoJSON data={currentDistrPlan} />
           {selectedPlan !== null ? (
-            <GeoJSON style={{ color: "orange" }} data={selectedPlan} />
+            <GeoJSON style={{ color: winnerColor }} data={selectedPlan} />
           ) : null}
         </MapContainer>
       </div>

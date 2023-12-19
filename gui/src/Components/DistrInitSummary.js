@@ -4,14 +4,14 @@ const DistrInitSummary = ({ distrDet }) => {
   const keys = Object.keys(distrDet);
   console.log(keys);
   const columnHeaders = [
-    "percentasian",
-    "percentblack",
     "percentdemvoters",
-    "percentindian",
-    "percentother",
-    "percentpacific",
     "percentrepvoters",
     "percentwhite",
+    "percentblack",
+    "percentasian",
+    "percentindian",
+    "percentpacific",
+    "percentother",
   ];
   const columnHeaderMapping = {
     percentasian: "% Asian",
@@ -23,24 +23,25 @@ const DistrInitSummary = ({ distrDet }) => {
     percentrepvoters: "% Rep. Voters",
     percentwhite: "% White",
   };
+  // console.log(distrDet);
   return (
     <div className="solo-table-container">
       <table>
         <thead>
           <tr>
-            <th>% Asian</th>
-            <th>% Black</th>
             <th>% Dem. Voters</th>
-            <th>% Indian</th>
-            <th>% Other</th>
-            <th>% Pacific</th>
             <th>% Rep. Voters</th>
             <th>% White</th>
+            <th>% Black</th>
+            <th>% Asian</th>
+            <th>% Indian</th>
+            <th>% Pacific</th>
+            <th>% Other</th>
           </tr>
         </thead>
         <tbody>
           <tr className="solo-tr">
-            {keys.map((key) => (
+            {columnHeaders.map((key) => (
               <td key={key}>{distrDet[key]}</td>
             ))}
           </tr>

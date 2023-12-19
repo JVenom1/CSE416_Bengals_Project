@@ -29,7 +29,7 @@ const DistrictSummaryTable = ({ distPlanList }) => {
     // true false list where true display the plan
     setSelectedPlans(updatedSelectedPlans);
   };
-
+  console.log(distPlanList);
   return (
     <div className="table-container">
       <table>
@@ -37,8 +37,8 @@ const DistrictSummaryTable = ({ distPlanList }) => {
           <tr>
             <th>Availability</th>
             <th>Plan #</th>
-            <th>Num Oppertunity Dist Count</th>
-            <th>Rep./Dem. Splits</th>
+            <th>Num Opportunity Dist Count</th>
+            <th>Rep. - Dem. Splits</th>
             {/* {columnHeaders.map((header) => (
                             <th key={header}>{header}</th>
                         ))} */}
