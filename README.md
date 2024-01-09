@@ -15,8 +15,11 @@ Welcome to the main project folder for our Bengals Project! This repository hous
 
 To start the program, follow these steps:
 
-1. Update the server link in `gui/src/api/posts.js` to match the backend server.
-    a. Make sure the server has data for the following GET requests from this file `../server/src/main/java/org/bengals/server/Resource.java`.
+1. **Update Server Link:**
+    a. Update the server link in `gui/src/api/posts.js` to match the backend server.
+
+    b. Ensure the server has data for the following GET requests from this file: `../server/src/main/java/org/bengals/server/Resource.java`.
+
 2. Navigate to the `gui` directory in your terminal:
 
     ```bash
