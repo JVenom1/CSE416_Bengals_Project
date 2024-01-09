@@ -2,7 +2,9 @@
 
 Main Project Folder For Our Bengals Project
 
-# GUI
+# Start Program
+
+change gui/src/api/posts.js to server link and match all backend
 
 cd gui
 
