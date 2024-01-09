@@ -1,23 +1,43 @@
 # CSE416_Bengals_Project
 
-Main Project Folder For Our Bengals Project
+## Overview
 
-Perform the following cluster analysis on sets of
-random district plans:
-*Analyze clustering effects among ensembles of
-random district plans.
-*Understand patterns of clusters within an ensemble.
-*Evaluate effectiveness of distance measures for pairs of district plans.
-*Determine how many plans in an ensemble are needed to identify almost all clusters.
-*Visualize clusters.
-*Visualize thousands of random plans for selection of individual plans.
+Welcome to the main project folder for our Bengals Project! This repository houses the code and resources for performing cluster analysis on sets of random district plans. The primary goals of this project include:
 
+- Analyzing clustering effects among ensembles of random district plans.
+- Understanding patterns of clusters within an ensemble.
+- Evaluating the effectiveness of distance measures for pairs of district plans.
+- Determining how many plans in an ensemble are needed to identify almost all clusters.
+- Visualizing clusters.
+- Visualizing thousands of random plans for the selection of individual plans.
 
-# Start Program
+## Getting Started
 
-change gui/src/api/posts.js to server link and match all backend
+To start the program, follow these steps:
 
-cd gui
+1. Update the server link in `gui/src/api/posts.js` to match the backend server.
+2. Navigate to the `gui` directory in your terminal:
 
-npm install
-npm start
+    ```bash
+    cd gui
+    ```
+
+3. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+4. Start the application:
+
+    ```bash
+    npm start
+    ```
+
+## Cluster Analysis
+
+The cluster analysis is designed to provide insights into the patterns and effects of clustering within ensembles of random district plans. This involves evaluating distance measures, identifying clusters, and determining the optimal number of plans to capture most clusters.
+
+## Visualization
+
+The project includes visualization components to aid in understanding and selecting individual plans. This is particularly useful when dealing with thousands of random plans, allowing for efficient exploration and selection.
