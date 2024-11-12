@@ -2,7 +2,7 @@
 
 ## Overview
 
-Video Preview:
+Early Development Stage Video Preview:
 https://github.com/user-attachments/assets/5d2e5ccd-596f-4414-9454-daca7fa71f3e
 
 Welcome to the main project folder for our Bengals Project! This repository houses the code and resources for performing cluster analysis on sets of random district plans. The primary goals of this project include:
