@@ -2,6 +2,9 @@
 
 ## Overview
 
+Video Preview:
+https://github.com/user-attachments/assets/5d2e5ccd-596f-4414-9454-daca7fa71f3e
+
 Welcome to the main project folder for our Bengals Project! This repository houses the code and resources for performing cluster analysis on sets of random district plans. The primary goals of this project include:
 
 - Analyzing clustering effects among ensembles of random district plans.
@@ -17,26 +20,26 @@ To start the program, follow these steps:
 
 1. **Update Server Link:**
 
-    - Update the server link in `gui/src/api/posts.js` to match the backend server.
-    - Ensure the server has data for the following GET requests from this file: `../server/src/main/java/org/bengals/server/Resource.java`.
+   - Update the server link in `gui/src/api/posts.js` to match the backend server.
+   - Ensure the server has data for the following GET requests from this file: `../server/src/main/java/org/bengals/server/Resource.java`.
 
 2. Navigate to the `gui` directory in your terminal:
 
-    ```bash
-    cd gui
-    ```
+   ```bash
+   cd gui
+   ```
 
 3. Install dependencies:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 4. Start the application:
 
-    ```bash
-    npm start
-    ```
+   ```bash
+   npm start
+   ```
 
 ## Cluster Analysis
 
